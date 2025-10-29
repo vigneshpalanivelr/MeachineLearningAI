@@ -6,34 +6,34 @@
 ## MAIN TABLE OF CONTENTS
 
 ### [CS1 - Machine Learning Fundamentals](#cs1---machine-learning-fundamentals)
-- Definition & Core Concepts
-- Performance-Task-Experience Triplet
-- Target Function and Hypothesis
-- The Model
-- Generalization
+- [Definition](#cs1-definition)
+- [Core Concepts](#cs1-core-concepts)
+- [Target Function and Hypothesis](#cs1-target-function-and-hypothesis)
+- [The Model](#cs1-the-model)
+- [Generalization](#cs1-generalization)
 
 ### [CS2 - Machine Learning Workflow](#cs2---machine-learning-workflow)
-- Types of Attributes
-- Discrete vs Continuous Attributes
-- Data Types
-- Data Pre-processing Steps
-- Feature Engineering
+- [Types of Attributes](#cs2-types-of-attributes)
+- [Discrete vs Continuous Attributes](#cs2-discrete-vs-continuous-attributes)
+- [Data Types](#cs2-data-types)
+- [Data Pre-processing Steps](#cs2-data-pre-processing-steps)
+- [Feature Engineering](#cs2-feature-engineering)
 
 ### [CS3 - Linear Regression & Regularization](#cs3---linear-regression--regularization)
-- What is Linear Regression?
-- Linear Regression Formulas
-- Types of Regression Models
-- Least Squares Regression
-- Hypothesis Function
-- Ridge Regression (L2)
-- Lasso Regression (L1)
-- Ridge vs Lasso Comparison
-- Elastic Net
-- Numerical Examples
+- [What is Linear Regression?](#cs3-what-is-linear-regression)
+- [Linear Regression Formulas](#cs3-linear-regression-formulas)
+- [Types of Regression Models](#cs3-types-of-regression-models)
+- [Least Squares Regression](#cs3-least-squares-regression)
+- [Hypothesis Function](#cs3-hypothesis-function)
+- [Ridge Regression (L2)](#cs3-ridge-regression-l2)
+- [Lasso Regression (L1)](#cs3-lasso-regression-l1)
+- [Ridge vs Lasso Comparison](#cs3-ridge-vs-lasso-comparison)
+- [Elastic Net](#cs3-elastic-net)
+- [Numerical Examples](#cs3-numerical-examples)
 
 ---
 
-# CS1 - MACHINE LEARNING FUNDAMENTALS
+# CS1 - Machine Learning Fundamentals
 
 ## CS1 TABLE OF CONTENTS
 1. [Definition](#cs1-definition)
@@ -202,7 +202,7 @@ Cause:                Balanced complexity, learns underlying patterns
 
 ---
 
-# CS2 - MACHINE LEARNING WORKFLOW
+# CS2 - Machine Learning Workflow
 
 ## CS2 TABLE OF CONTENTS
 1. [Types of Attributes](#cs2-types-of-attributes)
@@ -542,7 +542,7 @@ Green    →    Red=0, Blue=0, Green=1
 
 ---
 
-# CS3 - LINEAR REGRESSION & REGULARIZATION
+# CS3 - Linear Regression & Regularization
 
 ## CS3 TABLE OF CONTENTS
 1. [What is Linear Regression?](#cs3-what-is-linear-regression)
