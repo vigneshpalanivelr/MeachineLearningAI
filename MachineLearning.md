@@ -177,7 +177,7 @@
     - Convert: Attributes to one or more binary variables
     - Methods: One Hot Encoding (categorical features)
    
-# Linear Regression - Complete Guide
+# CS3 - Linear Regression
 
 ## Table of Contents
 1. [What is Linear Regression?](#1-what-is-linear-regression)
