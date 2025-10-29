@@ -1,196 +1,564 @@
-# CS1 - Machine Learning (ML)
-
-## Definition
-- Machine Learning (ML) is a field of study about creating programs that automatically improve by learning from experience and data
-- Instead of writing explicit rules, ML systems learn patterns from examples and use those patterns to make decisions
-- ML draws from multiple disciplines
-  - Statistics
-  - Artificial Intelligence (AI)
-  - Information Theory
-  - Biology
-  - Control Theory
-
-## Core Concepts and Definitions
-
-### Performance-Task–Experience Triplet
-- ML algorithms improve performance (P) at some task (T) with experience (E) as <P, T, E>
-  - Experience (E): The dataset or historical examples used for training
-  - Task (T): The goal or problem being solved, e.g., recognizing handwriting or filtering spam
-  - Performance (P): The metric that measures success, e.g., accuracy, error rate, precision, recall
-
-### Target Function and Hypothesis
-- f = The hidden rule that connects inputs to correct outputs in the real world
-- x = The input data we provide
-- f(x) = The real answer (the correct output)
-- h = Our ML model's attempt to replicate that hidden rule
-- h(x) = The prediction our model makes (what we calculated)
-- Challenge: We need to adjust h until h(x) matches f(x)
-- Success : When our predictions match what actually happened
-
-### The Model
-- A model is what you get after training an algorithm on data (captures the patterns and relationships learned from data)
-- The model encodes the knowledge gained from data (learned representation that makes predictions)
-- Examples:
-  - Linear Regression Learns: y = w * x + b
-  - Decision Tree Learns rules like tree structure: if Action-1 else Action-2
-  - Neural Network Learns millions of parameters (weights, biases)
-
-### Generalization
-- A central goal of ML is generalization — performing well on unseen or new data (unobserved examples)
-- Goal
-  - Overfitting: Model memorizes training data; great on training, poor on new data
-  - Underfitting: Model too simple; poor on both training and new data
-  - Good Generalization: Model learns underlying patterns; performs well on both
-
-# CS2 - Machine Learning Workflow
-
-## Types of Attributes
-### Numerical Attributes
-  - Definition: Attributes with numeric values
-  - Example: Age, salary, temperature
-
-### Categorical Attributes
-  - Definition: Attributes with distinct categories
-  - Example: Color (red, blue, green), gender (male, female)
-
-### Ordinal Attributes
-  - Definition: Categorical with meaningful order
-  - Example: Education level (high school, bachelor, master)
-
-### Binary Attributes
-  - Definition: Attributes with only two values
-  - Example: Yes/No, True/False
-
-## Discrete vs Continuous Attributes
-### Discrete Attributes
-  - Definition: Takes non-floating point values
-  - Characteristics: Countable, distinct values
-  - Example: Number of students, ratings (1-5), age in years
-
-### Continuous Attributes
-  - Definition: Takes any real value in a range
-  - Characteristics: Infinite possible values, decimal values
-  - Example: Temperature (98.6°F), height (5.8 meters), salary ($50,000.50)
-
-## Data Types
-### Relational/Object Data
-  - Structure: Rows = objects, Columns = attributes
-  - Use: Standard format for statistical data
-  - Example: Student database (rows=students, columns=name, age, GPA)
-
-### Transactional Data
-  - Structure: Records represent purchased items
-  - Use: Market basket analysis
-  - Example: Transaction ID, item list, purchase date
-
-### Document Data
-  - Structure: Vectors of words/terms
-  - Use: Text analysis, NLP
-  - Example: Document-term matrix, bag of words
-
-### Sequence Data
-  - Structure: Attributes with order relationships
-  - Use: Time or spatial ordered data
-  - Example: DNA sequences, event logs
-
-### Time Series Data
-  - Structure: Measurements over successive time points
-  - Use: Temporal pattern analysis
-  - Example: Daily rainfall, stock prices, temperature readings
-
-### Spatial and Spatio-Temporal Data
-  - Structure: Attributes related to positions/areas
-  - Use: Geographic analysis
-  - Example: Weather maps, location-based data
-
-### Web & Social Network Data
-  - Structure: Network relationships
-  - Use: Social analysis
-  - Example: Twitter connections, Facebook links
-
-## Data Pre-processing Steps
-### Data Cleaning
-  - Goal:
-    - Detection and correction of data quality problems.
-    - Poor quality data (e.g., noisy data, wrong data, missing values) can lead to highly inaccurate models.
-  - Handling Missing Values
-    - Option 1: Delete column (if >10% missing)
-    - Option 2: Replace with zero
-    - Option 3: Replace with last known value
-    - Option 4: Use ML to predict missing values
-  - Handling Outliers
-    - Definition: Data points unusual relative to rest
-    - Action: Remove if identified as noise
-  - Addressing Inconsistency
-    - Definition: Contradictory attributes (age vs birth year)
-    - Action: Correct or remove duplicates
-
-### Data Aggregation
-  - Definition: Combine data based on common identifier
-  - Example: Calculate total sales for transaction ID
-
-### Sampling
-  - Definition: Select subset of data for analysis
-  - Key Point: Sample size must represent population
-  - Types: Simple random sampling, stratified sampling
-  - Risk: Too small sample misses patterns
-
-### Scaling and Normalization
-  - Normalization
-    - Range: [0,1] or [-1,1]
-    - Use: Non-assumption based algorithms (KNN, Neural Networks)
-  - Standardization
-    - Use: Algorithms assuming Gaussian distribution
-    - Advantage: Less affected by outliers
-
-## Feature Engineering Steps
-### Feature Extraction Techniques
-  - Definition: Create lower-dimension features from raw data
-  - Dimensionality Reduction
-    - Goal: Reduce number of attributes
-    - Example: Principal Component Analysis (PCA)
-  - Transformation Examples
-    - Density = mass / volume
-    - Fourier transform for time series
-
-### Feature Selection Techniques
-  - Definition: Select subset of existing features
-  - Goal: Discard redundant/irrelevant features
-  - Techniques
-    - Filter Methods: Use heuristics (like correlation scores) independent of the learning algorithm to assess feature relevance
-    - Wrapper Methods: Use the target learning algorithm itself as a "black box" to evaluate how well a subset of features performs
-    - Embedded Methods: Perform feature selection automatically during the operation of the data mining algorithm (e.g., decision tree algorithms).
-
-### Feature Construction Techniques
-  - Definition: Creating genuinely new features, often based on combining existing ones by utilizing domain knowledge
-  - Techniques
-    - Polynomial Expansion: Univariate mathematical functions
-    - Feature Crossing: Combine features to capture interactions
-
-### Transformation and Encoding Techniques
-  - Discretization (Binning/Bucketing)
-    - Convert: Continuous to discrete (age to youth, adult)
-    - Techniques
-      - Equal-width partitioning
-      - Equal-depth (frequency) partitioning
-  - Binarization
-    - Convert: Attributes to one or more binary variables
-    - Methods: One Hot Encoding (categorical features)
-   
-# CS3 - Linear Regression
-
-## Table of Contents
-1. [What is Linear Regression?](#1-what-is-linear-regression)
-2. [Linear Regression Interpretation and Formula](#2-linear-regression-interpretation-and-formula)
-3. [Types of Regression Models and Formulas](#3-types-of-regression-models-and-formulas)
-4. [Least Square Regression Line and Notations](#4-least-square-regression-line-and-notations)
-5. [Linear Regression – Hypothesis Function and Formulas](#5-linear-regression--hypothesis-function-and-formulas)
-6. [Quick Reference Table](#6-quick-reference-table)
-7. [Examples and Numerical Solutions](#7-examples-and-numerical-solutions)
+# Complete Machine Learning Course Guide
+## CS1 • CS2 • CS3: Linear Models & Regression
 
 ---
 
-## 1. What is Linear Regression?
+## MAIN TABLE OF CONTENTS
+
+### [CS1 - Machine Learning Fundamentals](#cs1---machine-learning-fundamentals)
+- Definition & Core Concepts
+- Performance-Task-Experience Triplet
+- Target Function and Hypothesis
+- The Model
+- Generalization
+
+### [CS2 - Machine Learning Workflow](#cs2---machine-learning-workflow)
+- Types of Attributes
+- Discrete vs Continuous Attributes
+- Data Types
+- Data Pre-processing Steps
+- Feature Engineering
+
+### [CS3 - Linear Regression & Regularization](#cs3---linear-regression--regularization)
+- What is Linear Regression?
+- Linear Regression Formulas
+- Types of Regression Models
+- Least Squares Regression
+- Hypothesis Function
+- Ridge Regression (L2)
+- Lasso Regression (L1)
+- Ridge vs Lasso Comparison
+- Elastic Net
+- Numerical Examples
+
+---
+
+# CS1 - MACHINE LEARNING FUNDAMENTALS
+
+## CS1 TABLE OF CONTENTS
+1. [Definition](#cs1-definition)
+2. [Core Concepts](#cs1-core-concepts)
+3. [Target Function and Hypothesis](#cs1-target-function-and-hypothesis)
+4. [The Model](#cs1-the-model)
+5. [Generalization](#cs1-generalization)
+
+---
+
+## CS1 Definition
+
+Machine Learning (ML) is a field of study about creating programs that automatically improve by learning from experience and data.
+
+Instead of writing explicit rules, ML systems learn patterns from examples and use those patterns to make decisions.
+
+### ML Draws From Multiple Disciplines
+
+- **Statistics** - Probability, distributions, statistical inference
+- **Artificial Intelligence (AI)** - Learning algorithms and reasoning methods
+- **Information Theory** - Measuring and processing information
+- **Control Theory** - Adaptive systems and feedback mechanisms
+- **Biology** - Inspiration for neural networks and adaptive systems
+
+---
+
+## CS1 Core Concepts
+
+### Performance-Task-Experience Triplet
+
+ML algorithms improve performance (P) at some task (T) with experience (E) as **⟨P, T, E⟩**
+
+| Component | Meaning | Example |
+|-----------|---------|---------|
+| **Experience (E)** | The dataset or historical examples used for training | 1000 labeled emails (spam/not spam) |
+| **Task (T)** | The goal or problem being solved | Email spam classification |
+| **Performance (P)** | The metric that measures success | Accuracy, precision, recall |
+
+**Example:**
+- E: Historical house sales data
+- T: Predict house prices
+- P: Mean Squared Error, R²
+
+---
+
+## CS1 Target Function and Hypothesis
+
+### Key Definitions
+
+| Term | Symbol | Meaning |
+|------|--------|---------|
+| **Target Function** | $f$ | The hidden rule that connects inputs to correct outputs in the real world |
+| **Input Data** | $x$ | The input data we provide |
+| **Real Answer** | $f(x)$ | The correct output (ground truth) |
+| **Hypothesis** | $h$ | Our ML model's attempt to replicate the hidden rule |
+| **Prediction** | $h(x)$ | The prediction our model makes |
+
+### The Learning Challenge
+
+$$\text{Goal: Adjust } h \text{ until } h(x) \approx f(x)$$
+
+$$\text{Success: When our predictions match what actually happened}$$
+
+### Visual Representation
+
+```
+Real World           Our Model
+    ↓                    ↓
+ f(x) = Real Answer   h(x) = Our Prediction
+    │                    │
+    └────────────────────┘
+       Minimize Gap
+```
+
+---
+
+## CS1 The Model
+
+### What is a Model?
+
+A **model** is what you get after training an algorithm on data:
+- Captures the patterns and relationships learned from data
+- Encodes the knowledge gained from data
+- Learned representation that makes predictions
+
+### Examples of Models
+
+**Linear Regression Model:**
+$$y = wx + b$$
+Learns: How input changes affect output linearly
+
+**Decision Tree Model:**
+```
+if feature_1 > threshold:
+    if feature_2 < other_threshold:
+        predict A
+    else:
+        predict B
+else:
+    predict C
+```
+Learns: Rule-based tree structure for decisions
+
+**Neural Network Model:**
+Learns: Millions of parameters (weights, biases) that transform inputs to outputs
+
+### Model Output
+
+The final model encodes:
+- Learned parameters/weights
+- Relationships between features and target
+- Decision boundaries or prediction functions
+
+---
+
+## CS1 Generalization
+
+### Central Goal of ML
+
+**Generalization** = Performing well on unseen or new data (unobserved examples)
+
+Not just memorizing training data!
+
+### The Trade-off: Three Scenarios
+
+#### 1. Overfitting (Bad)
+```
+Training Performance: ✅ Excellent (95% accuracy)
+Test Performance:     ❌ Poor (60% accuracy)
+Problem:              Model memorized training data, doesn't generalize
+Cause:                Too complex, high variance
+```
+
+#### 2. Underfitting (Bad)
+```
+Training Performance: ❌ Poor (70% accuracy)
+Test Performance:     ❌ Poor (68% accuracy)
+Problem:              Model too simple to capture patterns
+Cause:                Too simple, high bias
+```
+
+#### 3. Good Generalization (Good)
+```
+Training Performance: ✅ Good (85% accuracy)
+Test Performance:     ✅ Good (84% accuracy)
+Problem:              None
+Cause:                Balanced complexity, learns underlying patterns
+```
+
+### Bias-Variance Trade-off
+
+| Aspect | High Complexity | Low Complexity |
+|--------|-----------------|-----------------|
+| **Bias** | Low (fits data well) | High (too rigid) |
+| **Variance** | High (sensitive to data) | Low (stable) |
+| **Result** | Overfitting | Underfitting |
+| **Example** | Degree 10 polynomial | Linear model |
+
+### Achieving Good Generalization
+
+✅ Use proper training/test split  
+✅ Apply regularization (Ridge, Lasso)  
+✅ Use cross-validation  
+✅ Monitor both training and validation error  
+✅ Keep model complexity balanced  
+
+---
+
+# CS2 - MACHINE LEARNING WORKFLOW
+
+## CS2 TABLE OF CONTENTS
+1. [Types of Attributes](#cs2-types-of-attributes)
+2. [Discrete vs Continuous Attributes](#cs2-discrete-vs-continuous-attributes)
+3. [Data Types](#cs2-data-types)
+4. [Data Pre-processing Steps](#cs2-data-pre-processing-steps)
+5. [Feature Engineering](#cs2-feature-engineering)
+
+---
+
+## CS2 Types of Attributes
+
+### Numerical Attributes
+- **Definition:** Attributes with numeric values
+- **Example:** Age, salary, temperature, distance
+
+### Categorical Attributes
+- **Definition:** Attributes with distinct categories (no order)
+- **Example:** Color (red, blue, green), gender (male, female), city names
+
+### Ordinal Attributes
+- **Definition:** Categorical attributes with meaningful order
+- **Example:** Education level (high school < bachelor < master), ratings (1 star < 5 stars)
+
+### Binary Attributes
+- **Definition:** Attributes with only two possible values
+- **Example:** Yes/No, True/False, Present/Absent, 0/1
+
+---
+
+## CS2 Discrete vs Continuous Attributes
+
+### Discrete Attributes
+- **Definition:** Takes non-floating point values
+- **Characteristics:** Countable, distinct values, gaps between values
+- **Example:** 
+  - Number of students (5, 10, 15, not 5.5)
+  - Product ratings (1, 2, 3, 4, 5)
+  - Age in years (25, 26, 27)
+
+### Continuous Attributes
+- **Definition:** Takes any real value in a range
+- **Characteristics:** Infinite possible values, can have decimal values
+- **Example:**
+  - Temperature (98.6°F, 20.3°C)
+  - Height (5.8 meters, 5.81 meters, 5.812 meters)
+  - Salary ($50,000, $50,000.50, $50,000.75)
+
+---
+
+## CS2 Data Types
+
+### Relational/Object Data
+- **Structure:** Rows = objects/samples, Columns = attributes/features
+- **Use Case:** Standard format for statistical data
+- **Example:** Student database with rows=students, columns=name, age, GPA
+- **Visual:**
+```
+|  Name   | Age | GPA  |
+|---------|-----|------|
+| Alice   | 20  | 3.8  |
+| Bob     | 21  | 3.6  |
+| Charlie | 19  | 3.9  |
+```
+
+### Transactional Data
+- **Structure:** Each record represents items purchased in a transaction
+- **Use Case:** Market basket analysis, recommendation systems
+- **Example:** Transaction ID, item list, purchase date
+- **Visual:**
+```
+| TransactionID | Items                      | Date       |
+|---------------|----------------------------|------------|
+| T001          | Bread, Milk, Butter        | 2025-01-15 |
+| T002          | Apple, Orange, Banana      | 2025-01-15 |
+```
+
+### Document Data
+- **Structure:** Data objects represented using vectors (words or terms)
+- **Use Case:** Text analysis, Natural Language Processing
+- **Example:** Document-term matrix, bag of words
+- **Visual:**
+```
+| Doc | word1 | word2 | word3 |
+|-----|-------|-------|-------|
+| D1  |   2   |   1   |   0   |
+| D2  |   0   |   3   |   2   |
+```
+
+### Sequence Data
+- **Structure:** Attributes with relationships involving order (time or space)
+- **Use Case:** Time or spatial ordered analysis
+- **Example:** DNA sequences (ATCG...), event logs, action sequences
+- **Visual:**
+```
+Sequence: A → T → C → G → A → T → C
+Position: 1   2   3   4   5   6   7
+```
+
+### Time Series Data
+- **Structure:** Sequences arising through measurement of time
+- **Use Case:** Temporal pattern analysis, forecasting
+- **Example:**
+  - Daily rainfall measurements
+  - Stock prices over time
+  - Acoustic features for speech recognition
+- **Visual:**
+```
+Date       | Price |
+|---------|--------|
+2025-01-01| $100   |
+2025-01-02| $102   |
+2025-01-03| $101   |
+```
+
+### Spatial and Spatio-Temporal Data
+- **Structure:** Objects with attributes related to positions/areas
+- **Use Case:** Geographic/location analysis
+- **Example:** Weather maps, GPS coordinates, location-based services
+
+### Web & Social Network Data
+- **Structure:** Network relationships and connections
+- **Use Case:** Social analysis, recommendation systems
+- **Example:** Twitter connections, Facebook links, citation networks
+
+---
+
+## CS2 Data Pre-processing Steps
+
+### Step 1: Data Cleaning
+
+**Goal:** Detection and correction of data quality problems
+
+**Why Important:** Poor quality data leads to highly inaccurate models
+
+#### 1.1 Handling Missing Values
+
+**Options:**
+
+| Option | When to Use | Pros | Cons |
+|--------|------------|------|------|
+| Delete Column | >10% missing | Simple | Loss of data |
+| Replace with Zero | Sparse data | Simple | May introduce bias |
+| Replace with Mean/Median | Few missing | Preserves stats | Loses variability |
+| Last Known Value | Time series | Maintains trend | May not be accurate |
+| ML Prediction | Few missing | Accurate | Complex |
+
+**Decision Tree:**
+```
+Missing values?
+    ├─ >10% → Delete column
+    ├─ Few (1-5) → Replace with mean/median
+    ├─ Time series → Forward/backward fill
+    └─ Predictable → Use ML imputation
+```
+
+#### 1.2 Handling Outliers
+
+- **Definition:** Data points unusual relative to the rest of the dataset
+- **Example:** Age = 999, Salary = -50000
+- **Detection:** Values > 3 standard deviations from mean
+- **Action:** Remove if identified as noise/error
+
+#### 1.3 Addressing Inconsistency
+
+- **Definition:** Contradictory attributes within same record
+- **Example:** Age = 25 but Birth Year = 1990 (would be 34-35)
+- **Action:** Correct or remove inconsistent records
+
+#### 1.4 Removing Duplicates
+
+- **Definition:** Identical or near-identical records
+- **Action:** Remove duplicate entries
+
+### Step 2: Data Aggregation
+
+- **Definition:** Combine/summarize data based on common identifier
+- **Example:** 
+  - Calculate total sales for each transaction ID
+  - Sum monthly revenue by store
+  - Average customer spending by region
+- **Benefit:** Reduces data size, creates meaningful groups
+
+### Step 3: Sampling
+
+- **Definition:** Select subset of data objects for analysis
+- **Key Point:** Sample size must represent population
+- **Types:**
+  - Simple random sampling: Each record has equal probability
+  - Stratified sampling: Sample from each group proportionally
+
+**Risk:** 
+- Too small sample → Misses patterns in original dataset
+- Too large sample → Computational inefficiency
+
+### Step 4: Scaling and Normalization
+
+#### 4.1 Normalization
+
+$$x_{\text{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
+
+- **Range:** [0,1] or [-1,1]
+- **Use:** Non-assumption based algorithms (KNN, Neural Networks)
+- **Effect:** All features on same scale
+
+**Example:**
+- Original: Age ∈ [18, 80], Salary ∈ [30000, 200000]
+- Normalized: Both ∈ [0, 1]
+
+#### 4.2 Standardization (Z-score)
+
+$$x_{\text{std}} = \frac{x - \mu}{\sigma}$$
+
+- **Mean:** 0, **Std Dev:** 1
+- **Use:** Algorithms assuming Gaussian distribution
+- **Advantage:** Less affected by outliers than normalization
+
+**Example:**
+- Original: Age = 30 (mean=40, σ=10)
+- Standardized: (30-40)/10 = -1.0
+
+---
+
+## CS2 Feature Engineering
+
+Feature engineering is the art of creating or selecting features to improve model performance.
+
+### Step 1: Feature Extraction
+
+#### 1.1 Dimensionality Reduction
+
+**Goal:** Reduce number of attributes
+
+**Why:** 
+- Too many features → overfitting, slow computation
+- Curse of dimensionality
+
+**Technique - Principal Component Analysis (PCA):**
+- Combines multiple features into fewer uncorrelated features
+- Example: 100 features → 10 principal components
+
+#### 1.2 Transformation Examples
+
+**Density Calculation:**
+$$\text{Density} = \frac{\text{Mass}}{\text{Volume}}$$
+Create new feature from existing features
+
+**Fourier Transform for Time Series:**
+- Convert time domain to frequency domain
+- Extract frequency components as features
+
+---
+
+### Step 2: Feature Selection
+
+**Definition:** Select subset of existing features
+
+**Goal:** Discard redundant or irrelevant features
+
+#### 2.1 Filter Methods
+
+- **How:** Use heuristics independent of learning algorithm
+- **Example:** Correlation scores, mutual information
+- **Advantage:** Fast, independent of model
+- **Disadvantage:** Ignores feature interactions
+
+#### 2.2 Wrapper Methods
+
+- **How:** Use learning algorithm itself as "black box"
+- **Process:** Try different feature subsets, evaluate performance
+- **Advantage:** Considers feature interactions
+- **Disadvantage:** Computationally expensive
+
+#### 2.3 Embedded Methods
+
+- **How:** Feature selection automatic during algorithm operation
+- **Example:** Decision tree algorithms, Lasso regression
+- **Advantage:** Efficient, integrated with learning
+- **Disadvantage:** Algorithm-specific
+
+---
+
+### Step 3: Feature Construction
+
+**Definition:** Creating genuinely new features, often by combining existing ones
+
+#### 3.1 Polynomial Expansion
+
+**Technique:** Use univariate mathematical functions
+
+**Example:**
+- Original feature: $x$
+- New features: $x^2, x^3, \sqrt{x}, \log(x)$
+
+#### 3.2 Feature Crossing
+
+**Technique:** Combine features to capture interactions
+
+**Example:**
+- Features: Age, Income
+- New feature: Age × Income (interaction effect)
+
+**Use Case:** Age and income together might be more predictive than separately
+
+---
+
+### Step 4: Transformation and Encoding
+
+#### 4.1 Discretization (Binning/Bucketing)
+
+**Definition:** Convert continuous to discrete attributes
+
+**Example:**
+- Original: Age ∈ [18, 80]
+- Binned: Youth (18-30), Adult (31-50), Senior (51-80)
+
+**Methods:**
+
+| Method | Approach | Example |
+|--------|----------|---------|
+| Equal-width | Divide into equal-width bins | [0-25), [25-50), [50-75), [75-100] |
+| Equal-depth | Divide so each bin has same count | Each bin has same number of records |
+
+#### 4.2 Binarization
+
+**Definition:** Convert attributes to one or more binary variables
+
+**Example: One-Hot Encoding for Categorical Features**
+
+Original: Color ∈ {Red, Blue, Green}
+```
+Original               Binarized
+Red      →    Red=1, Blue=0, Green=0
+Blue     →    Red=0, Blue=1, Green=0
+Green    →    Red=0, Blue=0, Green=1
+```
+
+---
+
+# CS3 - LINEAR REGRESSION & REGULARIZATION
+
+## CS3 TABLE OF CONTENTS
+1. [What is Linear Regression?](#cs3-what-is-linear-regression)
+2. [Linear Regression Formulas](#cs3-linear-regression-formulas)
+3. [Types of Regression Models](#cs3-types-of-regression-models)
+4. [Least Squares Regression](#cs3-least-squares-regression)
+5. [Hypothesis Function](#cs3-hypothesis-function)
+6. [Ridge Regression (L2)](#cs3-ridge-regression-l2)
+7. [Lasso Regression (L1)](#cs3-lasso-regression-l1)
+8. [Ridge vs Lasso Comparison](#cs3-ridge-vs-lasso-comparison)
+9. [Elastic Net](#cs3-elastic-net)
+10. [Numerical Examples](#cs3-numerical-examples)
+
+---
+
+## CS3 What is Linear Regression?
 
 ### Simple Definition
 
@@ -198,38 +566,30 @@ Linear regression is a method to predict a continuous value based on one or more
 
 ### Key Points
 
-- We have **input variables** (features/independent variables) → $X$
-- We have **output variable** (target/dependent variable) → $y$
-- We want to find the **relationship** between them
-- The relationship is assumed to be **linear**
+- **Input variables** (features/independent variables) → $X$
+- **Output variable** (target/dependent variable) → $y$
+- **Goal:** Find the relationship between them
+- **Assumption:** Relationship is linear
 
-### Real-world Examples
+### Real-world Applications
 
-**Example 1: House Price Prediction**
-- Input ($X$): House size (sq ft)
-- Output ($y$): House price ($)
-- Goal: Find the line that best describes this relationship
-
-**Example 2: Student Performance**
-- Input ($X$): Hours studied
-- Output ($y$): Exam score
-- Goal: Predict score based on study hours
-
-**Example 3: Employee Salary**
-- Input ($X$): Years of experience
-- Output ($y$): Salary
-- Goal: Predict salary based on experience
+| Application | Input | Output | Goal |
+|-------------|-------|--------|------|
+| House Price | Size (sq ft) | Price | Predict price from size |
+| Student Performance | Hours studied | Exam score | Predict score from hours |
+| Employee Salary | Years experience | Salary | Predict salary from experience |
+| Car Fuel | Weight | MPG | Predict efficiency from weight |
 
 ### Why Linear Regression?
 
-- **Simple and Interpretable**: Easy to understand and explain
-- **Computationally Efficient**: Fast to train and predict
-- **Good Baseline**: Often works well as a starting point
-- **Theoretical Foundation**: Well-established mathematical theory
+✅ **Simple and Interpretable** - Easy to understand and explain  
+✅ **Computationally Efficient** - Fast to train and predict  
+✅ **Good Baseline** - Often works well as starting point  
+✅ **Theoretical Foundation** - Well-established math  
 
 ---
 
-## 2. Linear Regression Interpretation and Formula
+## CS3 Linear Regression Formulas
 
 ### Simple Linear Regression (One Input Variable)
 
@@ -237,45 +597,25 @@ Linear regression is a method to predict a continuous value based on one or more
 
 $$y = w_0 + w_1 x$$
 
-Or equivalently:
+Or: $$\hat{y} = b + mx$$
 
-$$\hat{y} = b + mx$$
-
-#### Parameters Explanation
+#### Parameters
 
 | Symbol | Name | Meaning |
 |--------|------|---------|
-| $y$ or $\hat{y}$ | Predicted Output | The value we predict (the "hat" means it's a prediction) |
-| $x$ | Input Variable | Independent variable (feature) |
-| $w_0$ or $b$ | Intercept/Bias | Where the line crosses the y-axis (value when $x=0$) |
-| $w_1$ or $m$ | Slope/Weight | How much $y$ changes when $x$ increases by 1 unit |
+| $y$ or $\hat{y}$ | Predicted Output | The value we predict |
+| $x$ | Input Variable | Independent variable |
+| $w_0$ or $b$ | Intercept/Bias | y-axis crossing point |
+| $w_1$ or $m$ | Slope/Weight | Change in $y$ per unit change in $x$ |
 
-#### Visual Representation
+#### Real Example: House Price
 
-```
-      y
-      |     •(actual point)
-      |    /|
-      |   / |error
-      |  /• (predicted point)
-      | /
-      |/_____ x
-      
-The line y = w_0 + w_1*x is fitted to minimize total error
-```
+$$\text{Price} = 50,000 + 200 \times \text{Size}$$
 
-#### Real Example: House Price Prediction
-
-If we predict house price: $y = 50,000 + 200x$
-
-- $w_0 = 50,000$ → Base price (intercept)
-- $w_1 = 200$ → Price increases $200 per sq ft (slope)
-- If house is 1000 sq ft: $\hat{y} = 50,000 + 200(1000) = 250,000$
-- If house is 2000 sq ft: $\hat{y} = 50,000 + 200(2000) = 450,000$
-
-**Interpretation:**
-- Every additional square foot adds $200 to the price
-- A house with 0 sq ft would cost $50,000 (theoretical base)
+- $w_0 = 50,000$: Base price
+- $w_1 = 200$: Each sq ft adds $200
+- 1000 sq ft house: $50,000 + 200(1000) = 250,000
+- 2000 sq ft house: $50,000 + 200(2000) = 450,000
 
 ---
 
@@ -285,22 +625,7 @@ If we predict house price: $y = 50,000 + 200x$
 
 $$y = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
 
-Or in vector form:
-
-$$y = \mathbf{w}^T \mathbf{x}$$
-
-#### Vector Form Explanation
-
-$$\mathbf{w}^T \mathbf{x} = \begin{bmatrix} w_0 & w_1 & w_2 & \cdots & w_n \end{bmatrix} \cdot \begin{bmatrix} 1 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}$$
-
-$$= w_0(1) + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
-
-#### Parameters Explanation
-
-- $x_1, x_2, ..., x_n$ = multiple input features
-- $w_0$ = intercept/bias term
-- $w_1, w_2, ..., w_n$ = weights for each feature
-- Each weight $w_i$ shows how much feature $x_i$ contributes to the output
+Or in vector form: $$y = \mathbf{w}^T \mathbf{x}$$
 
 #### Real Example: House Price with Multiple Features
 
@@ -310,720 +635,478 @@ $$\text{Price} = 50,000 + 200(\text{size}) + 5,000(\text{bedrooms}) - 100(\text{
 - Base price: $50,000
 - Each sq ft adds: $200
 - Each bedroom adds: $5,000
-- Each year of age reduces price by: $100
+- Each year of age reduces by: $100
 
-**Sample Calculation:**
-For a house with 1500 sq ft, 3 bedrooms, and 10 years old:
+**Calculation:** 1500 sq ft, 3 bedrooms, 10 years old
 $$\text{Price} = 50,000 + 200(1500) + 5,000(3) - 100(10)$$
-$$= 50,000 + 300,000 + 15,000 - 1,000$$
-$$= 364,000$$
+$$= 50,000 + 300,000 + 15,000 - 1,000 = 364,000$$
 
 ---
 
-## 3. Types of Regression Models and Formulas
+## CS3 Types of Regression Models
 
-### A. Simple Linear Regression
+### Simple Linear Regression
 
-#### Formula
 $$y = w_0 + w_1 x$$
 
-#### Characteristics
-- One input variable
-- Simplest form of regression
-- Produces a straight line
-- Easy to visualize and interpret
-
-#### When to Use
-- When you have only one feature
-- When relationship appears linear
-- For initial exploration and baseline
+- **Characteristics:** One input, straight line, simplest form
+- **When to use:** Single feature, linear relationship
+- **Pros:** Simple, interpretable
+- **Cons:** Limited expressiveness
 
 ---
 
-### B. Multiple Linear Regression
+### Multiple Linear Regression
 
-#### Formula
 $$y = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
 
-Or in vector form:
-$$y = \mathbf{w}^T \mathbf{x}$$
-
-#### Characteristics
-- Multiple input variables
-- Still linear in parameters ($w$)
-- Produces a plane (in 3D) or hyperplane (in higher dimensions)
-- More expressive than simple linear regression
-
-#### Example with 3 Features
-$$\text{Salary} = 30,000 + 2,000(\text{experience}) + 500(\text{education}) + 100(\text{skills})$$
+- **Characteristics:** Multiple inputs, hyperplane in high dimensions
+- **When to use:** Many features, linear relationships
+- **Pros:** More expressive, interpretable
+- **Cons:** May underfit complex relationships
 
 ---
 
-### C. Polynomial Regression
+### Polynomial Regression
 
-#### Formula
 $$y = w_0 + w_1 x + w_2 x^2 + w_3 x^3 + ... + w_d x^d$$
 
-#### Characteristics
-- **Linear in parameters** ($w$) but **nonlinear in input** ($x$)
-- Can fit curved relationships
-- Produces curved lines/surfaces
-- Higher degree = more complex curves
-
-#### Examples
-
-**Degree 2 (Quadratic):**
-$$y = 1 + 2x + 3x^2$$
-
-**Degree 3 (Cubic):**
-$$y = 5 + 2x - 3x^2 + 0.5x^3$$
-
-#### Visual Difference
-```
-Linear:        Quadratic:     Cubic:
-   /              ∩            ∧∨
-  /              / \          / \
- /              /   \        /   \
-```
-
-#### When to Use
-- When data shows curved patterns
-- Non-linear relationships
-- Physics/engineering problems with natural curves
-
-#### Caution
-- Higher degree = risk of over-fitting
-- Can become unstable (oscillates wildly)
+- **Characteristic:** Linear in parameters but nonlinear in input
+- **Examples:** 
+  - Degree 2: $y = 1 + 2x + 3x^2$
+  - Degree 3: $y = 5 + 2x - 3x^2 + 0.5x^3$
+- **When to use:** Curved relationships, non-linear patterns
+- **Pros:** More flexible, fits complex patterns
+- **Cons:** Risk of overfitting, can become unstable
 
 ---
 
-### D. Ridge Regression (L2 Regularization)
+## CS3 Least Squares Regression
 
-#### Formula
-$$y = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
+### The Goal
 
-#### Cost Function with Penalty
-$$E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N (y_n - t_n)^2 + \frac{\lambda}{2} \sum_{j=1}^n w_j^2$$
+Find the line that **minimizes sum of squared errors** between predictions and actual values.
 
-Or:
-$$E(\mathbf{w}) = \text{Error} + \lambda \cdot \text{Penalty}$$
-
-#### Parameters
-- **First term** = data fit error (wants this small)
-- **Second term** = penalty for large weights (wants this small)
-- **$\lambda$** = regularization parameter (balances the two)
-
-#### Interpretation
-- Large $\lambda$ → penalize big weights heavily → simpler model (more bias, less variance)
-- Small $\lambda$ → penalize less → more complex model (less bias, more variance)
-- $\lambda = 0$ → regular linear regression (no penalty)
-
-#### Closed-Form Solution
-$$\mathbf{w} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1} \mathbf{\Phi}^T\mathbf{t}$$
-
-Where $\mathbf{I}$ is the identity matrix.
-
-#### Advantages
-- Prevents over-fitting
-- Handles multicollinearity (correlated features)
-- All features retained
-- Stable solution
-
-#### When to Use
-- When model over-fits training data
-- With many features
-- When you want to keep all features
-
----
-
-### E. Lasso Regression (L1 Regularization)
-
-#### Formula
-$$E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N (y_n - t_n)^2 + \lambda \sum_{j=1}^n |w_j|$$
-
-#### Key Difference from Ridge
-- Uses **absolute value** ($|w_j|$) instead of **square** ($w_j^2$)
-- Can shrink some weights to **exactly zero**
-- Performs **automatic feature selection**
-
-#### Advantages
-- Automatic feature selection (some weights become 0)
-- Interpretable (only important features remain)
-- Sparse solutions
-- Simpler final model
-
-#### Disadvantages
-- No closed-form solution (needs iterative methods)
-- Can be unstable with correlated features
-- Slower to compute than Ridge
-
-#### When to Use
-- When you want feature selection
-- With many features, only some relevant
-- Want a sparse, interpretable model
-
----
-
-### F. Elastic Net (Combination of L1 and L2)
-
-#### Formula
-$$E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N (y_n - t_n)^2 + \lambda_1 \sum_{j=1}^n |w_j| + \lambda_2 \sum_{j=1}^n w_j^2$$
-
-Or:
-$$E(\mathbf{w}) = \text{Error} + \lambda_1 \cdot \text{L1 Penalty} + \lambda_2 \cdot \text{L2 Penalty}$$
-
-#### Parameters
-- $\lambda_1$ = controls L1 (Lasso) regularization
-- $\lambda_2$ = controls L2 (Ridge) regularization
-
-#### Advantages
-- Combines benefits of both Lasso and Ridge
-- Better with correlated features than Lasso
-- Performs feature selection like Lasso
-- More stable than Lasso alone
-
-#### When to Use
-- When you have many correlated features
-- Want both regularization and feature selection
-- Best general-purpose regularized regression
-
----
-
-## 4. Least Square Regression Line and Notations
-
-### The Least Squares Method
-
-#### Goal
-Find the line that **minimizes the sum of squared errors** (differences between actual and predicted values).
-
-#### Why Least Squares?
-- Mathematically convenient (differentiable)
-- Penalizes large errors more (quadratic penalty)
-- Has analytical solution
-- Well-established theory
-
----
-
-### Key Notations
-
-| Symbol | Meaning | Example |
-|--------|---------|---------|
-| $N$ | Number of training examples | 100 data points |
-| $n$ | Index of example | $n = 1, 2, ..., N$ |
-| $x_i$ or $x_{(i)}$ | $i$-th input value | 1500 (sq ft) |
-| $y_i$, $t_i$, or $y_{(i)}$ | Actual $i$-th output value | 350,000 (price) |
-| $\hat{y}_i$ or $\hat{t}_i$ | Predicted $i$-th output value | 348,000 |
-| $e_i$ | Error for $i$-th example | $e_i = y_i - \hat{y}_i = 2,000$ |
-| $\mathbf{X}$ | Design matrix (all inputs) | $N \times M$ matrix |
-| $\mathbf{y}$ or $\mathbf{t}$ | Vector of actual outputs | $N \times 1$ vector |
-| $\mathbf{\hat{y}}$ | Vector of predictions | $N \times 1$ vector |
-| $\mathbf{w}$ | Weight vector | Contains $w_0, w_1, ..., w_n$ |
-| $\mathbf{\Phi}$ | Basis/Feature matrix | $N \times M$ matrix of features |
-| $\bar{x}$ | Mean of $x$ values | $\frac{1}{N}\sum x_i$ |
-| $\bar{y}$ | Mean of $y$ values | $\frac{1}{N}\sum y_i$ |
-
----
-
-### Cost Function (Sum of Squared Errors)
-
-#### Definition
+### Cost Function
 
 $$E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N (y_n - \hat{y}_n)^2$$
 
-Or equivalently:
+Or: $$J(\mathbf{w}) = \frac{1}{N}\sum_{n=1}^N (y_n - \hat{y}_n)^2$$ (Mean Squared Error)
 
-$$E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N (y_n - \mathbf{w}^T \mathbf{x}_n)^2$$
+### Why Least Squares?
 
-Or with Mean Squared Error:
+✅ Mathematically convenient (differentiable)  
+✅ Penalizes large errors more (quadratic)  
+✅ Has analytical solution  
+✅ Well-established theory  
 
-$$J(\mathbf{w}) = \frac{1}{N}\sum_{n=1}^N (y_n - \hat{y}_n)^2$$
+### Key Notations
 
-#### What This Means
+| Symbol | Meaning |
+|--------|---------|
+| $N$ | Number of training examples |
+| $x_i$ | $i$-th input value |
+| $y_i$, $t_i$ | Actual $i$-th output |
+| $\hat{y}_i$ | Predicted $i$-th output |
+| $e_i$ | Error: $e_i = y_i - \hat{y}_i$ |
+| $\mathbf{\Phi}$ | Design/Feature matrix |
+| $\mathbf{w}$ | Weight vector |
+| $\bar{x}$, $\bar{y}$ | Mean of x, y values |
 
-1. Calculate error for each example: $e_i = y_i - \hat{y}_i$
-2. Square each error: $e_i^2$
-3. Sum all squared errors: $\sum e_i^2$
-4. Divide by 2 (or N for MSE) - normalization
+### Optimal Weights for Simple Linear Regression
 
-#### Why Square Errors?
+**Slope:**
+$$w_1 = \frac{\sum_{i=1}^N (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^N (x_i - \bar{x})^2} = \frac{\text{Cov}(x,y)}{\text{Var}(x)}$$
 
-- Positive and negative errors don't cancel out
-- Large errors are penalized more (quadratic growth)
-- Mathematically convenient (differentiable)
-- Makes sense for Gaussian noise assumption
-
-#### Example with 3 Data Points
-
-| $n$ | $x$ | Actual $y$ | Predicted $\hat{y}$ | Error $e$ | Squared Error $e^2$ |
-|-----|-----|-----------|-------------------|-----------|------------------|
-| 1 | 1 | 3 | 2.5 | 0.5 | 0.25 |
-| 2 | 2 | 5 | 5.2 | -0.2 | 0.04 |
-| 3 | 3 | 7 | 7.1 | -0.1 | 0.01 |
-
-$$E(\mathbf{w}) = \frac{1}{2}(0.25 + 0.04 + 0.01) = 0.15$$
-
-$$J(\mathbf{w}) = \frac{1}{3}(0.25 + 0.04 + 0.01) = 0.10$$
-
----
-
-### Finding the Optimal Line (Simple Linear Regression)
-
-#### For Model: $y = w_0 + w_1 x$
-
-The optimal weights that minimize squared error are:
-
-#### Formula for Slope ($w_1$)
-
-$$w_1 = \frac{\sum_{i=1}^N (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^N (x_i - \bar{x})^2}$$
-
-Or equivalently:
-
-$$w_1 = \frac{\text{Covariance}(x, y)}{\text{Variance}(x)}$$
-
-#### Formula for Intercept ($w_0$)
-
+**Intercept:**
 $$w_0 = \bar{y} - w_1 \bar{x}$$
 
-#### Interpretation
+### Numerical Example
 
-- **$w_1$** = measures how much $y$ changes when $x$ changes
-- **$w_0$** = ensures line passes through point $(\bar{x}, \bar{y})$
-- The line is "balanced" through the center of the data
+**Data:** (1,2), (2,4), (3,5), (4,4), (5,5)
 
----
+**Step 1:** Calculate means
+$$\bar{x} = 3, \quad \bar{y} = 4$$
 
-### Numerical Example: Finding the Least Squares Line
+**Step 2:** Deviation table
 
-#### Data Points
-```
-(1, 2), (2, 4), (3, 5), (4, 4), (5, 5)
-```
-
-#### Step 1: Calculate Means
-$$\bar{x} = \frac{1+2+3+4+5}{5} = \frac{15}{5} = 3$$
-
-$$\bar{y} = \frac{2+4+5+4+5}{5} = \frac{20}{5} = 4$$
-
-#### Step 2: Create Deviation Tables
-
-| $i$ | $x_i$ | $y_i$ | $(x_i - \bar{x})$ | $(y_i - \bar{y})$ | $(x_i - \bar{x})(y_i - \bar{y})$ | $(x_i - \bar{x})^2$ |
-|-----|-------|-------|------------------|------------------|----------------------------------|------------------|
+| $i$ | $x_i$ | $y_i$ | $(x_i-\bar{x})$ | $(y_i-\bar{y})$ | Product | Square |
+|-----|-------|-------|----------------|----------------|---------|--------|
 | 1 | 1 | 2 | -2 | -2 | 4 | 4 |
 | 2 | 2 | 4 | -1 | 0 | 0 | 1 |
 | 3 | 3 | 5 | 0 | 1 | 0 | 0 |
 | 4 | 4 | 4 | 1 | 0 | 0 | 1 |
 | 5 | 5 | 5 | 2 | 1 | 2 | 4 |
-| **Sum** | | | | | **6** | **10** |
+| Sum | | | | | **6** | **10** |
 
-#### Step 3: Calculate $w_1$ (Slope)
+**Step 3:** Calculate weights
+$$w_1 = \frac{6}{10} = 0.6$$
+$$w_0 = 4 - 0.6(3) = 2.2$$
 
-$$w_1 = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = \frac{6}{10} = 0.6$$
-
-**Interpretation:** For every 1 unit increase in $x$, $y$ increases by 0.6 units.
-
-#### Step 4: Calculate $w_0$ (Intercept)
-
-$$w_0 = \bar{y} - w_1 \bar{x} = 4 - 0.6(3) = 4 - 1.8 = 2.2$$
-
-**Interpretation:** When $x = 0$, $y = 2.2$.
-
-#### Step 5: Final Equation
-
-$$\hat{y} = 2.2 + 0.6x$$
-
-#### Step 6: Make Predictions
-
-| $x$ | Predicted $\hat{y}$ |
-|-----|-------------------|
-| 1 | 2.2 + 0.6(1) = 2.8 |
-| 2 | 2.2 + 0.6(2) = 3.4 |
-| 3 | 2.2 + 0.6(3) = 4.0 |
-| 4 | 2.2 + 0.6(4) = 4.6 |
-| 5 | 2.2 + 0.6(5) = 5.2 |
+**Final Equation:** $\hat{y} = 2.2 + 0.6x$
 
 ---
 
-### Matrix Notation (Multiple Linear Regression)
+### Solution Methods
 
-#### Design Matrix ($\mathbf{\Phi}$ or $\mathbf{X}$)
-
-For data with $N$ samples and $M$ features:
-
-$$\mathbf{\Phi} = \begin{bmatrix}
-\phi_0(\mathbf{x}_1) & \phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & \cdots & \phi_{M-1}(\mathbf{x}_1) \\
-\phi_0(\mathbf{x}_2) & \phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & \cdots & \phi_{M-1}(\mathbf{x}_2) \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-\phi_0(\mathbf{x}_N) & \phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & \cdots & \phi_{M-1}(\mathbf{x}_N)
-\end{bmatrix}$$
-
-Dimensions: $N \times M$ (rows = samples, columns = features)
-
-#### Weight Vector
-
-$$\mathbf{w} = \begin{bmatrix} w_0 \\ w_1 \\ w_2 \\ \vdots \\ w_{M-1} \end{bmatrix}$$
-
-Dimensions: $M \times 1$
-
-#### Target Vector
-
-$$\mathbf{t} = \begin{bmatrix} t_1 \\ t_2 \\ \vdots \\ t_N \end{bmatrix}$$
-
-Dimensions: $N \times 1$
-
-#### Predictions in Matrix Form
-
-$$\mathbf{\hat{y}} = \mathbf{\Phi} \mathbf{w}$$
-
-#### Cost Function in Matrix Form
-
-$$E(\mathbf{w}) = \frac{1}{2}(\mathbf{\Phi}\mathbf{w} - \mathbf{t})^T(\mathbf{\Phi}\mathbf{w} - \mathbf{t})$$
-
-#### Optimal Solution (Normal Equations)
-
-$$\mathbf{w}_{\text{opt}} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$$
-
-**Components:**
-- $\mathbf{\Phi}^T$ = transpose of design matrix
-- $\mathbf{\Phi}^T\mathbf{\Phi}$ = Gram matrix (symmetric, positive definite)
-- $(\cdot)^{-1}$ = matrix inverse
-- $\mathbf{\Phi}^T\mathbf{t}$ = cross-correlation vector
-
----
-
-## 5. Linear Regression – Hypothesis Function and Formulas
-
-### What is a Hypothesis Function?
-
-A **hypothesis function** is our current model/guess for the relationship between inputs and outputs. It's the formula we use to make predictions.
-
-**Analogy:** A hypothesis is like a proposed "law of nature" that we're testing to see if it fits our data.
-
-#### Different Names for Same Concept
-
-- Hypothesis function: $h(\mathbf{x})$
-- Model function: $f(\mathbf{x})$
-- Prediction function: $\hat{y}(\mathbf{x})$
-- Learner: machine learning model
-- All represent the same idea
-
----
-
-### Hypothesis Function Notations
-
-#### Notation 1: Machine Learning Style
-
-$$h_{\mathbf{w}}(\mathbf{x}) = \mathbf{w}^T \mathbf{x}$$
-
-Subscript shows dependence on parameters $\mathbf{w}$
-
-#### Notation 2: Statistical Style
-
-$$f(\mathbf{x}) = \mathbf{w}^T \mathbf{\phi}(\mathbf{x})$$
-
-With explicit basis functions
-
-#### Notation 3: Simple Style
-
-$$y = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
-
-Expanded form, most intuitive
-
-#### All Three Are Equivalent
-
-All represent: **weighted linear combination of inputs**
-
----
-
-### Simple Linear Regression Hypothesis
-
-#### Formula
-
-$$h(x) = w_0 + w_1 x$$
-
-Or with $\theta$ notation (common in Andrew Ng's courses):
-
-$$h_\theta(x) = \theta_0 + \theta_1 x$$
-
-#### Parameters
-
-| Symbol | Meaning |
-|--------|---------|
-| $h(x)$ | Hypothesis function (prediction) |
-| $\theta_0$ | Intercept parameter |
-| $\theta_1$ | Slope parameter |
-| $x$ | Input feature |
-
-#### Example
-
-If $h(x) = 3 + 2x$, then:
-- When $x = 0$: $h(0) = 3$
-- When $x = 5$: $h(5) = 3 + 2(5) = 13$
-- When $x = 10$: $h(10) = 3 + 2(10) = 23$
-
----
-
-### Multiple Linear Regression Hypothesis
-
-#### Formula
-
-$$h(\mathbf{x}) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
-
-Or in vector form:
-
-$$h(\mathbf{x}) = \mathbf{w}^T \mathbf{x}$$
-
-#### Vector Form Details
-
-$$h(\mathbf{x}) = \begin{bmatrix} w_0 & w_1 & w_2 & \cdots & w_n \end{bmatrix} \cdot \begin{bmatrix} 1 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}$$
-
-**Note:** $x_0 = 1$ is a dummy variable for the bias term.
-
-#### Example with 3 Features
-
-$$h(x_1, x_2, x_3) = 10 + 2x_1 + 3x_2 - 0.5x_3$$
-
-For inputs $(x_1=5, x_2=4, x_3=2)$:
-$$h = 10 + 2(5) + 3(4) - 0.5(2) = 10 + 10 + 12 - 1 = 31$$
-
----
-
-### Cost Function for Hypothesis
-
-#### Purpose
-
-Measure how good our hypothesis is. Lower cost = better hypothesis.
-
-#### Squared Error Cost Function
-
-$$J(\mathbf{w}) = \frac{1}{2N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i)^2$$
-
-Or equivalently:
-
-$$J(\mathbf{w}) = \frac{1}{2N} \sum_{i=1}^N (\hat{y}_i - y_i)^2$$
-
-#### Mean Squared Error (MSE)
-
-$$\text{MSE} = \frac{1}{N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i)^2$$
-
-Note: MSE = $2 \times$ cost function with $\frac{1}{2}$
-
-#### Root Mean Squared Error (RMSE)
-
-$$\text{RMSE} = \sqrt{\frac{1}{N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i)^2}$$
-
-**Advantage:** In same units as target variable (more interpretable)
-
-#### Example
-
-| $i$ | $\mathbf{x}_i$ | Actual $y_i$ | Prediction $h(\mathbf{x}_i)$ | Error | Squared Error |
-|-----|-----------|----------|-------------|-------|---------------|
-| 1 | ... | 10 | 11 | -1 | 1 |
-| 2 | ... | 20 | 19 | 1 | 1 |
-| 3 | ... | 30 | 31 | -1 | 1 |
-
-$$J(\mathbf{w}) = \frac{1}{2(3)}(1 + 1 + 1) = \frac{3}{6} = 0.5$$
-
-$$\text{MSE} = \frac{1}{3}(1 + 1 + 1) = 1.0$$
-
----
-
-### Goal: Minimize Cost Function
-
-#### Objective
-
-Find the weights $\mathbf{w}$ that **minimize** $J(\mathbf{w})$:
-
-$$\mathbf{w}^* = \arg\min_{\mathbf{w}} J(\mathbf{w})$$
-
-Read as: "$\mathbf{w}^*$ is the value of $\mathbf{w}$ that minimizes $J(\mathbf{w})$"
-
-#### Geometric Interpretation
-
-- Think of cost function as a bowl-shaped surface
-- Optimal weights are at the bottom of the bowl
-- We want to find the lowest point
-
-```
-High cost
-    |
-    ↑  ╱╲
-    │ ╱  ╲
-    │╱    ╲
-Cost│     ╱╲ ← Minimum (optimal weights)
-    │    ╱  ╲
-    │   ╱    ╲
-    └─────────────
-      w1 → w2 →
-```
-
----
-
-### Two Methods to Find Optimal Weights
-
-#### Method 1: Analytical Solution (Closed-Form)
-
-**When to use:** Small to medium datasets
-
-##### Formula (Normal Equations)
+#### Method 1: Closed-Form (Normal Equations)
 
 $$\mathbf{w} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$$
 
-##### Components
+**Advantages:** Direct solution, guaranteed optimal, fast for small data  
+**Disadvantages:** Slow for large N/M, numerically unstable, memory intensive
 
-- $\mathbf{\Phi}$ = Design matrix ($N \times M$)
-- $\mathbf{\Phi}^T$ = Transpose
-- $\mathbf{\Phi}^T\mathbf{\Phi}$ = Gram matrix ($M \times M$)
-- $(\mathbf{\Phi}^T\mathbf{\Phi})^{-1}$ = Matrix inverse
-- $\mathbf{\Phi}^T\mathbf{t}$ = Cross-product with targets
+#### Method 2: Gradient Descent (Iterative)
 
-##### Advantages
-- Direct solution (one calculation)
-- No tuning needed
-- Guaranteed to find global minimum
-- Faster for small problems
+$$w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$$
 
-##### Disadvantages
-- Computationally expensive for large $N$ or $M$
-- Matrix inversion can be numerically unstable
-- Memory intensive
-- Doesn't work if matrix is singular
-
----
-
-#### Method 2: Iterative Solution (Gradient Descent)
-
-**When to use:** Large datasets, online learning
-
-##### General Update Rule
-
-$$\mathbf{w}^{(t+1)} = \mathbf{w}^{(t)} - \alpha \nabla J(\mathbf{w}^{(t)})$$
-
-##### Component Interpretation
-
-- $\mathbf{w}^{(t)}$ = weights at iteration $t$
-- $\mathbf{w}^{(t+1)}$ = weights at iteration $t+1$
-- $\alpha$ = learning rate (step size)
-- $\nabla J$ = gradient (direction of steepest ascent)
-
-##### For Each Parameter $w_j$
-
-$$w_j^{(t+1)} = w_j^{(t)} - \alpha \frac{\partial J}{\partial w_j}$$
-
-##### Gradient of MSE Cost Function
-
+Where:
 $$\frac{\partial J}{\partial w_j} = \frac{1}{N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i) x_j^{(i)}$$
 
-##### Full Update Equation
-
-$$w_j := w_j - \alpha \frac{1}{N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i) x_j^{(i)}$$
-
-Or in vector form:
-
-$$\mathbf{w} := \mathbf{w} - \alpha \mathbf{\Phi}^T(\mathbf{\Phi}\mathbf{w} - \mathbf{t})$$
-
-##### How Gradient Descent Works
-
-1. **Start** with random weights
-2. **Calculate** error for each example
-3. **Find gradient** (direction of steepest increase)
-4. **Move opposite** to gradient by step $\alpha$
-5. **Repeat** until convergence
-
-##### Algorithm Pseudocode
-
-```
-Initialize w randomly
-for iteration = 1 to max_iterations:
-    Calculate predictions: y_pred = Φ * w
-    Calculate errors: e = y_pred - y_actual
-    Calculate gradient: g = (1/N) * Φ^T * e
-    Update weights: w = w - α * g
-    If convergence: break
-```
-
-##### Learning Rate $\alpha$ Intuition
-
-- **Too small $\alpha$**: Very slow convergence, takes many iterations
-- **Too large $\alpha$**: May overshoot, diverge, or oscillate
-- **Good $\alpha$**: Smooth, steady descent to minimum
-
-```
-Loss curve over iterations:
-        |
-Loss    |  Too large α (diverges)
-        | /
-        |/  Good α (converges smoothly)
-        |\  
-        | \___  Too small α (very slow)
-        |______ 
-        Iteration →
-```
-
-##### Advantages
-- Works for large datasets
-- Memory efficient
-- Can be used for online learning
-- Flexible (works for many algorithms)
-
-##### Disadvantages
-- Need to tune learning rate $\alpha$
-- Many iterations needed
-- May get stuck in local minimum (for non-convex problems)
-- Slower per iteration than closed-form
+**Advantages:** Scalable to large data, memory efficient, flexible  
+**Disadvantages:** Needs hyperparameter tuning, many iterations, slower per iteration
 
 ---
 
-## 6. Quick Reference Table
+## CS3 Hypothesis Function
 
-### Key Formulas
+### Definition
 
-| Concept | Formula | Purpose |
-|---------|---------|---------|
-| **Simple Linear Regression** | $\hat{y} = w_0 + w_1 x$ | Predict with one input |
-| **Multiple Linear Regression** | $\hat{y} = \mathbf{w}^T \mathbf{x}$ | Predict with multiple inputs |
-| **Hypothesis Function** | $h(x) = w_0 + w_1 x$ | Our prediction model |
-| **Cost Function** | $J(w) = \frac{1}{2N}\sum(h(x_i)-y_i)^2$ | Measure prediction error |
-| **Slope (Simple)** | $w_1 = \frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$ | Optimal slope for simple regression |
-| **Intercept (Simple)** | $w_0 = \bar{y} - w_1 \bar{x}$ | Optimal intercept for simple regression |
-| **Normal Equations** | $\mathbf{w} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$ | Analytical solution for multiple regression |
-| **Gradient** | $\frac{\partial J}{\partial w_j} = \frac{1}{N}\sum(h(\mathbf{x}_i)-y_i)x_j^{(i)}$ | Direction of steepest increase |
-| **Gradient Descent Update** | $w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$ | Iterative weight update |
-| **Ridge Regression Cost** | $J = \frac{1}{2}\sum e_i^2 + \frac{\lambda}{2}\sum w_j^2$ | Regularized cost |
-| **Ridge Solution** | $\mathbf{w} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$ | Regularized optimal weights |
-| **Lasso Cost** | $J = \frac{1}{2}\sum e_i^2 + \lambda \sum \|w_j\|$ | Sparsity-inducing cost |
-| **Elastic Net Cost** | $J = \frac{1}{2}\sum e_i^2 + \lambda_1 \sum \|w_j\| + \lambda_2 \sum w_j^2$ | Combined L1 and L2 |
+A **hypothesis function** is our current model for the relationship between inputs and outputs.
 
-### Regression Types Comparison
+**Different Names:**
+- Hypothesis: $h(\mathbf{x})$
+- Model: $f(\mathbf{x})$
+- Predictor: $\hat{y}(\mathbf{x})$
+- All represent the same concept
 
-| Type | Linear Parameters | Linear Inputs | Use Case | Pros | Cons |
-|------|------------------|--------------|----------|------|------|
-| Simple Linear | Yes | Yes | 1 feature, linear relationship | Simple, interpretable | Limited expressiveness |
-| Multiple Linear | Yes | Yes | Many features, linear | Interpretable, efficient | May underfit |
-| Polynomial | Yes | No | Curved relationships | More expressive | Risk of overfitting |
-| Ridge | Yes | Yes/No | Many features, overfitting | Prevents overfitting | Must tune λ |
-| Lasso | Yes | Yes/No | Feature selection needed | Sparse solutions | Unstable with correlations |
-| Elastic Net | Yes | Yes/No | Many correlated features | Best of both | Must tune λ₁, λ₂ |
+### Simple Linear Regression
 
-### Optimization Methods Comparison
+$$h(x) = w_0 + w_1 x$$
 
-| Method | Formula | When to Use | Advantages | Disadvantages |
-|--------|---------|------------|------------|---------------|
-| **Closed-Form** | $(\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$ | Small datasets | Direct, guaranteed global min | Slow for large data, numerically unstable |
-| **Gradient Descent** | $w := w - \alpha \nabla J$ | Large datasets | Scalable, works with many algorithms | Needs learning rate tuning |
-| **Stochastic GD** | Update with 1 sample | Very large datasets | Most scalable | Noisy, may oscillate |
-| **Mini-batch GD** | Update with batch | Moderate-large datasets | Balanced trade-off | Still needs hyperparameter tuning |
+**Example:** If $h(x) = 3 + 2x$:
+- When $x=0$: $h(0)=3$
+- When $x=5$: $h(5)=13$
+- When $x=10$: $h(10)=23$
+
+### Multiple Linear Regression
+
+$$h(\mathbf{x}) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
+
+**Vector form:** $h(\mathbf{x}) = \mathbf{w}^T \mathbf{x}$
+
+**Example:**
+$$h(x_1, x_2, x_3) = 10 + 2x_1 + 3x_2 - 0.5x_3$$
+
+For $(x_1=5, x_2=4, x_3=2)$:
+$$h = 10 + 2(5) + 3(4) - 0.5(2) = 31$$
 
 ---
 
-## 7. Examples and Numerical Solutions
+## CS3 Ridge Regression (L2)
 
-### Complete Example 1: Simple Linear Regression
+### What is Ridge Regression?
 
-#### Problem Statement
-Predict student exam scores based on hours studied.
+Ridge Regression is a regularized linear regression that **prevents overfitting** by adding a **penalty on weight magnitudes**.
 
-#### Given Data
+Also called **Tikhonov regularization** or **L2 regularization**.
 
+### The Problem It Solves
+
+**Without Regularization:**
+- Model can fit training data perfectly (including noise)
+- Creates large weights → overfitting
+- Poor performance on new data
+
+**With Ridge Regularization:**
+- Balances fit to data with model simplicity
+- Keeps weights small → simpler model
+- Better generalization
+
+### Ridge Cost Function
+
+$$J(\mathbf{w}) = \underbrace{\frac{1}{2N}\sum_{n=1}^N (y_n - \hat{y}_n)^2}_{\text{Data Fit}} + \underbrace{\frac{\lambda}{2N}\sum_{j=1}^p w_j^2}_{\text{L2 Penalty}}$$
+
+Or simply:
+$$J(\mathbf{w}) = \text{MSE} + \lambda \sum w_j^2$$
+
+### Parameters
+
+| Parameter | Meaning | Effect |
+|-----------|---------|--------|
+| **$\lambda$** | Regularization strength | Controls penalty magnitude |
+| **$\sum w_j^2$** | Sum of squared weights | Penalizes large weights |
+
+### The Role of Lambda ($\lambda$)
+
+| $\lambda$ | Behavior | Weights | Overfitting | Underfitting |
+|---------|----------|---------|-------------|-------------|
+| $0$ | Standard regression | Large | High | Low |
+| Small | Weak penalty | Medium | Medium | Low |
+| Medium | Balanced | Small-Medium | Low | Medium |
+| Large | Strong penalty | Very small | Minimal | High |
+
+### Ridge Solution
+
+$$\mathbf{w}_{\text{Ridge}} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$$
+
+**Key Advantage:** Adding $\lambda \mathbf{I}$ makes matrix invertible (more stable)
+
+### Ridge Characteristics
+
+| Characteristic | Ridge |
+|---|---|
+| **Penalty Type** | L2 (squared weights) |
+| **Weights** | Shrink, but rarely reach zero |
+| **Feature Selection** | No (keeps all) |
+| **Solution** | Closed-form available |
+| **Speed** | Fast |
+| **Multicollinearity** | Handles well |
+| **Interpretability** | Medium (all features used) |
+
+### When to Use Ridge
+
+✅ Many features, want to keep all  
+✅ Model overfits  
+✅ Features are correlated  
+✅ Need stable solution  
+✅ Need fast computation  
+
+---
+
+## CS3 Lasso Regression (L1)
+
+### What is Lasso Regression?
+
+**Lasso** = **L**east **A**bsolute **S**hrinkage and **S**election **O**perator
+
+Regularized regression that can:
+1. **Shrink** weights towards zero
+2. **Force** some weights to **exactly zero** (automatic feature selection)
+3. Reduce model complexity
+
+Also called **L1 regularization**.
+
+### Lasso Cost Function
+
+$$J(\mathbf{w}) = \frac{1}{2N}\sum_{n=1}^N (y_n - \hat{y}_n)^2 + \frac{\lambda}{N}\sum_{j=1}^p |w_j|$$
+
+Or simply:
+$$J(\mathbf{w}) = \text{MSE} + \lambda \sum |w_j|$$
+
+### Key Difference: Absolute Value vs Squared
+
+**Ridge:** $\lambda \sum w_j^{\mathbf{2}}$ (quadratic, smooth)
+
+**Lasso:** $\lambda \sum |w_j|$ (linear, sharp corners)
+
+### Why Lasso Creates Sparse Solutions
+
+The absolute value penalty creates a non-smooth optimization surface with sharp corners. When the optimal point lands on a corner (axis), that weight becomes exactly zero.
+
+```
+Ridge (L2) Constraint:       Lasso (L1) Constraint:
+    w2                           w2
+    |   ○○○                      |
+    |  ○   ○ (circle)            | ◇◇◇
+    | ○●  ○                      | ◇●◇ (diamond)
+    |_____w1                      |____w1
+    
+Smooth (rarely zero)         Sharp corners (can be zero)
+```
+
+### Automatic Feature Selection
+
+**Example:**
+
+Given 10 features, Lasso produces:
+$$\hat{y} = 5 + 2x_1 + 0x_2 + 0.5x_3 + 0x_4 + ... + 0x_{10}$$
+
+Features 2, 4, 6, 7, 9, 10 are removed (coefficient = 0)
+
+Only uses: $\hat{y} = 5 + 2x_1 + 0.5x_3$
+
+### Why No Closed-Form Solution?
+
+The absolute value in the gradient is non-differentiable at zero:
+
+$$\frac{\partial}{\partial w_j}|w_j| = \begin{cases} 1 & w_j > 0 \\ -1 & w_j < 0 \\ \text{undefined} & w_j = 0 \end{cases}$$
+
+This non-differentiability **causes exact zeros**!
+
+Must use iterative methods:
+- Coordinate Descent
+- Proximal Gradient Descent
+- Shooting Algorithm
+
+### Lasso Characteristics
+
+| Characteristic | Lasso |
+|---|---|
+| **Penalty Type** | L1 (absolute values) |
+| **Weights** | Can be exactly zero |
+| **Feature Selection** | Yes (automatic) |
+| **Solution** | No closed-form (iterative) |
+| **Speed** | Slower (iterative) |
+| **Multicollinearity** | Less stable |
+| **Interpretability** | High (sparse) |
+
+### When to Use Lasso
+
+✅ Need automatic feature selection  
+✅ Have many features, only some matter  
+✅ Want interpretable model (fewer features)  
+✅ Suspect feature redundancy  
+✅ Want sparse solution  
+
+---
+
+## CS3 Ridge vs Lasso Comparison
+
+### Side-by-Side Comparison
+
+| Aspect | Ridge | Lasso | Elastic Net |
+|--------|-------|-------|-----------|
+| **Full Name** | Tikhonov | LASSO | Combination |
+| **Penalty** | $\lambda \sum w_j^2$ | $\lambda \sum \|w_j\|$ | Both |
+| **Weights** | Shrink, rarely zero | Can be exactly zero | Some zero |
+| **Feature Selection** | ❌ No | ✅ Yes | ✅ Yes |
+| **Closed Form** | ✅ Yes | ❌ No | ❌ No |
+| **Speed** | ⚡ Fast | 🐢 Slow | 🐢 Slow |
+| **Multicollinearity** | ✅ Good | ⚠️ Poor | ✅ Good |
+| **Sparsity** | Dense | Sparse | Sparse |
+| **Stability** | ✅ Stable | ❌ Unstable | ✅ Stable |
+| **Hyperparameters** | 1 ($\lambda$) | 1 ($\lambda$) | 2 ($\lambda_1$, $\lambda_2$) |
+
+### Geometric Interpretation
+
+**Constraint Regions:**
+
+```
+Ridge (L2):              Lasso (L1):              Elastic Net:
+  w2                       w2                       w2
+  |  ○○○                   |  ◇◇◇                   |  □-○
+  | ○   ○●                 | ◇●◇●                  | □   □●
+  |○     ○                 |◇   ◇                  |□  □□  
+  ├───w1                   ├───w1                  ├───w1
+  
+Circle constraint      Diamond constraint      Combined constraint
+(smooth)              (sharp corners)         (corners + smoothness)
+```
+
+### Handling Correlated Features
+
+**Ridge with Correlated Features:**
+```
+Features x₁ and x₂ highly correlated
+Ridge: w₁ = 2.5, w₂ = 2.3
+Effect: Distributes weights
+Both features kept
+Stable solution ✅
+```
+
+**Lasso with Correlated Features:**
+```
+Features x₁ and x₂ highly correlated
+Lasso: w₁ = 5, w₂ = 0 (or opposite)
+Effect: Arbitrarily picks one
+May remove important feature
+Unstable ⚠️
+```
+
+### Coefficient Path Visualization
+
+As $\lambda$ increases:
+
+**Ridge:**
+```
+Coefficient
+    |  w₁ ────────
+    | w₂  ──────── 
+    | w₃   ─────   
+    | w₄    ────   Smooth decrease
+    |__________→ λ Never reaches zero
+```
+
+**Lasso:**
+```
+Coefficient
+    |  w₁ ──────────
+    | w₂ ────╱─────  (becomes zero)
+    | w₃ ──╱────     (becomes zero)
+    | w₄●──────────  (becomes zero early)
+    |__________→ λ Can reach exactly zero
+```
+
+---
+
+## CS3 Elastic Net
+
+### What is Elastic Net?
+
+Elastic Net combines both **L1 (Lasso)** and **L2 (Ridge)** penalties.
+
+Gets the best of both worlds:
+- Feature selection from Lasso
+- Stability from Ridge
+- Better handling of correlated features
+
+### Elastic Net Cost Function
+
+$$J(\mathbf{w}) = \frac{1}{2N}\sum_{n=1}^N (y_n - \hat{y}_n)^2 + \lambda_1 \sum |w_j| + \lambda_2 \sum w_j^2$$
+
+Or with mixing parameter $\alpha$ (where $0 \leq \alpha \leq 1$):
+
+$$J(\mathbf{w}) = \text{MSE} + \lambda[\alpha \sum |w_j| + (1-\alpha) \sum w_j^2]$$
+
+### Parameters
+
+- **$\lambda_1$:** Controls L1 (Lasso) strength
+- **$\lambda_2$:** Controls L2 (Ridge) strength
+- **$\alpha = 0$:** Pure Ridge
+- **$\alpha = 1$:** Pure Lasso
+- **$0 < \alpha < 1$:** Balanced combination
+
+### Elastic Net Characteristics
+
+| Characteristic | Elastic Net |
+|---|---|
+| **Feature Selection** | ✅ Yes (L1) |
+| **Stability** | ✅ High (L2) |
+| **Correlated Features** | ✅ Handles well |
+| **Sparse Solutions** | ✅ Yes |
+| **Hyperparameters** | 2 ($\lambda_1$, $\lambda_2$) |
+| **Computation** | Iterative |
+
+### When to Use Elastic Net
+
+✅ Have many correlated features  
+✅ Want feature selection AND stability  
+✅ Need robust solution  
+✅ Unsure between Ridge and Lasso  
+
+### Elastic Net vs Pure Approaches
+
+```
+Ridge (α=0)          Elastic Net (α=0.5)      Lasso (α=1)
+
+y = 2x₁ + 1.5x₂      y = 2x₁ + 0x₂            y = 2x₁ + 0x₂
+    + 0.5x₃              + 0.3x₃                   + 0x₃
+    + 0.2x₄              + 0x₄                     + 0x₄
+
+All features used   Some removed             Only important
+                    Balanced approach        features remain
+```
+
+---
+
+## CS3 Numerical Examples
+
+### Example 1: Simple Linear Regression
+
+**Problem:** Predict exam scores from study hours
+
+**Data:**
 | Hours ($x$) | Score ($y$) |
 |-----------|---------|
 | 2 | 50 |
@@ -1032,207 +1115,129 @@ Predict student exam scores based on hours studied.
 | 5 | 70 |
 | 6 | 85 |
 
-#### Step 1: Calculate Means
+**Solution:**
+- $\bar{x} = 4$, $\bar{y} = 66$
+- $w_1 = 0.8$, $w_0 = 34$
+- **Equation:** $\hat{y} = 34 + 8x$
 
-$$\bar{x} = \frac{2+3+4+5+6}{5} = 4$$
-
-$$\bar{y} = \frac{50+60+65+70+85}{5} = 66$$
-
-#### Step 2: Create Deviation Table
-
-| $i$ | $x_i$ | $y_i$ | $(x_i - \bar{x})$ | $(y_i - \bar{y})$ | $(x_i - \bar{x})(y_i - \bar{y})$ | $(x_i - \bar{x})^2$ |
-|-----|-------|-------|------------------|------------------|----------------------------------|------------------|
-| 1 | 2 | 50 | -2 | -16 | 32 | 4 |
-| 2 | 3 | 60 | -1 | -6 | 6 | 1 |
-| 3 | 4 | 65 | 0 | -1 | 0 | 0 |
-| 4 | 5 | 70 | 1 | 4 | 4 | 1 |
-| 5 | 6 | 85 | 2 | 19 | 38 | 4 |
-| **Sum** | | | | | **80** | **10** |
-
-#### Step 3: Calculate $w_1$ (Slope)
-
-$$w_1 = \frac{80}{10} = 8$$
-
-**Interpretation:** Each additional hour of study increases score by 8 points on average.
-
-#### Step 4: Calculate $w_0$ (Intercept)
-
-$$w_0 = 66 - 8(4) = 66 - 32 = 34$$
-
-**Interpretation:** A student who studies 0 hours would score around 34 (hypothetical).
-
-#### Step 5: Regression Equation
-
-$$\hat{y} = 34 + 8x$$
-
-#### Step 6: Make Predictions
-
-| Hours ($x$) | Predicted Score | Actual Score | Error |
-|-----------|-----------------|-------------|-------|
-| 2 | 34 + 8(2) = 50 | 50 | 0 |
-| 3 | 34 + 8(3) = 58 | 60 | -2 |
-| 4 | 34 + 8(4) = 66 | 65 | 1 |
-| 5 | 34 + 8(5) = 74 | 70 | 4 |
-| 6 | 34 + 8(6) = 82 | 85 | -3 |
-
-#### Step 7: Calculate Cost
-
-$$J(w) = \frac{1}{2(5)}(0^2 + 2^2 + 1^2 + 4^2 + 3^2)$$
-
-$$= \frac{1}{10}(0 + 4 + 1 + 16 + 9) = \frac{30}{10} = 3$$
-
-#### Prediction for New Data
-
-If student studies 7 hours:
-$$\hat{y} = 34 + 8(7) = 90$$
-
-Expected score: 90
+**Interpretation:** Each hour adds 8 points
 
 ---
 
-### Complete Example 2: Multiple Linear Regression
+### Example 2: Multiple Linear Regression
 
-#### Problem Statement
-Predict house price based on size and age.
+**Problem:** Predict house price from size and age
 
-#### Given Data (5 houses)
-
-| Size (sqft) | Age (years) | Price ($1000) |
-|-----------|-----------|------------|
+**Data (5 houses):**
+| Size (sqft) | Age (years) | Price ($K) |
+|-----------|-----------|----------|
 | 1200 | 10 | 250 |
 | 1800 | 5 | 350 |
 | 1500 | 15 | 280 |
 | 2000 | 2 | 400 |
 | 1400 | 20 | 260 |
 
-#### Step 1: Create Design Matrix
+**Solution:**
+- **Equation:** $\text{Price} = 100 + 0.15(\text{Size}) - 2(\text{Age})$
 
-$$\mathbf{\Phi} = \begin{bmatrix}
-1 & 1200 & 10 \\
-1 & 1800 & 5 \\
-1 & 1500 & 15 \\
-1 & 2000 & 2 \\
-1 & 1400 & 20
-\end{bmatrix}, \quad \mathbf{t} = \begin{bmatrix} 250 \\ 350 \\ 280 \\ 400 \\ 260 \end{bmatrix}$$
+**Interpretation:**
+- Base price: $100K
+- Size adds: $150/sqft
+- Age reduces: $2K/year
 
-#### Step 2: Using Normal Equations (Simplified)
-
-Using computational tools (or matrix calculations):
-
-$$\mathbf{\Phi}^T\mathbf{\Phi} = \begin{bmatrix} 5 & 7900 & 52 \\ 7900 & 12,740,000 & 91,000 \\ 52 & 91,000 & 852 \end{bmatrix}$$
-
-$$\mathbf{\Phi}^T\mathbf{t} = \begin{bmatrix} 1540 \\ 2,376,000 \\ 11,620 \end{bmatrix}$$
-
-#### Step 3: Solve for Weights
-
-After matrix inversion and multiplication:
-
-$$\mathbf{w} = \begin{bmatrix} 100 \\ 0.15 \\ -2 \end{bmatrix}$$
-
-#### Step 4: Regression Equation
-
-$$\text{Price} = 100 + 0.15(\text{Size}) - 2(\text{Age})$$
-
-#### Step 5: Interpretation
-
-- **$w_0 = 100$**: Base price is $100,000
-- **$w_1 = 0.15$**: Each additional sq ft adds $150 to price
-- **$w_2 = -2$**: Each year of age reduces price by $2,000
-
-#### Step 6: Predictions
-
-**House 1:** 1200 sqft, 10 years
-$$\text{Price} = 100 + 0.15(1200) - 2(10) = 100 + 180 - 20 = 260$$
-(Actual: 250, Error: 10)
-
-**House 3:** 1500 sqft, 15 years
-$$\text{Price} = 100 + 0.15(1500) - 2(15) = 100 + 225 - 30 = 295$$
-(Actual: 280, Error: 15)
-
-**New House:** 1600 sqft, 8 years
-$$\text{Price} = 100 + 0.15(1600) - 2(8) = 100 + 240 - 16 = 324$$
-Predicted price: $324,000
+**New House (1600 sqft, 8 years):**
+$$\text{Price} = 100 + 0.15(1600) - 2(8) = 324K$$
 
 ---
 
-### Example 3: Polynomial Regression
+### Example 3: Ridge vs Lasso on Correlated Features
 
-#### Problem Statement
-Fit a quadratic (degree 2) polynomial to data showing curved relationship.
+**Problem:** Predict price with correlated features (size & bedrooms)
 
-#### Data
+**Standard LR Result:**
+```
+Price = 100 + 0.20*size + 50*bedrooms - 2*age
+Issues: Large, unstable coefficients
+```
 
-| $x$ | $y$ |
-|-----|-----|
-| 0 | 1 |
-| 1 | 2 |
-| 2 | 5 |
-| 3 | 10 |
+**Ridge Result (λ=1):**
+```
+Price = 95 + 0.12*size + 30*bedrooms - 1.8*age
+Effect: All weights shrunk, both features used, stable
+```
 
-#### Model
-$$y = w_0 + w_1 x + w_2 x^2$$
+**Lasso Result (λ=0.5):**
+```
+Price = 90 + 0.15*size + 0*bedrooms - 1.5*age
+Effect: Bedrooms eliminated (redundant), simpler model
+```
 
-#### Design Matrix (with basis functions $1, x, x^2$)
-
-$$\mathbf{\Phi} = \begin{bmatrix}
-1 & 0 & 0 \\
-1 & 1 & 1 \\
-1 & 2 & 4 \\
-1 & 3 & 9
-\end{bmatrix}, \quad \mathbf{t} = \begin{bmatrix} 1 \\ 2 \\ 5 \\ 10 \end{bmatrix}$$
-
-#### Solution (Using Normal Equations)
-
-After solving: $\mathbf{w} = [1, 0.5, 0.5]$
-
-#### Equation
-
-$$\hat{y} = 1 + 0.5x + 0.5x^2$$
-
-#### Predictions
-
-| $x$ | Predicted $\hat{y}$ | Actual $y$ | Error |
-|-----|------------------|----------|-------|
-| 0 | 1 + 0.5(0) + 0.5(0) = 1 | 1 | 0 |
-| 1 | 1 + 0.5(1) + 0.5(1) = 2 | 2 | 0 |
-| 2 | 1 + 0.5(2) + 0.5(4) = 4 | 5 | -1 |
-| 3 | 1 + 0.5(3) + 0.5(9) = 7.5 | 10 | -2.5 |
-
-Note: Quadratic model fits the increasing curvature better than a line would.
+**Elastic Net Result (λ=0.5, α=0.5):**
+```
+Price = 92 + 0.14*size + 5*bedrooms - 1.7*age
+Effect: All kept (Ridge) but bedrooms weight small
+```
 
 ---
 
-## Summary
+## Summary & Selection Guide
 
-### Key Takeaways
+### Quick Decision Tree
 
-1. **Linear Regression** predicts continuous values using linear models
-2. **Simple** (1 input) and **Multiple** (many inputs) forms exist
-3. **Polynomial** regression extends to curved relationships
-4. **Least Squares** minimizes sum of squared errors
-5. **Normal Equations** provide analytical solution for small data
-6. **Gradient Descent** is iterative method for large data
-7. **Regularization** (Ridge, Lasso, Elastic Net) prevents overfitting
-8. **Bias-Variance Tradeoff** governs model complexity
+```
+                    Start
+                      |
+              Many features?
+                   /    \
+                YES      NO
+                /          \
+            Correlated?     Use Simple
+              /    \        Linear
+            YES    NO       Regression
+            /       \
+        Elastic    Ridge
+        Net        
+                    
+OR: Need feature
+selection?
+    /      \
+  YES      NO
+  /         \
+Lasso    Ridge/Elastic
+```
 
-### When to Use Each Approach
+### Selection Criteria
 
-- **Simple Linear:** 1 feature, linear relationship, interpretability critical
-- **Multiple Linear:** Many features, linear relationships
-- **Polynomial:** Curved relationships, feature engineering
-- **Ridge:** Overfitting, all features important
-- **Lasso:** Many features, want automatic selection
-- **Elastic Net:** Many correlated features
+**Use Ridge When:**
+- ✅ Want to keep all features
+- ✅ Features are correlated
+- ✅ Need stable, fast solution
+- ✅ Model overfits slightly
 
-### Implementing Steps
+**Use Lasso When:**
+- ✅ Need feature selection
+- ✅ Have many features, few matter
+- ✅ Want interpretable model
+- ✅ Suspect redundancy
 
-1. Prepare data (clean, normalize if needed)
-2. Split into training and test sets
-3. Choose model type and complexity
-4. Select optimization method (closed-form or gradient descent)
-5. Train model (find optimal weights)
-6. Evaluate on test set
-7. Tune hyperparameters if needed
-8. Make predictions on new data
+**Use Elastic Net When:**
+- ✅ Have correlated features AND need selection
+- ✅ Unsure between Ridge and Lasso
+- ✅ Want robust, balanced solution
 
 ---
+
+## Key Formulas Reference
+
+| Method | Cost Function | Solution |
+|--------|---|---|
+| **Standard LR** | $\text{MSE}$ | $\mathbf{w} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$ |
+| **Ridge** | $\text{MSE} + \lambda \sum w_j^2$ | $\mathbf{w} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$ |
+| **Lasso** | $\text{MSE} + \lambda \sum \|w_j\|$ | No closed form (iterative) |
+| **Elastic Net** | $\text{MSE} + \lambda_1 \sum \|w_j\| + \lambda_2 \sum w_j^2$ | Iterative methods |
+
+---
+
+**Document Version:** Complete ML Guide  
+**Covers:** CS1 (Fundamentals), CS2 (Workflow), CS3 (Linear Models & Regularization)  
+**Suitable for:** Students, Reference Material, Exam Prep
