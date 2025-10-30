@@ -1,5 +1,5 @@
 # Complete Machine Learning Course Guide
-## CS1 • CS2 • CS3: Linear Models & Regression
+## CS1 • CS2 • CS3 • CS5: Linear Models & Regression + Classification
 
 ---
 
@@ -30,6 +30,19 @@
 - [Ridge vs Lasso Comparison](#cs3-ridge-vs-lasso-comparison)
 - [Elastic Net](#cs3-elastic-net)
 - [Numerical Examples](#cs3-numerical-examples)
+
+### [CS5 - Linear Models for Classification](#cs5---linear-models-for-classification)
+- [What is Classification?](#cs5-what-is-classification)
+- [Decision Theory](#cs5-decision-theory)
+- [Generative vs Discriminative Models](#cs5-generative-vs-discriminative-models)
+- [Discriminant Functions](#cs5-discriminant-functions)
+- [Logistic Regression](#cs5-logistic-regression)
+- [Cost Function (Cross-Entropy)](#cs5-cost-function-cross-entropy)
+- [Gradient Descent for Classification](#cs5-gradient-descent-for-classification)
+- [Multi-Class Classification](#cs5-multi-class-classification)
+- [Regularization in Classification](#cs5-regularization-in-classification)
+- [Evaluation Metrics](#cs5-evaluation-metrics)
+- [Numerical Examples](#cs5-numerical-examples)
 
 ---
 
@@ -866,7 +879,7 @@ $$\mathbf{w}_{\text{Ridge}} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi}
 
 ### When to Use Ridge
 
-✅ Many features, want to keep all  
+✅ Want to keep all features  
 ✅ Model overfits  
 ✅ Features are correlated  
 ✅ Need stable solution  
@@ -1238,6 +1251,927 @@ Lasso    Ridge/Elastic
 
 ---
 
-**Document Version:** Complete ML Guide  
-**Covers:** CS1 (Fundamentals), CS2 (Workflow), CS3 (Linear Models & Regularization)  
+# CS5 - Linear Models for Classification
+
+## CS5 TABLE OF CONTENTS
+1. [What is Classification?](#cs5-what-is-classification)
+2. [Decision Theory](#cs5-decision-theory)
+3. [Generative vs Discriminative Models](#cs5-generative-vs-discriminative-models)
+4. [Discriminant Functions](#cs5-discriminant-functions)
+5. [Logistic Regression](#cs5-logistic-regression)
+6. [Cost Function (Cross-Entropy)](#cs5-cost-function-cross-entropy)
+7. [Gradient Descent for Classification](#cs5-gradient-descent-for-classification)
+8. [Multi-Class Classification](#cs5-multi-class-classification)
+9. [Regularization in Classification](#cs5-regularization-in-classification)
+10. [Evaluation Metrics](#cs5-evaluation-metrics)
+11. [Numerical Examples](#cs5-numerical-examples)
+
+---
+
+## CS5 What is Classification?
+
+### Simple Definition
+
+Classification is predicting a **discrete class label** (category) rather than a continuous value.
+
+### Regression vs Classification
+
+| Aspect | Regression | Classification |
+|--------|-----------|----------------|
+| **Output Type** | Continuous (numbers) | Discrete (categories) |
+| **Example Output** | $150,000, 2.5, 98.6 | Spam/Ham, Dog/Cat, Yes/No |
+| **Goal** | Predict quantity | Predict category |
+| **Example Task** | House price, temperature | Email spam, disease diagnosis |
+| **Evaluation** | MSE, RMSE, R² | Accuracy, precision, recall |
+
+### Types of Classification
+
+**Binary Classification:**
+- Two classes: {0, 1} or {Positive, Negative}
+- Examples: Spam detection, disease diagnosis, pass/fail
+
+**Multi-Class Classification:**
+- More than two classes: {Class 1, Class 2, ..., Class K}
+- Examples: Digit recognition (0-9), animal species, product categories
+
+### Real-world Applications
+
+| Application | Input | Output | Classes |
+|-------------|-------|--------|---------|
+| Email Filtering | Email text | Spam/Ham | 2 |
+| Medical Diagnosis | Patient symptoms | Disease/Healthy | 2 |
+| Image Recognition | Image pixels | Cat/Dog/Bird | 3+ |
+| Credit Approval | Financial data | Approve/Deny | 2 |
+| Student Admission | GPA, test scores | Accept/Reject | 2 |
+
+---
+
+## CS5 Decision Theory
+
+### The Goal
+
+Given input **x**, predict which class it belongs to by learning $p(C_k|x)$ (probability of class $C_k$ given input $x$).
+
+### Key Probability Concepts
+
+**Joint Probability:**
+$$p(x, C_k) = p(C_k|x) \times p(x)$$
+
+**Bayes' Theorem:**
+$$p(C_k|x) = \frac{p(x|C_k) \times p(C_k)}{p(x)}$$
+
+Where:
+- $p(C_k|x)$ = **Posterior:** Probability of class given input
+- $p(x|C_k)$ = **Likelihood:** Probability of input given class
+- $p(C_k)$ = **Prior:** Probability of class (before seeing data)
+- $p(x)$ = **Evidence:** Probability of input (normalization)
+
+### Decision Rule
+
+**Assign** $x$ **to class** $C_k$ **if:**
+$$p(C_k|x) > p(C_j|x) \text{ for all } j \neq k$$
+
+This is called the **Bayes Classifier** - theoretically optimal decision rule.
+
+### Example: Medical Diagnosis
+
+**Problem:** Diagnose disease from biomarker level
+
+**Given:**
+- $p(\text{Disease}) = 0.01$ (1% prevalence - rare disease)
+- $p(\text{Healthy}) = 0.99$
+- Test results: biomarker level $x$
+
+**Decision boundary:** Where posteriors are equal
+$$p(x|\text{Disease}) \times 0.01 = p(x|\text{Healthy}) \times 0.99$$
+
+**Key Insight:** Likelihood ratio must be **99:1** to overcome low prior!
+
+Even if test is "positive", might still be healthy due to low base rate.
+
+---
+
+## CS5 Generative vs Discriminative Models
+
+### Two Approaches to Classification
+
+| Approach | What it Models | Steps |
+|----------|---------------|-------|
+| **Generative** | $p(x\|C_k)$ and $p(C_k)$ | 1. Model class distributions<br>2. Learn priors<br>3. Apply Bayes' theorem |
+| **Discriminative** | $p(C_k\|x)$ directly | 1. Learn decision boundary<br>2. Done! |
+
+---
+
+### Generative Models
+
+**Three-Step Process:**
+
+**Step 1:** Learn class-conditional densities $p(x|C_k)$
+- For each class, model how features are distributed
+- Example: Assume Gaussian distributions
+
+**Step 2:** Learn prior probabilities $p(C_k)$
+- Count frequency of each class in training data
+
+**Step 3:** Apply Bayes' theorem
+$$p(C_k|x) = \frac{p(x|C_k) \times p(C_k)}{p(x)}$$
+
+**Example: Job Hiring**
+
+**Data:**
+| CGPA | IQ | Job Offered |
+|------|-----|-------------|
+| 5.5 | 6.7 | 1 |
+| 8.0 | 6.0 | 1 |
+| 9.0 | 7.0 | 1 |
+| 5.0 | 7.0 | 0 |
+
+**For Job=1:** $\mu_1 = [7.5, 6.57]$, learn $\Sigma_1$  
+**For Job=0:** $\mu_2 = [5.0, 7.0]$, learn $\Sigma_2$  
+**Priors:** $p(\text{Job}=1) = 0.75$, $p(\text{Job}=0) = 0.25$
+
+**Challenge:** Need to estimate many parameters
+- Mean vector: $d$ parameters
+- Covariance matrix: $\frac{d(d+1)}{2}$ parameters
+- For 100 features: ~5,000 parameters per class!
+
+---
+
+### Discriminative Models
+
+**Direct Approach:** Learn $p(C_k|x)$ or decision boundary directly
+
+**Example: Logistic Regression**
+$$p(y=1|x) = \sigma(w^T x)$$
+
+Only need $(d+1)$ parameters (weights + bias)!
+
+**Advantages:**
+- **Fewer parameters** - more efficient
+- **Better with limited data** - focuses on boundary
+- **Faster training** - simpler optimization
+
+**Example Comparison:**
+
+| Model Type | Parameters for 100 features |
+|------------|---------------------------|
+| Generative (Gaussian) | ~5,000 per class |
+| Discriminative (Logistic) | 101 total |
+
+---
+
+### When to Use Each
+
+| Use Generative When | Use Discriminative When |
+|---------------------|------------------------|
+| ✅ Need to generate new samples | ✅ Focus is only on classification |
+| ✅ Have missing data | ✅ Have large datasets |
+| ✅ Have strong prior knowledge about distributions | ✅ Want better performance (usually) |
+| ✅ Classes are well-separated | ✅ Limited computational resources |
+| ✅ Want to model full data distribution | ✅ Need faster training |
+| ✅ Multiple related prediction tasks | ✅ Complex decision boundaries |  
+
+---
+
+## CS5 Discriminant Functions
+
+### Linear Discriminant (Two Classes)
+
+**Decision Function:**
+$$y(x) = w^T x + w_0$$
+
+**Classification Rule:**
+- If $y(x) > 0$: Predict Class 1
+- If $y(x) < 0$: Predict Class 0
+- If $y(x) = 0$: On the boundary
+
+### Geometric Interpretation
+
+**Weight Vector w:**
+- Direction perpendicular to decision boundary
+- Points toward Class 1
+
+**Bias Term** $w_0$:
+- Shifts boundary away from origin
+- Controls threshold
+
+**Distance from point to boundary:**
+$$r = \frac{w^T x + w_0}{||w||}$$
+
+### Example: Student Admission
+
+**Features:** GPA ($x_1$), Test Score ($x_2$)
+
+**Learned Model:**
+$$y(x) = -200 + 20 \times \text{GPA} + 1.5 \times \text{TestScore}$$
+
+**Decision Boundary:** (where $y(x) = 0$)
+$$20 \times \text{GPA} + 1.5 \times \text{TestScore} = 200$$
+
+**Interpretation:**
+- Each GPA point is "worth" $\frac{20}{1.5} = 13.33$ test points
+- If GPA = 3.0: Need TestScore $\geq 93.33$
+- If GPA = 4.0: Need TestScore $\geq 80$
+
+**Test Examples:**
+
+**Student A:** GPA=3.2, TestScore=85
+$$y = -200 + 20(3.2) + 1.5(85) = -8.5 < 0 \rightarrow \text{REJECT}$$
+
+**Student B:** GPA=3.5, TestScore=90
+$$y = -200 + 20(3.5) + 1.5(90) = 5 > 0 \rightarrow \text{ACCEPT}$$
+
+---
+
+## CS5 Logistic Regression
+
+### Why Not Linear Regression for Classification?
+
+**Problems with linear regression:**
+- Outputs can be $< 0$ or $> 1$ (invalid probabilities)
+- Sensitive to outliers
+- Not designed for classification
+
+**Solution:** Use sigmoid function to map to [0,1]
+
+### The Sigmoid Function
+
+$$\sigma(z) = \frac{1}{1 + e^{-z}}$$
+
+**Properties:**
+- Range: $(0, 1)$ - perfect for probabilities
+- Smooth and differentiable
+- Monotonic (always increasing)
+
+**Behavior:**
+
+| z | σ(z) | Interpretation |
+|---|------|----------------|
+| -∞ | 0 | Definitely Class 0 |
+| -5 | 0.007 | Very unlikely Class 1 |
+| -2 | 0.12 | Unlikely Class 1 |
+| 0 | 0.5 | 50-50 |
+| 2 | 0.88 | Likely Class 1 |
+| 5 | 0.993 | Very likely Class 1 |
+| +∞ | 1 | Definitely Class 1 |
+
+### Logistic Regression Model
+
+$$h(x) = \sigma(w^T x) = \frac{1}{1 + e^{-w^T x}}$$
+
+**Interpretation:**
+- $h(x)$ = Probability that $y = 1$
+- $1 - h(x)$ = Probability that $y = 0$
+
+**Decision Rule:**
+- If $h(x) \geq 0.5$: Predict Class 1
+- If $h(x) < 0.5$: Predict Class 0
+
+### Log-Odds (Logit)
+
+$$\log\left[\frac{p}{1-p}\right] = w^T x$$
+
+**Interpretation:**
+- Log-odds is linear in features
+- This is why it's called "Logistic Regression"
+- $w_j > 0$: Feature increases odds of Class 1
+- $w_j < 0$: Feature decreases odds of Class 1
+
+### Complete Example: Email Spam
+
+**Features:**
+- $x_1$ = Number of exclamation marks
+- $x_2$ = Contains "free" (1/0)
+- $x_3$ = Email length (words)
+
+**Learned Weights:**
+```
+w₀ = -2.0
+w₁ = 0.5  (exclamation marks)
+w₂ = 3.0  (contains "free")
+w₃ = -0.01 (length)
+```
+
+**New Email:** 2 exclamation marks, contains "free", 100 words
+
+**Step 1: Compute z**
+$$z = -2.0 + 0.5(2) + 3.0(1) + (-0.01)(100)$$
+$$z = -2.0 + 1.0 + 3.0 - 1.0 = 1.0$$
+
+**Step 2: Apply sigmoid**
+$$h(x) = \frac{1}{1 + e^{-1}} = 0.731$$
+
+**Result:** 73.1% probability of spam → Classify as SPAM
+
+**Interpretation:**
+- "free" has largest impact (weight = 3.0)
+- Each exclamation mark increases spam probability
+- Longer emails slightly less likely spam
+
+---
+
+## CS5 Cost Function (Cross-Entropy)
+
+### Why Not Mean Squared Error?
+
+MSE is **non-convex** for logistic regression:
+- Multiple local minima
+- Gradient descent may get stuck
+- Slow convergence
+
+### Cross-Entropy Loss
+
+**For single example:**
+$$\text{Cost}(h(x), y) = -[y \log(h(x)) + (1-y) \log(1-h(x))]$$
+
+**For entire dataset:**
+$$J(w) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)} \log(h(x^{(i)})) + (1-y^{(i)}) \log(1-h(x^{(i)}))\right]$$
+
+### Why Cross-Entropy?
+
+✅ **Convex** - single global minimum  
+✅ **Penalizes wrong confident predictions heavily**  
+✅ Comes from **maximum likelihood estimation**  
+✅ Works well with sigmoid function  
+
+### Understanding the Penalty
+
+**When y = 1 (actual class is positive):**
+
+| h(x) | Cost | Interpretation |
+|------|------|----------------|
+| 0.99 | 0.01 | Low penalty - good! |
+| 0.9 | 0.11 | Small penalty |
+| 0.5 | 0.69 | Medium penalty |
+| 0.1 | 2.30 | Large penalty! |
+| 0.01 | 4.61 | Huge penalty! |
+| → 0 | → ∞ | Infinite penalty |
+
+**When y = 0 (actual class is negative):**
+
+| h(x) | Cost | Interpretation |
+|------|------|----------------|
+| 0.01 | 0.01 | Low penalty - good! |
+| 0.1 | 0.11 | Small penalty |
+| 0.5 | 0.69 | Medium penalty |
+| 0.9 | 2.30 | Large penalty! |
+| 0.99 | 4.61 | Huge penalty! |
+| → 1 | → ∞ | Infinite penalty |
+
+**Key Property:** Being confident AND wrong is heavily penalized!
+
+### Example Calculation
+
+**3 Predictions:**
+- Prediction 1: $h(x)=0.9$, $y=1$ → Cost = $-\log(0.9) = 0.105$
+- Prediction 2: $h(x)=0.2$, $y=1$ → Cost = $-\log(0.2) = 1.609$
+- Prediction 3: $h(x)=0.1$, $y=0$ → Cost = $-\log(0.9) = 0.105$
+
+**Average Cost:** $\frac{0.105 + 1.609 + 0.105}{3} = 0.606$
+
+Prediction 2 dominates (was very wrong)!
+
+---
+
+## CS5 Gradient Descent for Classification
+
+### Update Rule
+
+$$w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$$
+
+Where:
+$$\frac{\partial J}{\partial w_j} = \frac{1}{m}\sum_{i=1}^{m}(h(x^{(i)}) - y^{(i)})x_j^{(i)}$$
+
+**Beautiful Result:** Same form as linear regression, but $h(x) = \sigma(w^T x)$!
+
+### Algorithm Steps
+
+**1. Initialize weights** (e.g., all zeros or small random values)
+
+**2. Repeat until convergence:**
+   - Compute predictions: $h(x^{(i)}) = \sigma(w^T x^{(i)})$ for all examples
+   - Compute gradients: $\frac{\partial J}{\partial w_j}$ for each weight
+   - Update weights: $w_j := w_j - \alpha \times \text{gradient}$
+   - Compute cost $J(w)$ to monitor progress
+
+**3. Stop when:**
+   - Cost stops decreasing
+   - Gradients become very small
+   - Maximum iterations reached
+
+### Simple Example
+
+**Data:** Pass/Fail based on study hours
+
+| Hours (x) | Pass (y) |
+|-----------|----------|
+| 1 | 0 |
+| 2 | 0 |
+| 3 | 1 |
+| 4 | 1 |
+
+**Hyperparameters:** $\alpha = 0.1$, initial $w_0 = 0, w_1 = 0$
+
+**Iteration 1:**
+
+For all examples with $w=[0, 0]$:
+```
+z = 0, h = σ(0) = 0.5 for all
+Errors: [0.5, 0.5, -0.5, -0.5]
+```
+
+**Gradients:**
+$$\frac{\partial J}{\partial w_0} = \frac{1}{4}[0.5 + 0.5 - 0.5 - 0.5] = 0$$
+$$\frac{\partial J}{\partial w_1} = \frac{1}{4}[0.5(1) + 0.5(2) - 0.5(3) - 0.5(4)] = -0.5$$
+
+**Update:**
+$$w_0 := 0 - 0.1(0) = 0$$
+$$w_1 := 0 - 0.1(-0.5) = 0.05$$
+
+**After many iterations:**
+```
+w₀ ≈ -5.5
+w₁ ≈ 2.5
+Decision boundary: -5.5 + 2.5(hours) = 0
+                   hours = 2.2
+```
+
+**Interpretation:** Need ~2.2 hours to have 50% pass probability
+
+### Variants
+
+| Method | Description | Batch Size |
+|--------|-------------|-----------|
+| **Batch GD** | Use all examples per update | m |
+| **Stochastic GD** | Use 1 example per update | 1 |
+| **Mini-batch GD** | Use small batch per update | 32, 64, 128 |
+
+**Most Common:** Mini-batch (balances speed and stability)
+
+### Learning Rate Selection
+
+| α | Effect | Problem |
+|---|--------|---------|
+| Too small | Slow convergence | Many iterations needed |
+| Just right | Steady decrease | Efficient learning |
+| Too large | Oscillation/divergence | Cost increases! |
+
+**Typical values:** 0.001, 0.01, 0.1
+
+---
+
+## CS5 Multi-Class Classification
+
+### Two Main Approaches
+
+---
+
+### 1. One-vs-All (One-vs-Rest)
+
+**Strategy:** Train K binary classifiers (one per class)
+
+**Example:** Classify {Sports, Politics, Technology}
+
+**Classifier 1:** Sports vs. {Politics, Technology}
+- Label Sports as 1, others as 0
+- Learn weights $w^{(1)}$
+
+**Classifier 2:** Politics vs. {Sports, Technology}
+- Label Politics as 1, others as 0
+- Learn weights $w^{(2)}$
+
+**Classifier 3:** Technology vs. {Sports, Technology}
+- Label Technology as 1, others as 0
+- Learn weights $w^{(3)}$
+
+**Prediction:**
+$$\hat{y} = \arg\max_k h_k(x)$$
+
+Choose class with highest probability.
+
+**Example:**
+```
+h₁(x) = 0.85  (Sports)
+h₂(x) = 0.10  (Politics)
+h₃(x) = 0.30  (Technology)
+
+Prediction: Sports
+```
+
+**Characteristics:**
+- ✅ Simple to implement
+- ✅ Parallelizable
+- ❌ Probabilities don't sum to 1
+- ❌ Class imbalance during training
+
+---
+
+### 2. Softmax Regression
+
+**Direct multi-class approach**
+
+**Model:**
+$$p(C_k|x) = \frac{\exp(w_k^T x)}{\sum_{j=1}^{K}\exp(w_j^T x)}$$
+
+**Properties:**
+- All probabilities positive
+- Sum to 1: $\sum_k p(C_k|x) = 1$
+- Reduces to logistic for K=2
+
+**Example:** Image classification {Cat, Dog, Bird}
+
+**Scores (logits):**
+```
+a₁ = 5.0  (Cat)
+a₂ = 2.0  (Dog)
+a₃ = 1.0  (Bird)
+```
+
+**Step 1: Exponentiate**
+```
+exp(5.0) = 148.4
+exp(2.0) = 7.4
+exp(1.0) = 2.7
+Sum = 158.5
+```
+
+**Step 2: Normalize**
+```
+p(Cat) = 148.4 / 158.5 = 0.936  (93.6%)
+p(Dog) = 7.4 / 158.5 = 0.047    (4.7%)
+p(Bird) = 2.7 / 158.5 = 0.017   (1.7%)
+```
+
+**Prediction: Cat** (highest probability)
+
+### Cross-Entropy for Softmax
+
+$$J(W) = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K}y_k^{(i)} \log(p_k^{(i)})$$
+
+where $y_k$ is one-hot encoded (1 for true class, 0 otherwise)
+
+### Comparison
+
+| Aspect | One-vs-All | Softmax |
+|--------|------------|---------|
+| **Training** | K separate models | Single joint model |
+| **Probabilities** | Don't sum to 1 | Always sum to 1 |
+| **Calibration** | Poor | Better |
+| **Implementation** | Simpler | More complex |
+| **Use Case** | Quick baseline | Need probabilities |
+
+---
+
+## CS5 Regularization in Classification
+
+### Why Regularization?
+
+**Problem:** Overfitting in classification
+- Model memorizes training data
+- Poor generalization to new data
+- Large weight magnitudes
+
+**Solution:** Add penalty to cost function
+
+---
+
+### L2 Regularization (Ridge)
+
+$$J(w) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)} \log h(x^{(i)}) + (1-y^{(i)}) \log(1-h(x^{(i)}))\right] + \frac{\lambda}{2m}\sum_{j=1}^{n}w_j^2$$
+
+**Effect:**
+- Shrinks all weights toward zero
+- Keeps all features
+- Reduces overfitting
+
+**Gradient:**
+$$\frac{\partial J}{\partial w_j} = \frac{1}{m}\sum_{i=1}^{m}(h(x^{(i)}) - y^{(i)})x_j^{(i)} + \frac{\lambda}{m}w_j$$
+
+---
+
+### L1 Regularization (Lasso)
+
+$$J(w) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)} \log h(x^{(i)}) + (1-y^{(i)}) \log(1-h(x^{(i)}))\right] + \frac{\lambda}{m}\sum_{j=1}^{n}|w_j|$$
+
+**Effect:**
+- Can set weights to exactly zero
+- Performs feature selection
+- Creates sparse models
+
+---
+
+### Choosing Lambda (λ)
+
+| λ | Effect | Training Acc | Test Acc |
+|---|--------|--------------|----------|
+| 0 | No regularization | 99% | 65% (overfit) |
+| 0.01 | Weak | 95% | 88% |
+| 0.1 | Medium | 92% | 91% (best!) |
+| 1.0 | Strong | 85% | 86% |
+| 10.0 | Too strong | 75% | 76% (underfit) |
+
+**Best λ:** Use cross-validation to select
+
+---
+
+## CS5 Evaluation Metrics
+
+### Beyond Accuracy
+
+**Why accuracy isn't enough:**
+
+Example: Disease detection (1% prevalence)
+```
+Model predicts "Healthy" for everyone
+Accuracy = 99% ← Seems great!
+But catches 0% of diseases ← Useless!
+```
+
+---
+
+### Confusion Matrix
+
+|  | Predicted Negative | Predicted Positive |
+|--|-------------------|-------------------|
+| **Actually Negative** | True Negative (TN) | False Positive (FP) |
+| **Actually Positive** | False Negative (FN) | True Positive (TP) |
+
+**Example:** Email Spam Filter (2000 emails)
+
+|  | Predicted Ham | Predicted Spam |
+|--|---------------|----------------|
+| **Actually Ham** | 950 (TN) | 50 (FP) |
+| **Actually Spam** | 30 (FN) | 970 (TP) |
+
+---
+
+### Key Metrics
+
+**Accuracy:**
+$$\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN} = \frac{1920}{2000} = 0.96$$
+
+**Precision (Positive Predictive Value):**
+$$\text{Precision} = \frac{TP}{TP + FP} = \frac{970}{1020} = 0.951$$
+
+**Question:** Of predicted spam, how many are actually spam?
+
+**Recall (Sensitivity, True Positive Rate):**
+$$\text{Recall} = \frac{TP}{TP + FN} = \frac{970}{1000} = 0.970$$
+
+**Question:** Of actual spam, how many did we catch?
+
+**F1 Score (Harmonic Mean):**
+$$F_1 = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} = 0.960$$
+
+**Specificity (True Negative Rate):**
+$$\text{Specificity} = \frac{TN}{TN + FP} = \frac{950}{1000} = 0.950$$
+
+---
+
+### Precision-Recall Tradeoff
+
+**Threshold Effect:**
+
+| Threshold | Precision | Recall | F1 | Use Case |
+|-----------|-----------|--------|-----|----------|
+| 0.9 | 0.98 | 0.60 | 0.74 | High confidence needed |
+| 0.7 | 0.92 | 0.85 | 0.88 | Balanced |
+| 0.5 | 0.85 | 0.92 | 0.88 | Standard |
+| 0.3 | 0.70 | 0.98 | 0.82 | Don't miss positives |
+
+**Tradeoff:**
+- High threshold → High precision, low recall
+- Low threshold → Low precision, high recall
+
+---
+
+### ROC Curve and AUC
+
+**ROC (Receiver Operating Characteristic):**
+- X-axis: False Positive Rate = $\frac{FP}{FP+TN}$
+- Y-axis: True Positive Rate (Recall) = $\frac{TP}{TP+FN}$
+
+**AUC (Area Under ROC Curve):**
+- Single number summarizing performance
+- AUC = 1.0: Perfect classifier
+- AUC = 0.9-1.0: Excellent
+- AUC = 0.8-0.9: Good
+- AUC = 0.5: Random guessing
+
+**Advantage:** Threshold-independent metric
+
+---
+
+### Choosing the Right Metric
+
+| Scenario | Best Metric | Why |
+|----------|-------------|-----|
+| Balanced classes | Accuracy | Simple, interpretable |
+| Imbalanced classes | F1, Precision, Recall | Accounts for imbalance |
+| False positives costly | Precision | Minimize FP |
+| False negatives costly | Recall | Minimize FN |
+| Need threshold-free | AUC-ROC | All thresholds |
+| Medical screening | Recall | Don't miss sick |
+| Spam filter | Precision | Don't mark good as spam |
+
+---
+
+## CS5 Numerical Examples
+
+### Example 1: Binary Classification - Student Admission
+
+**Problem:** Predict admission from GPA and test score
+
+**Data:**
+| GPA | Test | Admitted |
+|-----|------|----------|
+| 3.5 | 85 | 1 |
+| 3.2 | 75 | 0 |
+| 3.8 | 90 | 1 |
+| 2.9 | 70 | 0 |
+| 3.6 | 88 | 1 |
+
+**Learned Model:**
+$$z = -20 + 5 \times \text{GPA} + 0.2 \times \text{Test}$$
+$$h(x) = \sigma(z)$$
+
+**New Student:** GPA=3.4, Test=82
+
+**Step 1:** Compute z
+$$z = -20 + 5(3.4) + 0.2(82) = -20 + 17 + 16.4 = 13.4$$
+
+**Step 2:** Apply sigmoid
+$$h(x) = \frac{1}{1 + e^{-13.4}} \approx 0.9999$$
+
+**Result:** 99.99% probability of admission → **ADMIT**
+
+---
+
+### Example 2: Multi-Class - News Classification
+
+**Classes:** {Sports, Politics, Technology}
+
+**New Article Features:** word counts
+
+**One-vs-All Results:**
+```
+h₁(x) = σ(2.5) = 0.924  (Sports)
+h₂(x) = σ(-0.5) = 0.378 (Politics)
+h₃(x) = σ(0.8) = 0.689  (Technology)
+```
+
+**Prediction:** Sports (highest at 0.924)
+
+**Softmax Results:**
+```
+Logits: a₁=2.5, a₂=-0.5, a₃=0.8
+
+p(Sports) = exp(2.5) / [exp(2.5) + exp(-0.5) + exp(0.8)]
+         = 12.18 / [12.18 + 0.61 + 2.23]
+         = 12.18 / 15.02 = 0.811
+
+p(Politics) = 0.61 / 15.02 = 0.041
+p(Technology) = 2.23 / 15.02 = 0.148
+
+Prediction: Sports (81.1%)
+```
+
+---
+
+### Example 3: Evaluation Metrics
+
+**Spam Filter Results (1000 emails):**
+
+|  | Predicted Ham | Predicted Spam |
+|--|---------------|----------------|
+| **Actually Ham** | 870 | 30 |
+| **Actually Spam** | 20 | 80 |
+
+**Calculate Metrics:**
+
+**Accuracy:**
+$$\frac{870 + 80}{1000} = 0.95 \text{ (95\%)}$$
+
+**Precision:**
+$$\frac{80}{80 + 30} = 0.727 \text{ (72.7\%)}$$
+Of emails marked spam, 72.7% are actually spam
+
+**Recall:**
+$$\frac{80}{80 + 20} = 0.80 \text{ (80\%)}$$
+Catch 80% of actual spam
+
+**F1 Score:**
+$$2 \times \frac{0.727 \times 0.80}{0.727 + 0.80} = 0.762$$
+
+**Interpretation:**
+- Good accuracy (95%)
+- But precision only 72.7% → Many false positives
+- Missing 20% of spam (recall = 80%)
+- Could adjust threshold to improve recall
+
+---
+
+### Example 4: Regularization Effect
+
+**Problem:** Predict credit default with 50 features
+
+**Without Regularization:**
+```
+Training Accuracy: 98%
+Test Accuracy: 72%
+Issue: Overfitting!
+```
+
+**With L2 (λ=0.1):**
+```
+Training Accuracy: 91%
+Test Accuracy: 89%
+Result: Better generalization
+```
+
+**With L1 (λ=0.1):**
+```
+Training Accuracy: 90%
+Test Accuracy: 88%
+Non-zero weights: 12 out of 50
+Result: Sparse model, feature selection
+```
+
+**Key Finding:** Only 12 features actually matter!
+
+---
+
+## Summary & Selection Guide
+
+### Classification vs Regression
+
+| Use Classification When | Use Regression When |
+|------------------------|---------------------|
+| Output is category | Output is quantity |
+| Discrete labels | Continuous values |
+| Example: Spam/Ham | Example: House price |
+| Metrics: Accuracy, F1 | Metrics: MSE, R² |
+
+### Model Selection
+
+**Use Logistic Regression When:**
+✅ Need interpretable model  
+✅ Linear decision boundary works  
+✅ Want probability outputs  
+✅ Fast training needed  
+✅ Good baseline  
+
+**Use Softmax When:**
+✅ Multi-class problem (K > 2)  
+✅ Need calibrated probabilities  
+✅ Classes are mutually exclusive  
+
+**Add Regularization When:**
+✅ Model overfits training data  
+✅ Have many features  
+✅ Features are correlated (L2)  
+✅ Need feature selection (L1)  
+
+### Evaluation Metric Selection
+
+```
+                Start
+                  |
+        Balanced classes?
+           /          \
+         YES           NO
+         /              \
+    Use Accuracy    Use F1/Precision/Recall
+                         |
+                  What's costly?
+                   /          \
+         False Positives   False Negatives
+              /                  \
+        Use Precision        Use Recall
+```
+
+---
+
+## Key Formulas Reference
+
+| Component | Formula |
+|-----------|---------|
+| **Sigmoid** | $\sigma(z) = \frac{1}{1+e^{-z}}$ |
+| **Logistic Model** | $h(x) = \sigma(w^T x)$ |
+| **Cross-Entropy** | $J(w) = -\frac{1}{m}\sum[y\log h(x) + (1-y)\log(1-h(x))]$ |
+| **Gradient** | $\frac{\partial J}{\partial w_j} = \frac{1}{m}\sum(h(x^{(i)}) - y^{(i)})x_j^{(i)}$ |
+| **L2 Regularization** | $J(w) = \text{CE} + \frac{\lambda}{2m}\sum w_j^2$ |
+| **L1 Regularization** | $J(w) = \text{CE} + \frac{\lambda}{m}\sum \|w_j\|$ |
+| **Softmax** | $p(C_k\|x) = \frac{\exp(w_k^T x)}{\sum_j \exp(w_j^T x)}$ |
+| **Accuracy** | $\frac{TP+TN}{TP+TN+FP+FN}$ |
+| **Precision** | $\frac{TP}{TP+FP}$ |
+| **Recall** | $\frac{TP}{TP+FN}$ |
+| **F1 Score** | $2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ |
+
+---
+
+**Document Version:** Complete ML Guide with Classification  
+**Covers:** CS1 (Fundamentals), CS2 (Workflow), CS3 (Regression), CS5 (Classification)  
 **Suitable for:** Students, Reference Material, Exam Prep
+
+**Last Updated:** Enhanced with CS5 content
