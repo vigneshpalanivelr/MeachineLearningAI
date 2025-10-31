@@ -13,35 +13,15 @@
 
 ## CS0 – Important Links
 
-### Learning Resources & Documentation
-
-1. **Learn CV with Dhruv (GitHub Repository)**
-   - https://github.com/DhrubaAdhikary/Learn_CV_with_Dhruv
-   - Comprehensive learning resources and code examples
-
-2. **OpenCV (Open Source Computer Vision Library)**
-   - Official Website: https://opencv.org/
-   - **Color Spaces in OpenCV:**
-     - https://opencv.org/blog/color-spaces-in-opencv/
-     - Understanding RGB, HSV, Lab, YCbCr and conversions
-   - **OpenCV Tutorials:**
-     - https://docs.opencv.org/4.x/d9/df8/tutorial_root.html
-     - Complete tutorials covering basic to advanced topics
-   - **Getting Started with OpenCV:**
-     - https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html
-     - First steps: loading and displaying images
-
-### Competitions & Conferences
-
-3. **Grand Challenge**
-   - https://grand-challenge.org/
-   - Biomedical image analysis challenges and competitions
-   - Datasets and benchmarks for medical imaging research
-
-4. **WikiCFP (Call for Papers)**
-   - http://www.wikicfp.com/cfp/
-   - Comprehensive database of conference calls for papers
-   - Track upcoming computer vision and AI conferences
+| Category | Resource | Link | Description |
+|----------|----------|------|-------------|
+| **Learning Repository** | Learn CV with Dhruv | https://github.com/DhrubaAdhikary/Learn_CV_with_Dhruv | Comprehensive learning resources and code examples |
+| **OpenCV - Main** | OpenCV Official | https://opencv.org/ | Open source computer vision library |
+| **OpenCV - Color Spaces** | Color Spaces Guide | https://opencv.org/blog/color-spaces-in-opencv/ | Understanding RGB, HSV, Lab, YCbCr and conversions |
+| **OpenCV - Tutorials** | Complete Tutorials | https://docs.opencv.org/4.x/d9/df8/tutorial_root.html | Basic to advanced OpenCV tutorials |
+| **OpenCV - Getting Started** | First Steps Guide | https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html | Loading and displaying images with OpenCV |
+| **Competitions** | Grand Challenge | https://grand-challenge.org/ | Biomedical image analysis challenges and datasets |
+| **Conferences** | WikiCFP | http://www.wikicfp.com/cfp/ | Database of conference calls for papers in CV and AI |
 
 ---
 
@@ -134,67 +114,15 @@ Computer vision faces a fundamental challenge: reconstructing 3D information fro
 
 ### B. Core Challenges
 
-#### 1. Viewpoint Variation
-- The same object can appear very different from different angles
-- 3D pose changes alter visible surfaces and cause self-occlusion
-- Algorithms must learn **view-invariant features** to recognize objects regardless of viewpoint
-
-**Example:** A car viewed from the front looks completely different than from the side or top view.
-
----
-
-#### 2. Illumination Variation
-- Lighting conditions drastically alter brightness, contrast, and color appearance
-- Image intensity depends on: surface reflectance, orientation, light position, shadows
-- Systems must handle illumination changes to maintain consistent recognition
-- **Intrinsic image decomposition** (separating reflectance from illumination) is ill-conditioned
-
-**Example:** A white object in shadow may appear darker than a black object in bright light.
-
----
-
-#### 3. Scale Variation
-- Object appearance changes significantly with distance
-- Size in pixels varies inversely with distance
-- Detail level and texture visibility change at different scales
-- Algorithms require **scale invariance** to detect objects at varying sizes
-
-**Example:** Pedestrian detection must work for people 5 meters away (large) and 100 meters away (tiny).
-
----
-
-#### 4. Intra-Class Variation
-- Objects from the same class can look drastically different
-- Variations include: shape, texture, color, design, articulation
-- Models must generalize across appearance variations while maintaining discriminative power
-
-**Examples:**
-- Chairs: Office chairs, dining chairs, bean bags, stools
-- Cars: Sedans, SUVs, trucks, sports cars, vintage models
-
----
-
-#### 5. Occlusion and Clutter
-- **Occlusion:** Object parts are hidden by other objects (partial occlusion) or by the object itself (self-occlusion)
-- **Clutter:** Background contains irrelevant or overlapping details that create distractors
-- Both hinder recognition by hiding discriminative features and creating incomplete boundaries
-
-**Example:** Recognizing a person in a crowded street scene where multiple people overlap.
-
----
-
-#### 6. Local vs. Global Understanding
-- Algorithms often operate on local patches (keyhole view) but need global context
-- Combining local cues into coherent global understanding is non-trivial
-- The **binding problem**: which features belong to which object?
-
-**Example:** A patch of yellow-black stripes could be a bee, tiger, caution tape, or sports jersey — context resolves ambiguity.
-
----
-
-#### 7. Noise and Measurement Error
-- Real sensors introduce: thermal noise, shot noise, quantization errors, motion blur, compression artifacts
-- Requires probabilistic methods to manage uncertainty: RANSAC, Bayesian inference, robust estimators
+| Challenge | Description & Key Points | Example |
+|-----------|-------------------------|---------|
+| **1. Viewpoint Variation** | • Same object appears very different from different angles<br>• 3D pose changes alter visible surfaces and cause self-occlusion<br>• Requires **view-invariant features** | Car viewed from front looks completely different than from side or top view |
+| **2. Illumination Variation** | • Lighting drastically alters brightness, contrast, and color<br>• Image intensity depends on: surface reflectance, orientation, light position, shadows<br>• **Intrinsic image decomposition** is ill-conditioned | White object in shadow may appear darker than black object in bright light |
+| **3. Scale Variation** | • Object appearance changes significantly with distance<br>• Size in pixels varies inversely with distance<br>• Requires **scale invariance** for detection at varying sizes | Pedestrian detection: person 5m away (large) vs. 100m away (tiny) |
+| **4. Intra-Class Variation** | • Objects from same class look drastically different<br>• Variations: shape, texture, color, design, articulation<br>• Models must generalize while maintaining discriminative power | Chairs: office chairs, dining chairs, bean bags, stools<br>Cars: sedans, SUVs, trucks, sports cars |
+| **5. Occlusion and Clutter** | • **Occlusion:** Parts hidden by other objects or self-occlusion<br>• **Clutter:** Distracting background details<br>• Hides discriminative features, creates incomplete boundaries | Person in crowded street scene with multiple people overlapping |
+| **6. Local vs. Global** | • Algorithms operate on local patches but need global context<br>• Combining local cues into coherent understanding is non-trivial<br>• **Binding problem:** which features belong to which object? | Yellow-black stripes: bee? tiger? caution tape? sports jersey? Context resolves ambiguity |
+| **7. Noise and Errors** | • Real sensors introduce: thermal noise, shot noise, quantization errors, motion blur, compression artifacts<br>• Requires probabilistic methods: RANSAC, Bayesian inference, robust estimators | Camera sensor noise, JPEG compression artifacts |
 
 ---
 
@@ -263,32 +191,14 @@ Computer vision is interdisciplinary — drawing on signal processing, optics, g
 
 ### D. Application Domains
 
-#### 1. Core Recognition Tasks
-- Image classification, object detection, segmentation, tracking, action recognition
-
-#### 2. Autonomous Systems
-- Self-driving cars, drones, SLAM, VIO for AR/robotics
-- Machine inspection, quality control, X-ray inspection
-- Retail: automated checkout, shelf monitoring
-- Construction: site monitoring, structural inspection
-
-#### 3. Imaging & Modeling
-- **OCR** — Text extraction
-- **Computational Photography** — Super-resolution, HDR, denoising
-- **3D Reconstruction** — Photogrammetry, SfM, NeRF
-- **Special Effects** — Motion capture, image generation (GANs, Diffusion Models)
-
-#### 4. Security & Biometrics
-- Face/iris/fingerprint recognition
-- Surveillance: traffic monitoring, intruder detection
-- Deepfake detection
-
-#### 5. Healthcare & Science
-- Medical imaging (MRI, CT, X-ray analysis)
-- Diagnostics support, surgical guidance
-- Microscopy, astronomical imaging, remote sensing
-
-**Emerging:** Agriculture (crop monitoring), sports analytics, environmental monitoring, virtual try-on
+| Domain | Key Applications | Technologies/Methods | Use Cases |
+|--------|------------------|----------------------|-----------|
+| **1. Core Recognition** | Image classification, object detection, segmentation, tracking, action recognition | CNNs, YOLO, Mask R-CNN, Transformers | General computer vision tasks |
+| **2. Autonomous Systems** | • Self-driving cars, drones<br>• SLAM, VIO for AR/robotics<br>• Machine inspection, quality control<br>• Retail automation<br>• Construction monitoring | LiDAR, sensor fusion, path planning, SLAM algorithms | Autonomous vehicles, warehouse robots, automated checkout, site monitoring |
+| **3. Imaging & Modeling** | • OCR (text extraction)<br>• Computational Photography (super-resolution, HDR, denoising)<br>• 3D Reconstruction (photogrammetry, SfM, NeRF)<br>• Special Effects (motion capture, image generation) | Tesseract, GANs, Diffusion Models, MVS, bundle adjustment | Document processing, photo enhancement, 3D modeling, VFX industry |
+| **4. Security & Biometrics** | • Face/iris/fingerprint recognition<br>• Surveillance (traffic, intruder detection)<br>• Deepfake detection | Face recognition networks, CNN classifiers, anomaly detection | Authentication, security systems, fraud prevention |
+| **5. Healthcare & Science** | • Medical imaging (MRI, CT, X-ray analysis)<br>• Diagnostics support<br>• Surgical guidance<br>• Microscopy, astronomical imaging, remote sensing | U-Net, medical image segmentation, image registration | Disease diagnosis, treatment planning, scientific research |
+| **6. Emerging Applications** | Agriculture (crop monitoring), sports analytics, environmental monitoring, virtual try-on | Satellite imagery analysis, pose estimation, AR/VR | Precision farming, performance analysis, climate monitoring, e-commerce |
 
 ---
 
@@ -360,24 +270,20 @@ A digital image is a **sampled and quantized 2D signal**:
 
 ### D. Image Types
 
-#### 1. Grayscale Images
-- Single channel: 0 (black) to 255 (white)
-- 100×100 image = 10,000 values
-- Storage: 1 byte/pixel
+| Type | Channels | Value Range | Storage | Examples | Applications |
+|------|----------|-------------|---------|----------|--------------|
+| **Grayscale** | 1 channel | 0 (black) to 255 (white) | 1 byte/pixel | 100×100 image = 10,000 values | Medical imaging, document scanning, low-bandwidth transmission |
+| **Color (RGB)** | 3 channels (Red, Green, Blue) | Each channel: 0–255 | 3 bytes/pixel | (255,0,0)=Red<br>(0,255,0)=Green<br>(0,0,255)=Blue<br>(255,255,255)=White<br>M×N image = 3 matrices | Photography, video, general computer vision |
+| **HSV/HSL** | Hue, Saturation, Value/Lightness | H: 0-360°<br>S,V: 0-100% | 3 bytes/pixel | Separates color from brightness | Color-based segmentation, object tracking |
+| **YCbCr** | Luma (Y), Chroma Blue, Chroma Red | Y: 16-235<br>Cb,Cr: 16-240 | 3 bytes/pixel | Y contains brightness information | Video compression (JPEG, MPEG), broadcast standards |
+| **Lab** | Lightness, a (green-red), b (blue-yellow) | L: 0-100<br>a,b: -128 to 127 | 3 bytes/pixel | Perceptually uniform color space | Color correction, image editing, accurate color matching |
+| **CMYK** | Cyan, Magenta, Yellow, Black | Each: 0-100% | 4 bytes/pixel | Subtractive color model | Printing, graphic design |
 
-#### 2. Color Images (RGB)
-- Three channels: Red, Green, Blue (each 0–255)
-- Examples: (255,0,0)=Red, (255,255,255)=White
-- M×N color image = 3 matrices
-- Storage: 3 bytes/pixel
-
-#### 3. Alternative Color Spaces
-- **HSV/HSL** — Hue, Saturation, Value (color-based segmentation)
-- **YCbCr** — Luma + Chroma (video compression, JPEG)
-- **Lab** — Perceptually uniform (color correction)
-- **CMYK** — Cyan, Magenta, Yellow, Black (printing)
-
-**Why Different Spaces?** Separate brightness from color, perceptual uniformity, compression efficiency, task-specific advantages.
+**Why Different Color Spaces?**
+- **Illumination invariance:** Separate brightness from color (YCbCr, HSV)
+- **Perceptual uniformity:** Equal distances = equal perceptual differences (Lab)
+- **Compression efficiency:** Exploit human visual system (YCbCr)
+- **Task-specific advantages:** Skin detection (YCbCr), color tracking (HSV), printing (CMYK)
 
 ---
 
@@ -400,22 +306,13 @@ A digital image is a **sampled and quantized 2D signal**:
 
 Effective vision systems combine multiple processing strategies:
 
-**1. Bottom-Up (Data-Driven)**
-- **Flow:** Pixels → Edges → Regions → Objects → Scene
-- **Advantage:** General purpose, discovers unexpected patterns
-- **Limitation:** Sensitive to noise, computationally expensive
-- **Example:** Edge detection → contour grouping → shape recognition
+| Paradigm | Flow/Approach | Advantages | Limitations | Example |
+|----------|---------------|------------|-------------|---------|
+| **1. Bottom-Up (Data-Driven)** | Pixels → Edges → Regions → Objects → Scene | • General purpose<br>• Discovers unexpected patterns<br>• No prior assumptions needed | • Sensitive to noise and clutter<br>• Computationally expensive<br>• May produce spurious interpretations | Edge detection → contour grouping → shape recognition |
+| **2. Top-Down (Model-Based)** | Scene Model → Expected Objects → Predicted Features → Verification | • Efficient (guided search)<br>• Resolves ambiguity with priors<br>• Handles missing/occluded data | • Limited by model accuracy<br>• May miss unexpected objects<br>• Requires good initialization | Using 3D models to verify object hypotheses, template matching |
+| **3. Cooperative (Hybrid)** | Detect features (bottom-up) → generate hypotheses → verify with models (top-down) → refine → iterate | • More robust than either alone<br>• Leverages strengths of both<br>• Handles complex real-world scenarios | • More complex to implement<br>• Requires careful integration | Modern deep learning: Feedforward (bottom-up) + Attention (top-down) + Recurrent refinement |
 
-**2. Top-Down (Model-Based)**
-- **Flow:** Scene Model → Expected Objects → Predicted Features → Verification
-- **Advantage:** Efficient, resolves ambiguity with priors
-- **Limitation:** Limited by model accuracy, may miss unexpected objects
-- **Example:** Using 3D models to verify object hypotheses
-
-**3. Cooperative (Hybrid)**
-- **Approach:** Combines both: detect features (bottom-up) → generate hypotheses → verify with models (top-down) → refine → iterate
-- **Modern deep learning:** Feedforward (bottom-up) + Attention (top-down) + Recurrent refinement
-- **Advantage:** More robust than either approach alone
+**Key Insight:** Practical systems integrate bottom-up feature extraction with top-down model-based guidance through iterative refinement loops.
 
 ---
 
