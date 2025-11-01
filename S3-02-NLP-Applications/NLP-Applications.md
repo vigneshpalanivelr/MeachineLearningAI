@@ -26,6 +26,8 @@
 | **Development** | Jupyter | https://jupyter.org/ | Interactive computing and notebook environment |
 | **Grammar Tools** | LanguageTool | https://languagetool.org/ | Open-source grammar and spell checker |
 | **Textbooks** | Speech and Language Processing | https://web.stanford.edu/~jurafsky/slp3/ | Jurafsky & Martin (T1) - foundational NLP textbook |
+| **Document Parsing & Preprocessing** | Unstructured.io | https://unstructured.io/ | Library for parsing PDFs, HTML, Word, and other documents into structured data |
+
 
 ---
 
