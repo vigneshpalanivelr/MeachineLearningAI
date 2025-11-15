@@ -1,4 +1,4 @@
-# MLOps Course - Complete Study Guide
+# MLOps Course - Challenges in ML Deployment | DevOps vs MLOps
 
 **Course**: MTech AI/ML - BITS Pilani WILP
 **Author**: Amit Kumar

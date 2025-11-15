@@ -1,4 +1,4 @@
-# MLOps Course - CS1: Introduction to MLOps (Enhanced Edition)
+# MLOps Course - CS1: Introduction to MLOps
 
 **Course**: MTech AI/ML - BITS Pilani WILP
 **Author**: Amit Kumar
