@@ -7,6 +7,7 @@
 
 - [CS2 – Digital Image Fundamentals](#cs2--digital-image-fundamentals)
   - [Table of Contents](#table-of-contents)
+  - [Quick Reference Links (CS0)](#quick-reference-links-cs0)
   - [2.1 Image Formation \& Representation](#21-image-formation--representation)
     - [Pinhole Camera Model](#pinhole-camera-model)
     - [Image Formation Model](#image-formation-model)
@@ -44,6 +45,20 @@
     - [Practical Wisdom](#practical-wisdom)
 
 ---
+
+## Quick Reference Links (CS0)
+
+| Category | Resource | Description |
+|----------|----------|-------------|
+| https://www.researchgate.net/figure/Original-Secret-Image-24-bit-Color_fig5_220333988
+| https://zzz.zoomquilt2.com/
+| https://colab.research.google.com/github/DhrubaAdhikary/Learn_CV_with_Dhruv/blob/master/CV2_Digital_Image_Fundamentals_Exercises.ipynb#scrollTo=c251c6c2
+| https://www.geeksforgeeks.org/python/log-transformation-of-an-image-using-python-and-opencv/
+| https://deeplizard.com/resource/pavq7noze2
+https://www.cs.unc.edu/Research/Image/MIDAG/pubs/papers/Adaptive%20Histogram%20Equalization%20and%20Its%20Variations.pdf
+
+---
+
 
 ## 2.1 Image Formation & Representation
 
