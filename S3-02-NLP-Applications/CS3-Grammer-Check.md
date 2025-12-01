@@ -1,8 +1,8 @@
-# Grammar Check and Spell Correction - Complete Study Guide with Calculations
+# Grammar Check and Spell Correction
 
 ## Table of Contents
 
-- [Grammar Check and Spell Correction - Complete Study Guide with Calculations](#grammar-check-and-spell-correction---complete-study-guide-with-calculations)
+- [Grammar Check and Spell Correction](#grammar-check-and-spell-correction)
   - [Table of Contents](#table-of-contents)
   - [Quick Links](#quick-links)
   - [1. Introduction to Grammatical Errors](#1-introduction-to-grammatical-errors)
