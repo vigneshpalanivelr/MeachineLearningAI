@@ -79,6 +79,20 @@ After completing CS3, you should be able to:
   - CS1: Computer Vision Introduction
   - CS2: Image Formation, Sampling, Quantization
 
+https://distill.pub/2017/feature-visualization/
+https://hannibunny.github.io/mlbook/neuralnetworks/convolutionDemos.html
+https://deeplizard.com/resource/pavq7noze2
+https://www.sciencedirect.com/topics/computer-science/histogram-equalization
+https://iopscience.iop.org/article/10.1088/1742-6596/1019/1/012026/pdf
+https://www.researchgate.net/publication/258566696_A_Comparative_Study_of_Histogram_Equalization_Based_Image_Enhancement_Techniques_for_Brightness_Preservation_and_Contrast_Enhancement
+https://www.cs.unc.edu/Research/Image/MIDAG/pubs/papers/Adaptive%20Histogram%20Equalization%20and%20Its%20Variations.pdf
+http://docs.opencv.org/3.4/d4/d1b/tutorial_histogram_equalization.html
+https://www.google.com/search?q=box+filter+latest+papers+in+manufacturing+industry&sca_esv=adcc7a3865baaa50&rlz=1C5GCEM_enIN1183IN1183&ei=tesOaaDzJJOq4-EPo_jm4Ac&oq=BOx+FIlter+Latest+Papers+in+man&gs_lp=Egxnd3Mtd2l6LXNlcnAiH0JPeCBGSWx0ZXIgTGF0ZXN0IFBhcGVycyBpbiBtYW4qAggCMgUQIRigATIFECEYoAEyBRAhGKABMgQQIRgVSNY3UN8PWOYfcAR4AJABAJgBsgGgAe8JqgEEMC4xMLgBAcgBAPgBAZgCDaAC7gjCAg4QABiABBiwAxiGAxiKBcICCBAAGLADGO8FwgILEAAYgAQYsAMYogTCAgcQIRigARgKmAMAiAYBkAYIkgcDNC45oAe-IrIHAzAuObgH4gjCBwUzLjguMsgHGQ&sclient=gws-wiz-serp
+https://github.com/DhrubaAdhikary/Learn_CV_with_Dhruv/blob/master/CV_3_Digital_Image_Processing_Exercises.ipynb
+https://www.cs.umd.edu/~djacobs/CMSC426/Convolution.pdf
+https://mycolor.space/?hex=%23845EC2&sub=1
+https://zrruziev.medium.com/rgb-vs-bgr-relationships-between-color-depth-pixel-and-bytes-7821fa9c6320
+
 ---
 
 ## Quick Revision Checklist
