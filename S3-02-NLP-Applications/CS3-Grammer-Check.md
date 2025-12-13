@@ -9,7 +9,7 @@
     - [1.1 Definition and Classification](#11-definition-and-classification)
     - [1.2 Syntax vs Usage Errors](#12-syntax-vs-usage-errors)
   - [2. Error Type Distribution and Analysis](#2-error-type-distribution-and-analysis)
-    - [2.1 Complete Error Distribution Table](#21-complete-error-distribution-table)
+    - [2.1 Complete Error Distribution](#21-complete-error-distribution)
     - [2.2 Detailed Analysis of Major Error Types](#22-detailed-analysis-of-major-error-types)
       - [2.2.1 Preposition Errors (13%)](#221-preposition-errors-13)
       - [2.2.2 Determiner Errors (12%)](#222-determiner-errors-12)
@@ -138,26 +138,7 @@ Grammatical Errors
 
 ## 2. Error Type Distribution and Analysis
 
-### 2.1 Complete Error Distribution Table
-
-| Error Type | Percentage | Difficulty | Detection Method |
-|------------|-----------|------------|------------------|
-| Content Word Choice | 20% | Very High | Statistical/LM |
-| Verbal Morphology | 14% | High | Rules + ML |
-| Prepositions | 13% | Very High | ML/LM |
-| Determiners | 12% | High | ML/LM |
-| Punctuation | 12% | Medium | Rules |
-| Derivational Morphology | 5% | Medium | Rules + Dictionary |
-| Pronoun | 4% | Medium | Rules + Discourse |
-| Agreement | 4% | Low-Medium | Rules |
-| Run-on Sentences | 4% | Medium | Parsing |
-| Word Order | 4% | Medium | Parsing |
-| Real Word Spelling | 2% | High | Context-aware |
-| Other | 6% | Varies | Mixed |
-| **Total** | **100%** | - | - |
-
-**Visual Distribution:**
-
+### 2.1 Complete Error Distribution
 ```
 Content Word Choice     ████████████████████ 20%
 Verbal Morphology       ██████████████ 14%
@@ -633,26 +614,26 @@ Sentence: "I often work ___ home"
 Candidates: {at, in, from, on, with}
 
 Corpus Statistics:
-| Bigram | Count | Total "work" | Probability |
-|--------|-------|--------------|-------------|
-| "work at" | 30,000 | 100,000 | 0.30 |
-| "work in" | 5,000 | 100,000 | 0.05 |
-| "work from" | 25,000 | 100,000 | 0.25 |
-| "work on" | 1,000 | 100,000 | 0.01 |
-| "work with" | 1,000 | 100,000 | 0.01 |
+| Bigram      | Count  | Total "work" | Probability |
+|-------------|--------|--------------|-------------|
+| "work at"   | 30,000 | 100,000      | 0.30        |
+| "work in"   | 5,000  | 100,000      | 0.05        |
+| "work from" | 25,000 | 100,000      | 0.25        |
+| "work on"   | 1,000  | 100,000      | 0.01        |
+| "work with" | 1,000  | 100,000      | 0.01        |
 
 Forward probability: P(prep | "work")
 
-| Trigram | Count | Total "work at" | Probability |
-|---------|-------|-----------------|-------------|
-| "work at home" | 28,000 | 30,000 | 0.933 |
-| "work from home" | 24,000 | 25,000 | 0.960 |
-| "work in home" | 100 | 5,000 | 0.020 |
+| Trigram          | Count  | Total "work at" | Probability |
+|------------------|--------|-----------------|-------------|
+| "work at home"   | 28,000 | 30,000          | 0.933       |
+| "work from home" | 24,000 | 25,000          | 0.960       |
+| "work in home"   | 100    | 5,000           | 0.020       |
 
 Combined probability (bigram × trigram):
-P("at") = 0.30 × 0.933 = 0.280
+P("at")   = 0.30 × 0.933 = 0.280
 P("from") = 0.25 × 0.960 = 0.240
-P("in") = 0.05 × 0.020 = 0.001
+P("in")   = 0.05 × 0.020 = 0.001
 
 Decision: Select "at" (highest probability)
 
@@ -761,16 +742,16 @@ P("I eated lunch yesterday") = 0.000001
 
 Step 3: Calculate posterior probability
 
-P("ate" | "eated") ∝ 0.05 × 0.0003 = 1.5 × 10⁻⁵
-P("eat" | "eated") ∝ 0.08 × 0.00001 = 8.0 × 10⁻⁷
-P("eated" | "eated") ∝ 1.0 × 0.000001 = 1.0 × 10⁻⁶
+P("ate"   | "eated") ∝ 0.05 × 0.0003   = 1.5 × 10⁻⁵
+P("eat"   | "eated") ∝ 0.08 × 0.00001  = 8.0 × 10⁻⁷
+P("eated" | "eated") ∝ 1.0  × 0.000001 = 1.0 × 10⁻⁶
 
 Step 4: Normalize probabilities
 
 Total = 1.5×10⁻⁵ + 8.0×10⁻⁷ + 1.0×10⁻⁶ = 1.68×10⁻⁵
 
-P("ate" | "eated") = 1.5×10⁻⁵ / 1.68×10⁻⁵ = 0.893
-P("eat" | "eated") = 8.0×10⁻⁷ / 1.68×10⁻⁵ = 0.048
+P("ate"   | "eated") = 1.5×10⁻⁵ / 1.68×10⁻⁵ = 0.893
+P("eat"   | "eated") = 8.0×10⁻⁷ / 1.68×10⁻⁵ = 0.048
 P("eated" | "eated") = 1.0×10⁻⁶ / 1.68×10⁻⁵ = 0.059
 
 Decision: Select "ate" (highest probability)
@@ -802,12 +783,12 @@ Confidence: 0.893
 
 **Example Scenarios:**
 
-| Sentence | Actual | System | Result |
-|----------|--------|--------|--------|
-| "I am going for walk" | ERROR (missing "a") | Flags error | TP ✓😊 |
-| "I am going for a walk" | CORRECT | No flag | TN ✓😊 |
-| "I am going for a walk" | CORRECT | Flags error | FP ✗😞 |
-| "I am going for walk" | ERROR | No flag | FN ✗😞 |
+| Sentence                | Actual              | System      | Result |
+|-------------------------|---------------------|-------------|--------|
+| "I am going for walk"   | ERROR (missing "a") | Flags error | TP ✓   |
+| "I am going for a walk" | CORRECT             | No flag     | TN ✓   |
+| "I am going for a walk" | CORRECT             | Flags error | FP ✗   |
+| "I am going for walk"   | ERROR               | No flag     | FN ✗   |
 
 ### 4.2 Metric Formulas and Examples
 
@@ -839,9 +820,9 @@ Confidence: 0.893
 
 ```
 Test Set: 500 sentences
-- True Positives (TP) = 80 (correctly flagged errors)
+- True Positives (TP)  = 80 (correctly flagged errors)
 - False Positives (FP) = 20 (incorrectly flagged)
-- True Negatives (TN) = 350 (correctly identified as correct)
+- True Negatives (TN)  = 350 (correctly identified as correct)
 - False Negatives (FN) = 50 (missed errors)
 
 Verify: TP + FP + TN + FN = 80 + 20 + 350 + 50 = 500 ✓
@@ -852,9 +833,9 @@ Verify: TP + FP + TN + FN = 80 + 20 + 350 + 50 = 500 ✓
 ```
 Step 1: Calculate Precision
 Precision = TP / (TP + FP)
-         = 80 / (80 + 20)
-         = 80 / 100
-         = 0.80 or 80%
+          = 80 / (80 + 20)
+          = 80 / 100
+          = 0.80 or 80%
 
 Interpretation: 80% of flagged errors were real errors
 
@@ -898,14 +879,14 @@ Interpretation: Missed 38.46% of actual errors
 
 **Summary Table:**
 
-| Metric | Formula | Value | Interpretation |
-|--------|---------|-------|----------------|
-| Precision | TP/(TP+FP) | 80% | High reliability when flagging |
-| Recall | TP/(TP+FN) | 61.54% | Moderate coverage |
-| F-score | 2PR/(P+R) | 69.56% | Balanced performance |
-| Accuracy | (TP+TN)/Total | 86% | Good overall |
-| FPR | FP/(FP+TN) | 5.41% | Low false alarms |
-| FNR | FN/(FN+TP) | 38.46% | Significant misses |
+| Metric    | Formula       | Value  | Interpretation                 |
+|-----------|---------------|--------|--------------------------------|
+| Precision | TP/(TP+FP)    | 80%    | High reliability when flagging |
+| Recall    | TP/(TP+FN)    | 61.54% | Moderate coverage              |
+| F-score   | 2PR/(P+R)     | 69.56% | Balanced performance           |
+| Accuracy  | (TP+TN)/Total | 86%    | Good overall                   |
+| FPR       | FP/(FP+TN)    | 5.41%  | Low false alarms               |
+| FNR       | FN/(FN+TP)    | 38.46% | Significant misses             |
 
 #### Example 2: Comprehensive Evaluation
 
@@ -976,13 +957,13 @@ Miss Rate = 1 - Recall = 1 - 0.70 = 0.30 = 30%
 
 **Performance Assessment:**
 
-| Aspect | Score | Evaluation |
-|--------|-------|------------|
-| Precision | 82.35% | Good - Low false alarms |
-| Recall | 70% | Moderate - Missing 30% of errors |
-| F-score | 75.68% | Acceptable balance |
-| Accuracy | 90.91% | Very good overall |
-| **Recommendation** | - | Improve recall (reduce FN) |
+| Aspect    | Score  | Evaluation                       |
+|-----------|--------|----------------------------------|
+| Precision | 82.35% | Good - Low false alarms          |
+| Recall    | 70%    | Moderate - Missing 30% of errors |
+| F-score   | 75.68% | Acceptable balance               |
+| Accuracy  | 90.91% | Very good overall                |
+| **Recommendation** | - | Improve recall (reduce FN)   |
 
 #### Example 3: Comparing Two Systems
 
@@ -1018,14 +999,14 @@ Accuracy_B = (150 + 360) / 600 = 510/600 = 0.85 = 85%
 
 **Comparison Table:**
 
-| Metric | System A (Rule) | System B (ML) | Winner |
-|--------|-----------------|---------------|---------|
-| Precision | 90.91% | 75% | System A |
-| Recall | 52.63% | 78.95% | System B |
-| F-score | 66.67% | 76.92% | System B |
-| Accuracy | 83.33% | 85% | System B |
-| False Positives | 10 | 50 | System A |
-| False Negatives | 90 | 40 | System B |
+| Metric          | System A (Rule) | System B (ML) | Winner   |
+|-----------------|-----------------|---------------|----------|
+| Precision       | 90.91%          | 75%           | System A |
+| Recall          | 52.63%          | 78.95%        | System B |
+| F-score         | 66.67%          | 76.92%        | System B |
+| Accuracy        | 83.33%          | 85%           | System B |
+| False Positives | 10              | 50            | System A |
+| False Negatives | 90              | 40            | System B |
 
 **Trade-off Analysis:**
 
@@ -1065,13 +1046,13 @@ P(w₁, w₂, ..., wₙ) = P(w₁) × P(w₂) × ... × P(wₙ)
 
 **Example Corpus Statistics:**
 
-| Word | Count | Total Words | P(word) |
-|------|-------|-------------|---------|
-| the | 500,000 | 10,000,000 | 0.05 |
-| cat | 10,000 | 10,000,000 | 0.001 |
-| sat | 8,000 | 10,000,000 | 0.0008 |
-| on | 300,000 | 10,000,000 | 0.03 |
-| mat | 2,000 | 10,000,000 | 0.0002 |
+| Word | Count   | Total Words | P(word) |
+|------|---------|-------------|---------|
+| the  | 500,000 | 10,000,000  | 0.05    |
+| cat  | 10,000  | 10,000,000  | 0.001   |
+| sat  | 8,000   | 10,000,000  | 0.0008  |
+| on   | 300,000 | 10,000,000  | 0.03    |
+| mat  | 2,000   | 10,000,000  | 0.0002  |
 
 **Calculation:**
 
