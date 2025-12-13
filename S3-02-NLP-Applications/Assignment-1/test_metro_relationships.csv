@@ -1,0 +1,11 @@
+source,target,line,distance
+New Delhi Station,Connaught Place,Airport Express,2.5
+Connaught Place,Aerocity,Airport Express,15.3
+Aerocity,Terminal 3 Airport,Airport Express,3.2
+Gurgaon Sector 21,Sikanderpur Metro,Rapid Metro,1.8
+Sikanderpur Metro,Phase 1 Cyber City,Rapid Metro,2.1
+Phase 1 Cyber City,Phase 2 Cyber City,Rapid Metro,1.5
+Phase 2 Cyber City,Phase 3 Cyber City,Rapid Metro,1.3
+Noida City Center,Noida Sector 34,Blue Line Extension,2.7
+Noida Sector 34,Noida Sector 52,Blue Line Extension,3.1
+Noida Sector 52,Noida Sector 61,Blue Line Extension,2.9
