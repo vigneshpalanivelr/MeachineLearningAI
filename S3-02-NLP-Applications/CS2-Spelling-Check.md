@@ -2451,46 +2451,25 @@ Rule-based methods rely on **predefined rules and dictionaries** to identify and
 2. **Spelling Rules**: Language-specific patterns
 3. **Exception Lists**: Irregular forms
 
-#### How They Work
-
-**Detection**:
-```python
-def check_spelling_rule_based(word, dictionary, rules):
-    # Step 1: Dictionary lookup
-    if word in dictionary:
-        return True
-
-    # Step 2: Check common patterns
-    for rule in rules:
-        if rule.matches(word):
-            return rule.suggest_correction(word)
-
-    # Step 3: Check exceptions
-    if word in exception_list:
-        return handle_exception(word)
-
-    return False  # Not valid
-```
-
 **Example Rules**:
 - `i before e except after c` → "receive" not "recieve"
 - Double consonants before -ing → "running" not "runing"
 - Drop silent 'e' before -ing → "write" → "writing"
 
 #### Advantages
-
-✅ **Easy to implement**: Clear, deterministic logic
-✅ **Fast**: Simple lookups and pattern matching
-✅ **Transparent**: Rules are interpretable
-✅ **No training data needed**: Hand-crafted rules
+<br>
+✅ **Easy to implement** : Clear, deterministic logic<br>
+✅ **Fast**: Simple lookups and pattern matching<br>
+✅ **Transparent**: Rules are interpretable<br>
+✅ **No training data needed**: Hand-crafted rules<br>
 
 #### Limitations
 
-❌ **Cannot handle new words**: Slang, proper nouns, neologisms
-❌ **Manual maintenance**: Rules must be updated by experts
-❌ **Limited context**: Cannot handle ambiguous errors
-❌ **Exception-heavy**: Many irregular cases require special handling
-❌ **Language-specific**: Rules don't transfer across languages
+❌ **Cannot handle new words**: Slang, proper nouns, neologisms<br>
+❌ **Manual maintenance**: Rules must be updated by experts<br>
+❌ **Limited context**: Cannot handle ambiguous errors<br>
+❌ **Exception-heavy**: Many irregular cases require special handling<br>
+❌ **Language-specific**: Rules don't transfer across languages<br>
 
 #### Real-World Example
 
@@ -2527,47 +2506,22 @@ $$\hat{w} = \underset{w}{\text{argmax}} \; P(x \mid w) \cdot P(w)$$
 Use surrounding words to estimate probability:
 $$P(w_i \mid w_{i-2}, w_{i-1})$$
 
-#### Example: Statistical Spell Checker
-
-```python
-class StatisticalSpellChecker:
-    def __init__(self, corpus):
-        self.word_counts = self.build_language_model(corpus)
-        self.total_words = sum(self.word_counts.values())
-
-    def P(self, word):
-        """Probability of word in language"""
-        return self.word_counts[word] / self.total_words
-
-    def correction(self, word):
-        """Most probable spelling correction"""
-        candidates = self.candidates(word)
-        return max(candidates, key=self.P)
-
-    def candidates(self, word):
-        """Generate candidate corrections"""
-        return (self.known([word]) or
-                self.known(self.edits1(word)) or
-                self.known(self.edits2(word)) or
-                [word])
-```
-
 #### Advantages
 
-✅ **Flexible**: Adapts to different domains and languages
-✅ **Scalable**: Can handle large vocabularies
-✅ **Handles variations**: Learns from actual usage
-✅ **No manual rules**: Learns patterns automatically
-✅ **Data-driven**: Improves with more data
+✅ **Flexible**: Adapts to different domains and languages<br>
+✅ **Scalable**: Can handle large vocabularies<br>
+✅ **Handles variations**: Learns from actual usage<br>
+✅ **No manual rules**: Learns patterns automatically<br>
+✅ **Data-driven**: Improves with more data<br>
 
 #### Limitations
 
-❌ **Requires large corpora**: Needs substantial training data
-❌ **Computationally expensive**: Training and inference can be slow
-❌ **Noisy data problems**: Learns errors if training data has mistakes
-❌ **Bias issues**: Reflects biases in training corpus
-❌ **Sparse data**: Rare words have unreliable probabilities
-❌ **Limited interpretability**: Hard to understand why a correction was made
+❌ **Requires large corpora**: Needs substantial training data<br>
+❌ **Computationally expensive**: Training and inference can be slow<br>
+❌ **Noisy data problems**: Learns errors if training data has mistakes<br>
+❌ **Bias issues**: Reflects biases in training corpus<br>
+❌ **Sparse data**: Rare words have unreliable probabilities<br>
+❌ **Limited interpretability**: Hard to understand why a correction was made<br>
 
 ---
 
@@ -2578,8 +2532,6 @@ class StatisticalSpellChecker:
 Neural network methods learn complex patterns from data to perform **end-to-end spelling correction**.
 
 **Key Advantage**: Can capture long-range dependencies and semantic context that statistical methods miss.
-
----
 
 #### 3.3.1 Sequence-to-Sequence (Seq2Seq) Models
 
@@ -2739,11 +2691,11 @@ Input: [CLS] I recieved the package [SEP]
    - Predict top-k replacements
    - Rank by confidence
 
-**Advantages**:
-✅ Deep contextual understanding
-✅ Handles complex, multi-word contexts
-✅ State-of-the-art accuracy
-✅ Transfer learning from pre-training
+**Advantages**:<br>
+✅ Deep contextual understanding<br>
+✅ Handles complex, multi-word contexts<br>
+✅ State-of-the-art accuracy<br>
+✅ Transfer learning from pre-training<br>
 
 **Example Models**:
 - **BERT**: Original bidirectional transformer
@@ -2836,20 +2788,6 @@ Decoder: "I received the package"
 **3. BART**
 - Denoising autoencoder
 - Excellent for error correction tasks
-
-**Usage Example** (Hugging Face):
-```python
-from transformers import pipeline
-
-# Load pre-trained spell checker
-corrector = pipeline("text2text-generation",
-                     model="oliverguhr/spelling-correction-english-base")
-
-# Correct text
-text = "I recieved the package yesteday"
-corrected = corrector(text, max_length=128)[0]['generated_text']
-print(corrected)  # "I received the package yesterday"
-```
 
 **Advantages**:
 - Ready-to-use models
@@ -3124,11 +3062,11 @@ Input: `"I went too the store"`
 
 #### Advantages of Hybrid Approach
 
-✅ **Best of all worlds**: Speed + accuracy + flexibility
-✅ **Graceful degradation**: Falls back to simpler methods if complex ones fail
-✅ **Interpretable + Powerful**: Rules explain common cases, neural handles complex ones
-✅ **Efficient**: Rules handle 80% of cases quickly, ML handles remaining 20%
-✅ **Maintainable**: Rules can be updated without retraining models
+✅ **Best of all worlds**: Speed + accuracy + flexibility<br>
+✅ **Graceful degradation**: Falls back to simpler methods if complex ones fail<br>
+✅ **Interpretable + Powerful**: Rules explain common cases, neural handles complex ones<br>
+✅ **Efficient**: Rules handle 80% of cases quickly, ML handles remaining 20%<br>
+✅ **Maintainable**: Rules can be updated without retraining models<br>
 
 ---
 
