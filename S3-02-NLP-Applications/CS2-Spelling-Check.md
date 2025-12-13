@@ -2440,11 +2440,33 @@ Positive examples (weather):
 
 ## 3. Modern Approaches to Spelling Correction
 
+### Overview
+
+Modern spelling correction methods extend classical dictionary lookup and the noisy channel model by incorporating linguistic rules, statistical learning, and deep neural representations. The goal is to improve accuracy, handle context-sensitive (real-word) errors, and scale across domains and languages.
+
+These approaches mainly differ in:
+
+* How language knowledge is represented
+* How spelling errors are modeled
+* How much contextual information is used
+
+The four major modern approaches are: rule-based, statistical, deep learning–based, and large language model (LLM)–based methods.
+
+---
+
 ### 3.1 Rule-Based Methods
 
-#### Overview
+Definition:
+Rule-based spelling correction relies on manually designed linguistic rules and dictionaries to identify and correct spelling errors.
 
-Rule-based methods rely on **predefined rules and dictionaries** to identify and correct spelling errors.
+Brief Description:
+A word is flagged as an error if it violates predefined rules, such as not appearing in a dictionary or breaking valid spelling patterns. Corrections are suggested using handcrafted rules, morphological analysis, affix stripping, or known confusion sets.
+
+Key Characteristics:
+
+* Deterministic and fast
+* Easy to interpret and debug
+* No training data required
 
 **Core Components**:
 1. **Dictionary**: List of valid words
@@ -2483,9 +2505,21 @@ Rule-based methods rely on **predefined rules and dictionaries** to identify and
 
 ### 3.2 Statistical Methods
 
-#### Overview
+Definition:
+Statistical spelling correction uses probabilistic models learned from large text corpora to detect and correct spelling errors.
 
-Statistical methods use **probabilistic models** and **machine learning** to learn from large text corpora and generate corrections based on likelihood.
+Brief Description:
+These methods treat spelling correction as a probabilistic inference problem. The most common formulation is the Noisy Channel Model, which selects the correction that maximizes:
+
+P(correct word | observed error) proportional to P(error | word) * P(word)
+
+Language models (unigram, bigram, trigram) estimate word likelihoods, while error models estimate typing or spelling error probabilities.
+
+Key Characteristics:
+
+* Data-driven and adaptable
+* Can rank multiple candidate corrections
+* Can incorporate limited context using n-grams
 
 **Core Idea**: Model the probability of words and sequences, then select the most likely correction.
 
@@ -2527,9 +2561,28 @@ $$P(w_i \mid w_{i-2}, w_{i-1})$$
 
 ### 3.3 Deep Learning Approaches
 
-#### Overview
+Definition:
+Deep learning–based spelling correction uses neural networks to learn spelling error patterns directly from data.
 
-Neural network methods learn complex patterns from data to perform **end-to-end spelling correction**.
+Brief Description:
+These approaches frame spelling correction as a sequence-to-sequence task at the character or word level. Models such as LSTM, Bi-LSTM, and Transformer architectures learn mappings from erroneous text to corrected text using labeled datasets.
+
+Key Characteristics:
+
+* Handles multiple and complex errors
+* Learns contextual and semantic patterns
+* Adaptable across languages and domains
+
+Limitations:
+
+* Requires large labeled datasets
+* Computationally expensive
+* Limited interpretability
+
+Examples:
+
+* Bi-LSTM spell correction models
+* Transformer-based correction systems
 
 **Key Advantage**: Can capture long-range dependencies and semantic context that statistical methods miss.
 
@@ -2707,11 +2760,28 @@ Input: [CLS] I recieved the package [SEP]
 
 ### 3.4 LLM-Based Spell Checkers
 
-#### Overview
+Definition:
+LLM-based spelling correction uses large pre-trained language models to detect and correct spelling errors using deep contextual understanding.
 
-Large Language Models (LLMs) like GPT, T5, and their variants can perform spell checking as a **text generation** or **text-to-text transformation** task.
+Brief Description:
+Large Language Models (LLMs) such as GPT, T5, and BERT-based models implicitly learn spelling rules, word usage frequencies, and context during pretraining. Spelling correction becomes part of a broader text understanding and generation task.
 
----
+Key Characteristics:
+
+* Strong context awareness
+* Can jointly correct spelling, grammar, and style
+* Minimal task-specific feature engineering
+
+Limitations:
+
+* High computational cost
+* Reduced transparency in decision-making
+* Possibility of hallucinated or over-corrections
+
+Examples:
+
+* GPT-based text correction
+* T5 fine-tuned for grammatical error correction
 
 #### 3.4.1 GPT for Contextual Correction
 
