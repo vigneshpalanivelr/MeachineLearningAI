@@ -112,7 +112,7 @@ graph TD
 
 ### Overview
 
-**🎯 Cross-Reference**: This section expands on **CS1 Section 1.2.2 (ML Problem Framing)** and **CS1 Section 1.2.4 (Model Development)** with practical implementation details.
+**Cross-Reference**: This section expands on **CS1 Section 1.2.2 (ML Problem Framing)** and **CS1 Section 1.2.4 (Model Development)** with practical implementation details.
 
 Model development encompasses the entire journey from business problem to trained model, including:
 
@@ -1098,7 +1098,7 @@ Data Scientists ←────[Communication Gap]────→ DevOps Team
      │                                              │
      └──────────────────┬───────────────────────────┘
                         │
-                   ⚠️ Challenge:
+                   Challenge:
                 Information exchange &
                 effective collaboration
                         │
@@ -1315,13 +1315,13 @@ Could affect business decisions!
 **Trade-offs of Portable Formats:**
 
 ```
-✅ Pros:
+Pros:
 ├── Reduced dependency on specific libraries
 ├── Improved portability across systems
 ├── Simplified deployment
 └── Better interoperability
 
-❌ Cons:
+Cons:
 ├── Limited algorithm support
 ├── Potential behavior differences vs original
 ├── Loss of some advanced features
@@ -1498,8 +1498,8 @@ Prediction: Loan Application REJECTED
 
 Black Box Output:
 └── Approval Probability: 0.23 (below 0.5 threshold)
-    ├── ❌ Not helpful for customer
-    └── ❌ Cannot improve application
+    ├── Not helpful for customer
+    └── Cannot improve application
 
 With Explainability (SHAP):
 └── Rejection Factors:
@@ -1807,7 +1807,7 @@ Production Data (Nov 2024):
 │  │          █ █ █ █ █         │      │
 │  └────────────────────────────┘      │
 │  Mean: 42, Std: 12                   │
-│  ⚠️  Drift Detected! (KS test p<0.01) │
+│   Drift Detected! (KS test p<0.01) │
 └──────────────────────────────────────┘
 
 Action Required:
@@ -1880,13 +1880,13 @@ graph TD
 │  │                             │  ╲ 85%     │      │
 │  │                             │   ─────    │      │
 │  └──────────────────────────────────────────┘      │
-│  ⚠️  Performance degraded 7% in 2 weeks!            │
+│   Performance degraded 7% in 2 weeks!            │
 │                                                     │
 │  Data Drift Detection                               │
 │  Feature               | KS Statistic | Alert       │
 │  ─────────────────────────────────────────────      │
 │  Age                   |   0.08       | ✓ OK        │
-│  Tenure_Months         |   0.15       | ⚠️  Warning │
+│  Tenure_Months         |   0.15       |  Warning │
 │  Monthly_Charges       |   0.25       | 🚨 DRIFT!   │
 │  Total_Services        |   0.06       | ✓ OK        │
 │                                                     │
@@ -1895,7 +1895,7 @@ graph TD
 │  │ Training: 30% churn, 70% no churn        │      │
 │  │ Current:  45% churn, 55% no churn        │      │
 │  └──────────────────────────────────────────┘      │
-│  ⚠️  Shift in prediction distribution detected      │
+│   Shift in prediction distribution detected      │
 │                                                     │
 │  Recommendation:                                    │
 │  1. Investigate Monthly_Charges drift               │
@@ -3005,7 +3005,7 @@ Approvals:
 │  ├── Risk assessment accepted                   │
 │  └── Approval: Chief Data Officer ✓             │
 │                    ↓                            │
-│         ✅ APPROVED FOR PRODUCTION               │
+│         APPROVED FOR PRODUCTION               │
 │                                                 │
 └─────────────────────────────────────────────────┘
 ```

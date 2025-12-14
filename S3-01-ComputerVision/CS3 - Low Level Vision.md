@@ -1055,7 +1055,7 @@ Result: Center pixel = 115 (average of neighborhood)
 ****Not realistic** - closer pixels should have more influence
 ****Can create blocky artifacts** in some cases
 
-💡 **Solution:** Use **Gaussian filter** instead!
+**Solution:** Use **Gaussian filter** instead!
 
 ---
 

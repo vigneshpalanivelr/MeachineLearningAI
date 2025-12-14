@@ -391,10 +391,10 @@ graph TD
 ### MLOps: Emerging and Immature
 
 **The Harsh Reality:**
-- ❌ **87% of ML projects never go live**
-- ❌ Only 13% reach production
-- ❌ No standardized toolchain
-- ❌ Complex, fragmented landscape
+- **87% of ML projects never go live**
+- Only 13% reach production
+- No standardized toolchain
+- Complex, fragmented landscape
 
 ---
 
@@ -1626,18 +1626,18 @@ Attack:
 **Memorize These Numbers:**
 
 **From Course Materials:**
-- ✅ **22%**: ML model deployment success rate
-- ✅ **78%**: ML model deployment failure rate
-- ✅ **87%**: ML projects that never go live (research survey)
-- ✅ **50%**: Teams taking 1 week - 3 months to deploy
-- ✅ **72%**: Data scientists spending ≥25% time on deployment
+- **22%**: ML model deployment success rate
+- **78%**: ML model deployment failure rate
+- **87%**: ML projects that never go live (research survey)
+- **50%**: Teams taking 1 week - 3 months to deploy
+- **72%**: Data scientists spending ≥25% time on deployment
 
 **From Research Survey (Paleyes et al.):**
-- ✅ **50%**: Companies spend 8-90 days deploying single model
-- ✅ **8%**: Poisoning rate in training → 50% incorrect medical dosages
-- ✅ **1.5M**: Packets per second from 1-GB/s Ethernet interface
-- ✅ **$50k-$1.6M**: Cost to train BERT model (depending on size)
-- ✅ **650-4,013**: Queries needed to steal models from cloud providers
+- **50%**: Companies spend 8-90 days deploying single model
+- **8%**: Poisoning rate in training → 50% incorrect medical dosages
+- **1.5M**: Packets per second from 1-GB/s Ethernet interface
+- **$50k-$1.6M**: Cost to train BERT model (depending on size)
+- **650-4,013**: Queries needed to steal models from cloud providers
 
 ## Mnemonics for Exam
 

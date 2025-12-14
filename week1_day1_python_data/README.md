@@ -3,8 +3,8 @@
 ## 🧭 Table of Contents
 - [📘 Week 1 - Day 1: Python + ML Warm-up + Docker Kickstart](#-week-1---day-1-python--ml-warm-up--docker-kickstart)
   - [🧭 Table of Contents](#-table-of-contents)
-  - [🎯 Objective](#-objective)
-  - [📁 Project Structure](#-project-structure)
+  - [Objective](#-objective)
+  - [Project Structure](#-project-structure)
   - [⚙️ Dependencies Overview](#️-dependencies-overview)
   - [🧩 Key Concepts](#-key-concepts)
     - [What is `prog="data-tool"`](#what-is-progdata-tool)
@@ -31,11 +31,11 @@
   - [🐳 Docker Usage](#-docker-usage)
   - [🧠 Interview Learnings](#-interview-learnings)
   - [📚 Stretch Goals](#-stretch-goals)
-  - [✅ Day 1 Checklist](#-day-1-checklist)
+  - [Day 1 Checklist](#-day-1-checklist)
 
 ---
 
-## 🎯 Objective
+## Objective
 Learn the **Python foundations for data workflows** by building a small but production-style project.
 
 This includes:
@@ -47,7 +47,7 @@ This includes:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 week1_day1_python_data/
@@ -100,7 +100,7 @@ You'll see:
 usage: data-tool [OPTIONS] COMMAND [ARGS]...
 ```
 
-✅ This makes your CLI look polished and consistent, even when it's installed as a package later.
+This makes your CLI look polished and consistent, even when it's installed as a package later.
 
 ---
 
@@ -134,7 +134,7 @@ args = parser.parse_args(["filter", "data.json", "score"])
 print(args.command)  # → "filter"
 ```
 
-✅ Enables multiple subcommands under one tool, just like `git` or `docker`.
+Enables multiple subcommands under one tool, just like `git` or `docker`.
 
 ---
 
@@ -156,7 +156,7 @@ def main(argv=None):
   main(["summarize", "data/sample.json", "score"])
   ```
 
-✅ Makes your CLI testable and reusable — used in production tools like `pip`, `black`, and `aws-cli`.
+Makes your CLI testable and reusable — used in production tools like `pip`, `black`, and `aws-cli`.
 
 ---
 
@@ -174,7 +174,7 @@ This follows the **Single Responsibility Principle**:
 * `cli.py` = the waiter 🧾 (handles user input)
 * `tests/` = the critic 🧪 (checks quality)
 
-✅ Clean, testable, and ready for MLOps pipelines.
+Clean, testable, and ready for MLOps pipelines.
 
 ---
 
@@ -207,7 +207,7 @@ is equivalent to:
 data-tool summarize ...
 ```
 
-✅ In short: `@click.group()` = entry point; `@cli.command()` = subcommands under that entry.
+In short: `@click.group()` = entry point; `@cli.command()` = subcommands under that entry.
 
 ---
 
@@ -215,7 +215,7 @@ data-tool summarize ...
 
 | Feature        | `argparse`                                | `click`                        |
 | -------------- | ----------------------------------------- | ------------------------------ |
-| Built-in       | ✅ Yes                                     | ❌ Needs `pip install click`    |
+| Built-in       | Yes                                     | Needs `pip install click`    |
 | Syntax         | Imperative (`add_argument`, `parse_args`) | Declarative (`@click.command`) |
 | Subcommands    | Manual (`add_subparsers`)                 | Easy (`@cli.group`)            |
 | Help UI        | Basic                                     | Beautiful + colored            |
@@ -223,7 +223,7 @@ data-tool summarize ...
 | Learning Curve | Low                                       | Medium                         |
 | Best For       | Scripts, internal tools                   | Production CLIs, DevOps tools  |
 
-✅ We used `argparse` for Day 1 to understand CLI fundamentals.
+We used `argparse` for Day 1 to understand CLI fundamentals.
 
 ---
 
@@ -264,7 +264,7 @@ def cmd_summarize(path: str, field: str) -> None:
 * `field: str` — expects a **field name** (string, like `"score"`)
 * `-> None` — **does not return anything**, just performs an action (printing)
 
-**💡 Example usage:**
+**Example usage:**
 ```python
 cmd_summarize("data/sample.json", "score")
 # Output:
@@ -296,7 +296,7 @@ def _make_numeric_pred(minv: Any = None, maxv: Any = None):
 * `maxv: Any = None` — optional parameter, defaults to `None`
 * No `->` annotation — but it **returns a function** (a closure)
 
-**💡 Example usage:**
+**Example usage:**
 ```python
 pred = _make_numeric_pred(minv=80, maxv=90)
 pred(85)   # → True (85 is between 80 and 90)
@@ -334,7 +334,7 @@ def cmd_filter(path: str, field: str, minv: Any = None, maxv: Any = None) -> Non
 * `maxv: Any = None` — optional **maximum value**
 * `-> None` — just **prints output**, doesn't return anything
 
-**💡 Example usage:**
+**Example usage:**
 ```python
 cmd_filter("data/sample.json", "score", minv=85)
 # Output:
@@ -359,10 +359,10 @@ cmd_filter("data/sample.json", "score", minv=85)
 
 Type hints are **optional but powerful**:
 
-✅ **IDE Support** — Auto-complete and error detection
-✅ **Readability** — Self-documenting code
-✅ **Type Checking** — Tools like `mypy` catch bugs
-✅ **Collaboration** — Other engineers know what to pass in
+**IDE Support** — Auto-complete and error detection
+**Readability** — Self-documenting code
+**Type Checking** — Tools like `mypy` catch bugs
+**Collaboration** — Other engineers know what to pass in
 
 **Comparison:**
 
@@ -397,7 +397,7 @@ The second is instantly clearer! 📖
 | `Dict[str, int]` | Dictionary: str keys, int values | `scores: Dict[str, int]` |
 | `Callable[[int], bool]` | Function taking int, returning bool | Function passed as argument |
 
-✅ Understanding these signatures makes you a better Python engineer!
+Understanding these signatures makes you a better Python engineer!
 
 ---
 
@@ -461,7 +461,7 @@ Run:
 pytest -q
 ```
 
-✅ Checks:
+Checks:
 
 * Summary statistics
 * Filtering logic
@@ -483,7 +483,7 @@ Run:
 docker run --rm json-insights summarize data/sample.json score
 ```
 
-✅ Docker makes your CLI portable and reproducible.
+Docker makes your CLI portable and reproducible.
 
 ---
 
@@ -510,7 +510,7 @@ docker run --rm json-insights summarize data/sample.json score
 
 ---
 
-## ✅ Day 1 Checklist
+## Day 1 Checklist
 
 | Task                            | Done |
 | ------------------------------- | ---- |
@@ -524,6 +524,6 @@ docker run --rm json-insights summarize data/sample.json score
 
 ---
 
-> 💡 **Tip:**
+> **Tip:**
 > Each "Day" in this 4-week plan builds upon this project.
 > You're not just writing scripts — you're constructing the foundation of an **MLOps-ready AI system** step by step.

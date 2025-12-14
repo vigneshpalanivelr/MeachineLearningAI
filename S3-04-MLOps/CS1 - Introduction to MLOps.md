@@ -71,7 +71,7 @@ Every ML-based software system must manage three core assets:
 └──────────┘
 ```
 
-**💡 Key Insight**: Unlike traditional software where code is king, ML systems have THREE equally important assets that must work in harmony!
+**Key Insight**: Unlike traditional software where code is king, ML systems have THREE equally important assets that must work in harmony!
 
 ---
 
@@ -80,7 +80,7 @@ Every ML-based software system must manage three core assets:
 ### Definition
 The initial step in any data science workflow to **acquire and prepare data** for analysis.
 
-**🎯 Real-World Analogy**: Think of data engineering as running a quality control factory. Raw materials (data) come in from various suppliers, often damaged or incomplete. Your job? Turn that mess into pristine, ready-to-use inputs for your ML models—just like a chef inspecting and preparing ingredients before cooking!
+**Real-World Analogy**: Think of data engineering as running a quality control factory. Raw materials (data) come in from various suppliers, often damaged or incomplete. Your job? Turn that mess into pristine, ready-to-use inputs for your ML models—just like a chef inspecting and preparing ingredients before cooking!
 
 ### Key Characteristics
 - Data integrated from **various resources** with **different formats**
@@ -260,7 +260,7 @@ After Splitting:
 ├── Validation: 1,500 records (tune hyperparameters)
 └── Test:       1,500 records (final acceptance test)
 
-⚠️  Critical Rule: Test set is locked away until final evaluation!
+ Critical Rule: Test set is locked away until final evaluation!
 ```
 
 **Real-World Analogy**: Like preparing for an exam. You study from textbooks (training set), practice with sample questions (validation set), and take the final exam with completely new questions (test set) to prove you truly learned the concepts.
@@ -272,7 +272,7 @@ After Splitting:
 ### Definition
 The **core of the ML workflow** - executing machine learning algorithms to obtain an ML model.
 
-**🎯 Real-World Analogy**: If Data Engineering is about preparing ingredients, Model Engineering is about perfecting the recipe. Your goal? Create an intelligent function that learns patterns from data and makes accurate predictions.
+**Real-World Analogy**: If Data Engineering is about preparing ingredients, Model Engineering is about perfecting the recipe. Your goal? Create an intelligent function that learns patterns from data and makes accurate predictions.
 
 ### Model Engineering Pipeline
 
@@ -482,7 +482,7 @@ Performing the final **"Model Acceptance Test"** using the hold-back **test data
 
 **Critical Rules:**
 ```
-⚠️  THE TEST SET IS SACRED ⚠️
+ THE TEST SET IS SACRED ⚠️
 
 ✗ NEVER use test data during training
 ✗ NEVER tune hyperparameters based on test results
@@ -817,18 +817,18 @@ LoanAmount = 10,000 + 500×Age + 0.3×Income + 100×CreditScore
 #### Decision Framework for Model Selection
 
 **When to Choose Interpretable Models:**
-- ✅ Regulated industries (finance, healthcare, legal)
-- ✅ High-stakes decisions affecting people's lives
-- ✅ Need to explain to non-technical stakeholders
-- ✅ Trust is more important than marginal accuracy gains
-- ✅ Compliance requirements mandate explainability
+- Regulated industries (finance, healthcare, legal)
+- High-stakes decisions affecting people's lives
+- Need to explain to non-technical stakeholders
+- Trust is more important than marginal accuracy gains
+- Compliance requirements mandate explainability
 
 **When to Choose Black Box Models:**
-- ✅ Accuracy is paramount (medical diagnosis, fraud detection)
-- ✅ Low-stakes applications (product recommendations)
-- ✅ Clear business value from extra 5-10% accuracy
-- ✅ Can invest in XAI tools for post-hoc explanations
-- ✅ Internal use with technical users
+- Accuracy is paramount (medical diagnosis, fraud detection)
+- Low-stakes applications (product recommendations)
+- Clear business value from extra 5-10% accuracy
+- Can invest in XAI tools for post-hoc explanations
+- Internal use with technical users
 
 **Real-World Requirements:**
 ```
@@ -1211,7 +1211,7 @@ graph TD
 #### Data Leakage Prevention
 
 ```
-❌ WRONG: Split → Remove Duplicates
+WRONG: Split → Remove Duplicates
 ✓ CORRECT: Remove Duplicates → Split
 
 Data leakage occurs when test dataset information
@@ -2990,13 +2990,13 @@ Use Case: Estimate Delivery Time (ETD)
 
 ## 📚 Exam Preparation: Common Mistakes & Misconceptions
 
-### ❌ Misconception 1: "The test set can be used multiple times"
+### Misconception 1: "The test set can be used multiple times"
 ```
 WRONG THINKING:
 "I'll test my model on the test set, adjust hyperparameters, test again,
 and repeat until I get good results!"
 
-✅ CORRECT UNDERSTANDING:
+CORRECT UNDERSTANDING:
 - Test set should be used ONLY ONCE for final evaluation
 - Each test on test set = information leakage
 - Hyperparameter tuning should happen on VALIDATION set
@@ -3011,24 +3011,24 @@ THE RIGHT PROCESS:
 5. If test fails, start over with new approach
 ```
 
-### ❌ Misconception 2: "More features always mean better models"
+### Misconception 2: "More features always mean better models"
 ```
 WRONG THINKING:
 "I have 500 features, so my model should be very accurate!"
 
-✅ CORRECT UNDERSTANDING:
+CORRECT UNDERSTANDING:
 - Too many features → Overfitting, slow training, poor generalization
 - Quality > Quantity: 50 relevant features >> 500 noisy features
 - Curse of dimensionality: High-dimensional sparse data is hard to learn from
 - Always remove highly correlated features (Corr > 0.60)
 ```
 
-### ❌ Misconception 3: "Black box models are always best"
+### Misconception 3: "Black box models are always best"
 ```
 WRONG THINKING:
 "Neural networks have 95% accuracy, so I should always use them!"
 
-✅ CORRECT UNDERSTANDING:
+CORRECT UNDERSTANDING:
 - Accuracy isn't the only metric
 - Regulated industries (finance, healthcare) may REQUIRE interpretability
 - Stakeholder trust depends on explainability

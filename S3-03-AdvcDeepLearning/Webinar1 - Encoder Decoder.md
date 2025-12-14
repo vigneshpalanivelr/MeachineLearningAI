@@ -1609,11 +1609,11 @@ ROI: Excellent! The extra training time pays off immediately.
 
 The Deep Autoencoder proves that **smart architecture design** (gradual compression, hierarchical learning) outperforms **brute-force approaches** (more neurons, more parameters). It achieves **better results with half the parameters** through:
 
-1. ✅ **Efficient parameter usage** - No wasted capacity
-2. ✅ **Gradual compression** - Better information preservation
-3. ✅ **Stable gradients** - More reliable training
-4. ✅ **Hierarchical features** - Meaningful representations
-5. ✅ **Production-ready** - Smaller, faster, better
+1. **Efficient parameter usage** - No wasted capacity
+2. **Gradual compression** - Better information preservation
+3. **Stable gradients** - More reliable training
+4. **Hierarchical features** - Meaningful representations
+5. **Production-ready** - Smaller, faster, better
 
 **Key Insight**: In deep learning, **architecture matters more than size**. The deep autoencoder is a perfect example of achieving more with less through thoughtful design.
 
@@ -2139,7 +2139,7 @@ print(f"  Epochs: {EPOCHS}")
 print(f"  Batch Size: {BATCH_SIZE}")
 print(f"  Training Samples: {len(x_train):,}")
 print(f"  Validation Samples: {len(x_test):,}")
-print(f"\n⚠️  CRITICAL: Input=Noisy, Target=Clean")
+print(f"\n CRITICAL: Input=Noisy, Target=Clean")
 print(f"    The network learns to remove noise!")
 print("-" * 60)
 
@@ -2199,7 +2199,7 @@ mse_noisy = np.mean(np.square(x_test - x_test_noisy))
 mse_denoised = np.mean(np.square(x_test - decoded_imgs))
 improvement = ((mse_noisy - mse_denoised) / mse_noisy) * 100
 
-print(f"\n📊 Quality Metrics:")
+print(f"\nQuality Metrics:")
 print(f"  MSE (Noisy vs Clean): {mse_noisy:.6f}")
 print(f"  MSE (Denoised vs Clean): {mse_denoised:.6f}")
 print(f"  ✓ Improvement: {improvement:.1f}%")
@@ -2401,11 +2401,11 @@ Bottleneck: 7×7×32 = 1,568 feature values
             ↓
 What fits through the bottleneck?
 
-✅ Digit structure (edges, curves, topology) - CONSISTENT
+Digit structure (edges, curves, topology) - CONSISTENT
    → Can be compressed efficiently
    → Network learns to preserve this
 
-❌ Random noise (unpredictable variations) - INCONSISTENT
+Random noise (unpredictable variations) - INCONSISTENT
    → Cannot be compressed efficiently
    → Network learns to discard this
 ```
@@ -2413,8 +2413,8 @@ What fits through the bottleneck?
 **Analogy**:
 
 Imagine describing an image in 10 words:
-- ✅ "Vertical line with horizontal top stroke forming digit seven" (fits!)
-- ❌ "Pixel (1,1)=0.743, Pixel (1,2)=0.892, Pixel (1,3)=0.615..." (too random, doesn't fit!)
+- "Vertical line with horizontal top stroke forming digit seven" (fits!)
+- "Pixel (1,1)=0.743, Pixel (1,2)=0.892, Pixel (1,3)=0.615..." (too random, doesn't fit!)
 
 The bottleneck forces the network to keep only what can be efficiently described (signal), not random noise.
 
@@ -2607,7 +2607,7 @@ $$\mathcal{L} = -\frac{1}{N}\sum_{i=1}^{N}[y_i \log(\hat{y}_i) + (1-y_i)\log(1-\
 
 #### When to Use Denoising Autoencoder
 
-**✅ Use When:**
+**Use When:**
 - Working with images or spatial data
 - Need to remove noise from corrupted data
 - Have pairs of noisy/clean examples for training
@@ -2615,7 +2615,7 @@ $$\mathcal{L} = -\frac{1}{N}\sum_{i=1}^{N}[y_i \log(\hat{y}_i) + (1-y_i)\log(1-\
 - Need real-time denoising capability
 - Building image restoration systems
 
-**❌ Don't Use When:**
+**Don't Use When:**
 - Working with non-spatial data (use dense AE)
 - Input size varies significantly (convolutions are size-specific)
 - Don't have clean reference data for training
@@ -3417,16 +3417,16 @@ Reduction:     94% smaller than Vanilla
 #### Why the Network Learns to Remove Noise
 
 **Noise Characteristics**:
-- ❌ Different for every image (random)
-- ❌ No consistent pattern across dataset
-- ❌ Cannot be predicted from context
-- ❌ High-frequency, irregular
+- Different for every image (random)
+- No consistent pattern across dataset
+- Cannot be predicted from context
+- High-frequency, irregular
 
 **Signal (Digit) Characteristics**:
-- ✅ Consistent structure across images
-- ✅ Clear patterns (edges, curves, topology)
-- ✅ Predictable from local context
-- ✅ Low-frequency, structured
+- Consistent structure across images
+- Clear patterns (edges, curves, topology)
+- Predictable from local context
+- Low-frequency, structured
 
 **What the Network Learns**:
 
@@ -3527,8 +3527,8 @@ Result: Signal passes through, noise gets filtered out!
 **Analogy**:
 
 Imagine describing a person in 10 words:
-- ✅ "Tall woman, brown hair, glasses, friendly smile" (essential features)
-- ❌ "Freckle at x=47mm y=82mm, hair strand angle 23.7°..." (noise/details)
+- "Tall woman, brown hair, glasses, friendly smile" (essential features)
+- "Freckle at x=47mm y=82mm, hair strand angle 23.7°..." (noise/details)
 
 The bottleneck forces the network to keep only essential information!
 

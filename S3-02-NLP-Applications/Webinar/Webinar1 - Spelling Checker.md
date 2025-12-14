@@ -4308,7 +4308,7 @@ Output: "Hello world!"
 
 ## Method 9: calculate_score() - The Scoring Engine
 
-### 🎯 Purpose
+### Purpose
 
 **Calculate a confidence score (0.0 to 1.0) for each correction candidate.**
 
@@ -4316,7 +4316,7 @@ This is the **heart of the ranking algorithm**. It determines which suggestions 
 
 ---
 
-### 📝 Complete Code
+### Complete Code
 
 ```python
 def calculate_score(self, original: str, candidate: str, edit_distance: int) -> float:
@@ -4753,7 +4753,7 @@ final_score = (base_score    × 0.5) +
 
 ---
 
-### 📊 Comparison: Multiple Candidates
+### Comparison: Multiple Candidates
 
 Let's compare **four candidates** for the misspelling **"helo"**:
 
@@ -4902,7 +4902,7 @@ These were **empirically tuned** by:
 
 ---
 
-### 💡 Practical Applications
+### Practical Applications
 
 #### Use Case 1: Autocorrect
 
@@ -5029,7 +5029,7 @@ Why?
 
 ## Method 10: get_substring_candidates() - Fuzzy Matching
 
-### 🎯 Purpose
+### Purpose
 
 **Find candidates when edit distance fails.**
 
@@ -5037,7 +5037,7 @@ This is the **fallback strategy** when a word is so different that edit distance
 
 ---
 
-### 📝 Complete Code
+### Complete Code
 
 ```python
 def get_substring_candidates(self, word: str) -> List[Tuple[str, float]]:
@@ -5383,7 +5383,7 @@ If we used 0.1:
 
 ---
 
-### 🔄 Complete Example Walkthrough
+### Complete Example Walkthrough
 
 Let's trace through **every step** for the word `"prog"`:
 
@@ -5532,7 +5532,7 @@ Substring:
 
 ---
 
-### ⚠️ Limitations
+### Limitations
 
 **Problem 1: Performance**
 
@@ -5585,7 +5585,7 @@ Substring matching can't distinguish!
 
 ---
 
-### 💡 Optimization Ideas
+### Optimization Ideas
 
 **Idea 1: Index-Based Lookup**
 
@@ -5729,7 +5729,7 @@ candidates = trie.search_prefix("prog")
 
 ## Method 11: check_text() - Text Analysis
 
-### 🎯 Purpose
+### Purpose
 
 **Analyze entire text and find all misspellings with their correction candidates.**
 
@@ -5737,7 +5737,7 @@ This method processes complete sentences/paragraphs and returns a dictionary map
 
 ---
 
-### 📝 Complete Code
+### Complete Code
 
 ```python
 def check_text(self, text: str) -> Dict[str, List[Tuple[str, float]]]:
@@ -6174,7 +6174,7 @@ return misspelled
 
 ---
 
-### 📊 Performance Analysis
+### Performance Analysis
 
 **Time Complexity:**
 
@@ -6215,7 +6215,7 @@ Space: 200 × 10 candidates = 2000 tuples
 
 ---
 
-### 💡 Use Cases
+### Use Cases
 
 #### Use Case 1: Document Proofreading
 
@@ -6381,7 +6381,7 @@ def check_text_with_counts(self, text):
 
 ## Method 12: correct_text() - Text Correction
 
-### 🎯 Purpose
+### Purpose
 
 **Apply corrections to text automatically or show suggestions interactively.**
 
@@ -6391,7 +6391,7 @@ This is the **final method** - it takes misspelled text and either:
 
 ---
 
-### 📝 Complete Code
+### Complete Code
 
 ```python
 def correct_text(self, text: str, auto_correct: bool = False) -> str:
@@ -7970,7 +7970,7 @@ batch = [
     [3, 16],             # Shape: (2,)  ← Different shape!
 ]
 
-# ❌ ERROR: Cannot create tensor with different shapes
+# ERROR: Cannot create tensor with different shapes
 # Cannot stack into array
 ```
 

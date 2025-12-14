@@ -130,7 +130,7 @@ Grammatical Errors
 |--------|---------------|--------------|
 | **Nature** | Violate grammar rules | Violate conventions |
 | **Learning** | Easier (systematic) | Harder (memorization) |
-| **Example** | "She go" → "She goes" | "on Monday" → "in Monday" ❌ |
+| **Example** | "She go" → "She goes" | "on Monday" → "in Monday" |
 | **Detection** | Rule-based possible | Requires corpus/statistics |
 | **Frequency** | Lower for learners | Higher for learners |
 
@@ -2808,14 +2808,14 @@ Task: Compare strengths/weaknesses
 **Common Pitfalls to Avoid:**
 
 ```
-❌ Confusing Precision and Recall
-❌ Forgetting to add sentence boundaries for LM
-❌ Using regular probabilities instead of log probabilities
-❌ Mixing up rows and columns in confusion matrix
-❌ Forgetting to verify total counts
-❌ Incorrect parentheses in formulas
-❌ Not normalizing probabilities
-❌ Confusing P(A|B) with P(B|A)
+Confusing Precision and Recall
+Forgetting to add sentence boundaries for LM
+Using regular probabilities instead of log probabilities
+Mixing up rows and columns in confusion matrix
+Forgetting to verify total counts
+Incorrect parentheses in formulas
+Not normalizing probabilities
+Confusing P(A|B) with P(B|A)
 ```
 
 ---

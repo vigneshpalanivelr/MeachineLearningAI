@@ -747,18 +747,18 @@ HIGH-LEVEL PROCESSING:
 
 ### Common Misconceptions & Pitfalls
 
-**❌ Misconception #1:** "Computer vision is just about implementing algorithms"
-**✅ Reality:** CV is about handling ambiguity, combining multiple cues, and making informed decisions under uncertainty
+**Misconception #1:** "Computer vision is just about implementing algorithms"
+**Reality:** CV is about handling ambiguity, combining multiple cues, and making informed decisions under uncertainty
 
 ---
 
-**❌ Misconception #2:** "Higher resolution always means better performance"
-**✅ Reality:** More pixels ≠ more information. Can introduce noise, slow processing. Optimal resolution depends on task.
+**Misconception #2:** "Higher resolution always means better performance"
+**Reality:** More pixels ≠ more information. Can introduce noise, slow processing. Optimal resolution depends on task.
 
 ---
 
-**❌ Misconception #3:** "Deep learning has solved computer vision"
-**✅ Reality:** DL excels on large, labeled datasets but struggles with:
+**Misconception #3:** "Deep learning has solved computer vision"
+**Reality:** DL excels on large, labeled datasets but struggles with:
 - Out-of-distribution data
 - Adversarial examples
 - Explainability
@@ -766,13 +766,13 @@ HIGH-LEVEL PROCESSING:
 
 ---
 
-**❌ Misconception #4:** "RGB is always the best color space"
-**✅ Reality:** Task-dependent! HSV better for color-based segmentation, YCbCr for video compression, Lab for perceptual tasks.
+**Misconception #4:** "RGB is always the best color space"
+**Reality:** Task-dependent! HSV better for color-based segmentation, YCbCr for video compression, Lab for perceptual tasks.
 
 ---
 
-**❌ Misconception #5:** "Edge detection solves segmentation"
-**✅ Reality:** Edges are mid-level features. Segmentation requires:
+**Misconception #5:** "Edge detection solves segmentation"
+**Reality:** Edges are mid-level features. Segmentation requires:
 - Edge detection (where?)
 - Grouping (which edges belong together?)
 - Region filling (complete boundaries)
@@ -952,7 +952,7 @@ Image understanding is a **hierarchical, iterative process** combining:
 
 ```
 ┌─────────────────────────────────────────────┐
-│ 🎯 MUST KNOW FOR EXAM                      │
+│ MUST KNOW FOR EXAM                      │
 ├─────────────────────────────────────────────┤
 │ ✓ CV = Image formation + Machine perception│
 │ ✓ Inverse problem (2D→3D ambiguous)        │
@@ -967,7 +967,7 @@ Image understanding is a **hierarchical, iterative process** combining:
 
 **Study Time Allocation:**
 - Section 1.1 (What is CV?): 15 mins
-- Section 1.2 (Challenges): 30 mins ⚠️ Most important
+- Section 1.2 (Challenges): 30 mins Most important
 - Section 1.3 (Applications): 20 mins
 - Section 1.4 (Representation): 25 mins
 - Practice Questions: 30 mins

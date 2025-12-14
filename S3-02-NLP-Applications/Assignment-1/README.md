@@ -605,60 +605,89 @@ curl -s -X POST -F "file=@test_generic_relationships.csv" \
 ```
 ---
 
-### Complete Testing Scenario: Walking Network in Central Delhi
+### Complete Testing Scenario: Walking Network on Yellow Line
 
 **Prerequisites:**
 - Backend running with `delhi_metro.csv` loaded (283 stations, 284 connections)
 - Frontend open at http://localhost:3000
 
+**Context:**
+The following stations already exist on the Yellow Line with metro connections:
+- Rajiv Chowk [Conn: Blue] (interchange with Blue line)
+- Patel Chowk
+- Central Secretariat [Conn: Violet] (interchange with Violet line)
+- Udyog Bhawan
+
+We will add **walking distance** relationships between these stations.
+
 ---
 
-#### Step 1: Add Walking Routes Between Central Delhi Stations
+#### Step 1: Add Walking Connections
 
 Add these relationships one by one using the "Add Relationship" form:
 
 **Relationship 1:**
 ```yaml
-Entity 1: Rajiv Chowk
+Entity 1: "Rajiv Chowk [Conn: Blue]"
 Relationship: walking_distance
 Entity 2: Patel Chowk
-Expected Legend: Stations: 283, Connections: 284
-Actual Legend: Stations: 284, Connections: 285
+
+Expected Legend:
+  Stations: 283 (no new stations, both exist)
+  Connections: 285 (284 metro + 1 walking)
 ```
 
 **Relationship 2:**
 ```yaml
 Entity 1: Patel Chowk
 Relationship: walking_distance
-Entity 2: Central Secretariat
-Expected Legend: Stations: 283, Connections: 286
-Actual Legend: Stations: 285, Connections: 286
+Entity 2: "Central Secretariat [Conn: Violet]"
+
+Expected Legend:
+  Stations: 283
+  Connections: 286 (284 metro + 2 walking)
 ```
 
 **Relationship 3:**
 ```yaml
-Entity 1: Central Secretariat
+Entity 1: "Central Secretariat [Conn: Violet]"
 Relationship: walking_distance
 Entity 2: Udyog Bhawan
-Expected Legend: Stations: 283, Connections: 287
-Actual Legend: Stations: 285, Connections: 287
-```
 
-**Relationship 4:**
-```yaml
-Entity 1: Rajiv Chowk
-Relationship: walking_distance
-Entity 2: Barakhamba
-Expected Legend: Stations: 284, Connections: 288
-Actual Legend: Stations: 285, Connections: 288
-Note: "Barakhamba" is a new station (not in original metro network)
+Expected Legend:
+  Stations: 283
+  Connections: 287 (284 metro + 3 walking)
 ```
 
 ---
 
-#### Step 2: Query Neighborhood (Radius 2)
+#### Step 2: Query Neighborhood (Radius 1)
 
-Test the neighborhood query to see connected stations:
+Test neighborhood query to see both metro and walking connections:
+
+```yaml
+Query Parameters:
+  Station: Patel Chowk
+  Radius: 1
+
+Expected Result:
+  Stations Shown: Multiple stations (including):
+    - "Rajiv Chowk [Conn: Blue]" (via walking_distance)
+    - "Central Secretariat [Conn: Violet]" (via walking_distance)
+    - "Rajiv Chowk [Conn: Yellow]" (via Yellow line metro)
+    - Udyog Bhawan (via Yellow line metro - next station)
+    - Other Yellow line neighbors
+
+  Total: 5 stations
+
+  Connections Shown:
+    - 2 walking_distance edges (Rajiv-Patel, Patel-Central)
+    - Multiple metro line edges
+```
+
+#### Step 3: Query Neighborhood (Radius 2)
+
+Expand to radius 2 to see more connections:
 
 ```yaml
 Query Parameters:
@@ -666,84 +695,60 @@ Query Parameters:
   Radius: 2
 
 Expected Result:
-  Total Stations Shown: 4 stations
-  Stations:
-    - Rajiv Chowk (1 hop away)
-    - Patel Chowk (center station)
-    - Central Secretariat (1 hop away)
-    - Udyog Bhawan (2 hops away)
+  Stations Shown: More stations (including):
+    - All radius-1 stations
+    - "Udyog Bhawan" (2 hops: Patel→Central→Udyog via walking)
+    - More Yellow line stations
+    - Blue line stations connected to Rajiv Chowk
+    - Violet line stations connected to Central Secretariat
 
-  Total Connections Shown: 3 walking routes
-  Actual Stations Shown: 9 stations
-  Actuakl Connections Shown: 14 connections
+  Total: ~10-15 stations (depends on metro network structure)
 ```
 
-**How to test:**
-1. Enter "Patel Chowk" in "Station Name" field
-2. Enter "2" in "Radius" field
-3. Click "Show Neighborhood"
-4. Graph should display only 4 stations and their connections
+#### Step 4: Find Path Using Walking Connections
 
----
-
-#### Step 3: Find Walking Path
-
-Test path finding between stations:
+Test path that uses the walking connections:
 
 ```yaml
 Query Parameters:
-  Source: Rajiv Chowk
+  Source: Rajiv Chowk [Conn: Blue]
   Destination: Udyog Bhawan
 
 Expected Result:
-  Path Length: 3 stops
-  Route:
-    - Rajiv Chowk
-    - Patel Chowk
-    - Central Secretariat
-    - Udyog Bhawan
+  Path may use:
+    Option 1 (via walking):
+      Rajiv Chowk [Conn: Blue] → Patel Chowk →
+      Central Secretariat [Conn: Violet] → Udyog Bhawan
+      (3 hops via walking)
 
-  Path Type: Shortest path via walking connections
-  Actual Path Type: just "path"
+    Option 2 (via Yellow line metro):
+      Rajiv Chowk [Conn: Blue] → Rajiv Chowk [Conn: Yellow] →
+      Patel Chowk → Central Secretariat [Conn: Yellow] → Udyog Bhawan
+      (4 hops via metro interchanges)
+
+    Option 3 (hybrid):
+      Some combination of metro and walking
+
+  NetworkX will choose the SHORTEST path (fewest hops)
 ```
 
-**How to test:**
-1. Enter "Rajiv Chowk" in Source field
-2. Enter "Udyog Bhawan" in Destination field
-3. Click "Find Shortest Path"
-4. Alert shows: "Path Found! Stops: 3"
-5. Graph highlights the 4-station walking route
+#### Step 5: Alternative Path Test
 
----
-
-#### Step 4: Alternative Path Test
-
-Test path to the newly added station:
+Test a simpler path:
 
 ```yaml
 Query Parameters:
-  Source: Rajiv Chowk
-  Destination: Barakhamba
+  Source: Patel Chowk
+  Destination: Udyog Bhawan
 
 Expected Result:
-  Path Length: 1 stop
-  Route:
-    - Rajiv Chowk
-    - Barakhamba
+  Path Length: Likely 2-3 hops
+  Route options:
+    - Via walking: Patel Chowk → Central Secretariat → Udyog Bhawan
+    - Via metro: Patel Chowk → (next Yellow line station) → Udyog Bhawan
 
-  Direct Connection: Yes (walking_distance)
-  Actual Path Type: just "path"
+  NetworkX chooses shortest
 ```
-
----
-
-#### Step 5: Reset and Verify
-
-1. Click "Reset to Full Graph" button
-2. Legend should show: Stations: 284, Connections: 288
-3. Graph displays full metro network + walking routes
-
----
 
 ## Build & Deployment
 

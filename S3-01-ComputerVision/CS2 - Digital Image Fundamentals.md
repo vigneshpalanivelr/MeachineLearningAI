@@ -1870,33 +1870,33 @@ Storage ≈ 44 GB / 60 ≈ 0.73 GB
 
 ### Common Misconceptions & Pitfalls
 
-**❌ Misconception #1:** "Higher bit depth always means better image quality"
-**✅ Reality:** Beyond 8-10 bits, human eyes can't distinguish differences for most applications. 16-bit useful for professional editing headroom, not display.
+**Misconception #1:** "Higher bit depth always means better image quality"
+**Reality:** Beyond 8-10 bits, human eyes can't distinguish differences for most applications. 16-bit useful for professional editing headroom, not display.
 
 ---
 
-**❌ Misconception #2:** "Sampling and quantization are the same thing"
-**✅ Reality:** Sampling discretizes SPACE (x,y), quantization discretizes INTENSITY. Independent processes.
+**Misconception #2:** "Sampling and quantization are the same thing"
+**Reality:** Sampling discretizes SPACE (x,y), quantization discretizes INTENSITY. Independent processes.
 
 ---
 
-**❌ Misconception #3:** "Gamma correction is only for monitors"
-**✅ Reality:** Gamma transform used for: monitor correction, image enhancement, tone mapping, HDR compression, medical imaging, etc.
+**Misconception #3:** "Gamma correction is only for monitors"
+**Reality:** Gamma transform used for: monitor correction, image enhancement, tone mapping, HDR compression, medical imaging, etc.
 
 ---
 
-**❌ Misconception #4:** "Log transformation always brightens images"
-**✅ Reality:** Log expands DARK values and compresses BRIGHT values. Overall effect depends on image histogram. Can make bright images dimmer.
+**Misconception #4:** "Log transformation always brightens images"
+**Reality:** Log expands DARK values and compresses BRIGHT values. Overall effect depends on image histogram. Can make bright images dimmer.
 
 ---
 
-**❌ Misconception #5:** "Histogram must be uniform (flat) for good images"
-**✅ Reality:** Histogram shape depends on scene content. Night scene should have left-skewed histogram. Uniform not always optimal.
+**Misconception #5:** "Histogram must be uniform (flat) for good images"
+**Reality:** Histogram shape depends on scene content. Night scene should have left-skewed histogram. Uniform not always optimal.
 
 ---
 
-**❌ Misconception #6:** "More spatial resolution is always better"
-**✅ Reality:** Diminishing returns beyond optimal sampling (Nyquist). Noise amplification, storage waste, processing overhead.
+**Misconception #6:** "More spatial resolution is always better"
+**Reality:** Diminishing returns beyond optimal sampling (Nyquist). Noise amplification, storage waste, processing overhead.
 
 ---
 
@@ -2183,7 +2183,7 @@ Answer: Depends on:
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│ 🎯 MUST KNOW FOR EXAM                               │
+│ MUST KNOW FOR EXAM                               │
 ├──────────────────────────────────────────────────────┤
 │ ✓ f(x,y) = i(x,y) × r(x,y)                         │
 │ ✓ Sampling vs. Quantization (space vs. intensity)  │
@@ -2202,7 +2202,7 @@ Answer: Depends on:
 - Section 2.1 (Image Formation): 20 mins
 - Section 2.2 (Digitization): 15 mins
 - Section 2.3 (Resolution): 15 mins
-- Section 2.4 (Transformations): 35 mins ⚠️ Most important
+- Section 2.4 (Transformations): 35 mins Most important
 - Practice Questions: 30 mins
 
 **Total Study Time:** ~2 hours for thorough revision

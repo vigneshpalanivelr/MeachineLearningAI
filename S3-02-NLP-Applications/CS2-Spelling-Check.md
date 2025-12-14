@@ -519,7 +519,7 @@ $$P_{\text{interp}}(\text{across} \mid \text{versatile}) = 0.00009 = 9 \times 10
 
 | Method | Probability | Result |
 |--------|-------------|--------|
-| Without interpolation | 0 | ❌ Eliminates valid candidate |
+| Without interpolation | 0 | Eliminates valid candidate |
 | With interpolation | 0.00009 | ✓ Small but non-zero |
 
 **Full Comparison for Candidates**:
@@ -538,7 +538,7 @@ $$= 0.000021618$$
 | Candidate | Without Interpolation | With Interpolation |
 |-----------|----------------------|-------------------|
 | actress | $P = 0.000021$ | $P = 0.000021618$ |
-| across | $P = 0$ ❌ | $P = 0.00009$ ✓ |
+| across | $P = 0$ | $P = 0.00009$ ✓ |
 
 **Key Insight**: Interpolation prevents zero probabilities while still favoring observed bigrams!
 
@@ -2458,18 +2458,18 @@ Rule-based methods rely on **predefined rules and dictionaries** to identify and
 
 #### Advantages
 <br>
-✅ **Easy to implement** : Clear, deterministic logic<br>
-✅ **Fast**: Simple lookups and pattern matching<br>
-✅ **Transparent**: Rules are interpretable<br>
-✅ **No training data needed**: Hand-crafted rules<br>
+**Easy to implement** : Clear, deterministic logic<br>
+**Fast**: Simple lookups and pattern matching<br>
+**Transparent**: Rules are interpretable<br>
+**No training data needed**: Hand-crafted rules<br>
 
 #### Limitations
 
-❌ **Cannot handle new words**: Slang, proper nouns, neologisms<br>
-❌ **Manual maintenance**: Rules must be updated by experts<br>
-❌ **Limited context**: Cannot handle ambiguous errors<br>
-❌ **Exception-heavy**: Many irregular cases require special handling<br>
-❌ **Language-specific**: Rules don't transfer across languages<br>
+**Cannot handle new words**: Slang, proper nouns, neologisms<br>
+**Manual maintenance**: Rules must be updated by experts<br>
+**Limited context**: Cannot handle ambiguous errors<br>
+**Exception-heavy**: Many irregular cases require special handling<br>
+**Language-specific**: Rules don't transfer across languages<br>
 
 #### Real-World Example
 
@@ -2508,20 +2508,20 @@ $$P(w_i \mid w_{i-2}, w_{i-1})$$
 
 #### Advantages
 
-✅ **Flexible**: Adapts to different domains and languages<br>
-✅ **Scalable**: Can handle large vocabularies<br>
-✅ **Handles variations**: Learns from actual usage<br>
-✅ **No manual rules**: Learns patterns automatically<br>
-✅ **Data-driven**: Improves with more data<br>
+**Flexible**: Adapts to different domains and languages<br>
+**Scalable**: Can handle large vocabularies<br>
+**Handles variations**: Learns from actual usage<br>
+**No manual rules**: Learns patterns automatically<br>
+**Data-driven**: Improves with more data<br>
 
 #### Limitations
 
-❌ **Requires large corpora**: Needs substantial training data<br>
-❌ **Computationally expensive**: Training and inference can be slow<br>
-❌ **Noisy data problems**: Learns errors if training data has mistakes<br>
-❌ **Bias issues**: Reflects biases in training corpus<br>
-❌ **Sparse data**: Rare words have unreliable probabilities<br>
-❌ **Limited interpretability**: Hard to understand why a correction was made<br>
+**Requires large corpora**: Needs substantial training data<br>
+**Computationally expensive**: Training and inference can be slow<br>
+**Noisy data problems**: Learns errors if training data has mistakes<br>
+**Bias issues**: Reflects biases in training corpus<br>
+**Sparse data**: Rare words have unreliable probabilities<br>
+**Limited interpretability**: Hard to understand why a correction was made<br>
 
 ---
 
@@ -2692,10 +2692,10 @@ Input: [CLS] I recieved the package [SEP]
    - Rank by confidence
 
 **Advantages**:<br>
-✅ Deep contextual understanding<br>
-✅ Handles complex, multi-word contexts<br>
-✅ State-of-the-art accuracy<br>
-✅ Transfer learning from pre-training<br>
+Deep contextual understanding<br>
+Handles complex, multi-word contexts<br>
+State-of-the-art accuracy<br>
+Transfer learning from pre-training<br>
 
 **Example Models**:
 - **BERT**: Original bidirectional transformer
@@ -3062,11 +3062,11 @@ Input: `"I went too the store"`
 
 #### Advantages of Hybrid Approach
 
-✅ **Best of all worlds**: Speed + accuracy + flexibility<br>
-✅ **Graceful degradation**: Falls back to simpler methods if complex ones fail<br>
-✅ **Interpretable + Powerful**: Rules explain common cases, neural handles complex ones<br>
-✅ **Efficient**: Rules handle 80% of cases quickly, ML handles remaining 20%<br>
-✅ **Maintainable**: Rules can be updated without retraining models<br>
+**Best of all worlds**: Speed + accuracy + flexibility<br>
+**Graceful degradation**: Falls back to simpler methods if complex ones fail<br>
+**Interpretable + Powerful**: Rules explain common cases, neural handles complex ones<br>
+**Efficient**: Rules handle 80% of cases quickly, ML handles remaining 20%<br>
+**Maintainable**: Rules can be updated without retraining models<br>
 
 ---
 
@@ -3140,15 +3140,15 @@ def generate_synthetic_errors(correct_sentence):
 
 #### Advantages
 
-✅ **Scalable**: Can generate millions of training examples
-✅ **Customizable**: Tune error types to target language
-✅ **Low-cost**: No manual annotation needed
+**Scalable**: Can generate millions of training examples
+**Customizable**: Tune error types to target language
+**Low-cost**: No manual annotation needed
 
 #### Challenges
 
-❌ **Realism**: Synthetic errors may not match real user errors
-❌ **Diversity**: Hard to capture all error types
-❌ **Domain shift**: Model may overfit to synthetic patterns
+**Realism**: Synthetic errors may not match real user errors
+**Diversity**: Hard to capture all error types
+**Domain shift**: Model may overfit to synthetic patterns
 
 **Recent Work**:
 - "Generating Diverse Error Corrections with Conditional Chain Editing" (2023)
@@ -3246,9 +3246,9 @@ def fluency_score(sentence):
 
 #### Advantages
 
-✅ **Flexible**: Can optimize for multiple objectives
-✅ **Human-like**: Generates more natural corrections
-✅ **Robust**: Less sensitive to annotation style
+**Flexible**: Can optimize for multiple objectives
+**Human-like**: Generates more natural corrections
+**Robust**: Less sensitive to annotation style
 
 **Recent Work**:
 - "Fluency Boost Learning and Inference for Neural Grammatical Error Correction" (2022)
@@ -3306,10 +3306,10 @@ Show what would change if certain features were different:
 
 #### Benefits
 
-✅ **Educational**: Helps learners understand mistakes
-✅ **Trust**: Users can verify corrections
-✅ **Debugging**: Developers can improve models
-✅ **Compliance**: Important for high-stakes applications
+**Educational**: Helps learners understand mistakes
+**Trust**: Users can verify corrections
+**Debugging**: Developers can improve models
+**Compliance**: Important for high-stakes applications
 
 **Tools & Frameworks**:
 - **ERRANT**: Error Annotation Toolkit

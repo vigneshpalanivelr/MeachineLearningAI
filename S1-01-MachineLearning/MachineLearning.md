@@ -174,24 +174,24 @@ Not just memorizing training data!
 
 #### 1. Overfitting (Bad)
 ```
-Training Performance: ✅ Excellent (95% accuracy)
-Test Performance:     ❌ Poor (60% accuracy)
+Training Performance: Excellent (95% accuracy)
+Test Performance:     Poor (60% accuracy)
 Problem:              Model memorized training data, doesn't generalize
 Cause:                Too complex, high variance
 ```
 
 #### 2. Underfitting (Bad)
 ```
-Training Performance: ❌ Poor (70% accuracy)
-Test Performance:     ❌ Poor (68% accuracy)
+Training Performance: Poor (70% accuracy)
+Test Performance:     Poor (68% accuracy)
 Problem:              Model too simple to capture patterns
 Cause:                Too simple, high bias
 ```
 
 #### 3. Good Generalization (Good)
 ```
-Training Performance: ✅ Good (85% accuracy)
-Test Performance:     ✅ Good (84% accuracy)
+Training Performance: Good (85% accuracy)
+Test Performance:     Good (84% accuracy)
 Problem:              None
 Cause:                Balanced complexity, learns underlying patterns
 ```
@@ -207,11 +207,11 @@ Cause:                Balanced complexity, learns underlying patterns
 
 ### Achieving Good Generalization
 
-✅ Use proper training/test split  
-✅ Apply regularization (Ridge, Lasso)  
-✅ Use cross-validation  
-✅ Monitor both training and validation error  
-✅ Keep model complexity balanced  
+Use proper training/test split
+Apply regularization (Ridge, Lasso)
+Use cross-validation
+Monitor both training and validation error
+Keep model complexity balanced
 
 ---
 
@@ -251,7 +251,7 @@ Cause:                Balanced complexity, learns underlying patterns
 ### Discrete Attributes
 - **Definition:** Takes non-floating point values
 - **Characteristics:** Countable, distinct values, gaps between values
-- **Example:** 
+- **Example:**
   - Number of students (5, 10, 15, not 5.5)
   - Product ratings (1, 2, 3, 4, 5)
   - Age in years (25, 26, 27)
@@ -393,7 +393,7 @@ Missing values?
 ### Step 2: Data Aggregation
 
 - **Definition:** Combine/summarize data based on common identifier
-- **Example:** 
+- **Example:**
   - Calculate total sales for each transaction ID
   - Sum monthly revenue by store
   - Average customer spending by region
@@ -407,7 +407,7 @@ Missing values?
   - Simple random sampling: Each record has equal probability
   - Stratified sampling: Sample from each group proportionally
 
-**Risk:** 
+**Risk:**
 - Too small sample → Misses patterns in original dataset
 - Too large sample → Computational inefficiency
 
@@ -449,7 +449,7 @@ Feature engineering is the art of creating or selecting features to improve mode
 
 **Goal:** Reduce number of attributes
 
-**Why:** 
+**Why:**
 - Too many features → overfitting, slow computation
 - Curse of dimensionality
 
@@ -595,10 +595,10 @@ Linear regression is a method to predict a continuous value based on one or more
 
 ### Why Linear Regression?
 
-✅ **Simple and Interpretable** - Easy to understand and explain  
-✅ **Computationally Efficient** - Fast to train and predict  
-✅ **Good Baseline** - Often works well as starting point  
-✅ **Theoretical Foundation** - Well-established math  
+**Simple and Interpretable** - Easy to understand and explain
+**Computationally Efficient** - Fast to train and predict
+**Good Baseline** - Often works well as starting point
+**Theoretical Foundation** - Well-established math
 
 ---
 
@@ -685,7 +685,7 @@ $$y = w_0 + w_1 x_1 + w_2 x_2 + ... + w_n x_n$$
 $$y = w_0 + w_1 x + w_2 x^2 + w_3 x^3 + ... + w_d x^d$$
 
 - **Characteristic:** Linear in parameters but nonlinear in input
-- **Examples:** 
+- **Examples:**
   - Degree 2: $y = 1 + 2x + 3x^2$
   - Degree 3: $y = 5 + 2x - 3x^2 + 0.5x^3$
 - **When to use:** Curved relationships, non-linear patterns
@@ -708,10 +708,10 @@ Or: $$J(\mathbf{w}) = \frac{1}{N}\sum_{n=1}^N (y_n - \hat{y}_n)^2$$ (Mean Square
 
 ### Why Least Squares?
 
-✅ Mathematically convenient (differentiable)  
-✅ Penalizes large errors more (quadratic)  
-✅ Has analytical solution  
-✅ Well-established theory  
+Mathematically convenient (differentiable)
+Penalizes large errors more (quadratic)
+Has analytical solution
+Well-established theory
 
 ### Key Notations
 
@@ -766,7 +766,7 @@ $$w_0 = 4 - 0.6(3) = 2.2$$
 
 $$\mathbf{w} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}$$
 
-**Advantages:** Direct solution, guaranteed optimal, fast for small data  
+**Advantages:** Direct solution, guaranteed optimal, fast for small data
 **Disadvantages:** Slow for large N/M, numerically unstable, memory intensive
 
 #### Method 2: Gradient Descent (Iterative)
@@ -776,7 +776,7 @@ $$w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$$
 Where:
 $$\frac{\partial J}{\partial w_j} = \frac{1}{N} \sum_{i=1}^N (h(\mathbf{x}_i) - y_i) x_j^{(i)}$$
 
-**Advantages:** Scalable to large data, memory efficient, flexible  
+**Advantages:** Scalable to large data, memory efficient, flexible
 **Disadvantages:** Needs hyperparameter tuning, many iterations, slower per iteration
 
 ---
@@ -879,11 +879,11 @@ $$\mathbf{w}_{\text{Ridge}} = (\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi}
 
 ### When to Use Ridge
 
-✅ Want to keep all features  
-✅ Model overfits  
-✅ Features are correlated  
-✅ Need stable solution  
-✅ Need fast computation  
+Want to keep all features
+Model overfits
+Features are correlated
+Need stable solution
+Need fast computation
 
 ---
 
@@ -924,7 +924,7 @@ Ridge (L2) Constraint:       Lasso (L1) Constraint:
     |  ○   ○ (circle)            | ◇◇◇
     | ○●  ○                      | ◇●◇ (diamond)
     |_____w1                      |____w1
-    
+
 Smooth (rarely zero)         Sharp corners (can be zero)
 ```
 
@@ -966,11 +966,11 @@ Must use iterative methods:
 
 ### When to Use Lasso
 
-✅ Need automatic feature selection  
-✅ Have many features, only some matter  
-✅ Want interpretable model (fewer features)  
-✅ Suspect feature redundancy  
-✅ Want sparse solution  
+Need automatic feature selection
+Have many features, only some matter
+Want interpretable model (fewer features)
+Suspect feature redundancy
+Want sparse solution
 
 ---
 
@@ -983,12 +983,12 @@ Must use iterative methods:
 | **Full Name** | Tikhonov | LASSO | Combination |
 | **Penalty** | $\lambda \sum w_j^2$ | $\lambda \sum \|w_j\|$ | Both |
 | **Weights** | Shrink, rarely zero | Can be exactly zero | Some zero |
-| **Feature Selection** | ❌ No | ✅ Yes | ✅ Yes |
-| **Closed Form** | ✅ Yes | ❌ No | ❌ No |
+| **Feature Selection** | No | Yes | Yes |
+| **Closed Form** | Yes | No | No |
 | **Speed** | ⚡ Fast | 🐢 Slow | 🐢 Slow |
-| **Multicollinearity** | ✅ Good | ⚠️ Poor | ✅ Good |
+| **Multicollinearity** | Good | Poor | Good |
 | **Sparsity** | Dense | Sparse | Sparse |
-| **Stability** | ✅ Stable | ❌ Unstable | ✅ Stable |
+| **Stability** | Stable | Unstable | Stable |
 | **Hyperparameters** | 1 ($\lambda$) | 1 ($\lambda$) | 2 ($\lambda_1$, $\lambda_2$) |
 
 ### Geometric Interpretation
@@ -1000,9 +1000,9 @@ Ridge (L2):              Lasso (L1):              Elastic Net:
   w2                       w2                       w2
   |  ○○○                   |  ◇◇◇                   |  □-○
   | ○   ○●                 | ◇●◇●                  | □   □●
-  |○     ○                 |◇   ◇                  |□  □□  
+  |○     ○                 |◇   ◇                  |□  □□
   ├───w1                   ├───w1                  ├───w1
-  
+
 Circle constraint      Diamond constraint      Combined constraint
 (smooth)              (sharp corners)         (corners + smoothness)
 ```
@@ -1015,7 +1015,7 @@ Features x₁ and x₂ highly correlated
 Ridge: w₁ = 2.5, w₂ = 2.3
 Effect: Distributes weights
 Both features kept
-Stable solution ✅
+Stable solution
 ```
 
 **Lasso with Correlated Features:**
@@ -1035,8 +1035,8 @@ As $\lambda$ increases:
 ```
 Coefficient
     |  w₁ ────────
-    | w₂  ──────── 
-    | w₃   ─────   
+    | w₂  ────────
+    | w₃   ─────
     | w₄    ────   Smooth decrease
     |__________→ λ Never reaches zero
 ```
@@ -1084,19 +1084,19 @@ $$J(\mathbf{w}) = \text{MSE} + \lambda[\alpha \sum |w_j| + (1-\alpha) \sum w_j^2
 
 | Characteristic | Elastic Net |
 |---|---|
-| **Feature Selection** | ✅ Yes (L1) |
-| **Stability** | ✅ High (L2) |
-| **Correlated Features** | ✅ Handles well |
-| **Sparse Solutions** | ✅ Yes |
+| **Feature Selection** | Yes (L1) |
+| **Stability** | High (L2) |
+| **Correlated Features** | Handles well |
+| **Sparse Solutions** | Yes |
 | **Hyperparameters** | 2 ($\lambda_1$, $\lambda_2$) |
 | **Computation** | Iterative |
 
 ### When to Use Elastic Net
 
-✅ Have many correlated features  
-✅ Want feature selection AND stability  
-✅ Need robust solution  
-✅ Unsure between Ridge and Lasso  
+Have many correlated features
+Want feature selection AND stability
+Need robust solution
+Unsure between Ridge and Lasso
 
 ### Elastic Net vs Pure Approaches
 
@@ -1209,8 +1209,8 @@ Effect: All kept (Ridge) but bedrooms weight small
             YES    NO       Regression
             /       \
         Elastic    Ridge
-        Net        
-                    
+        Net
+
 OR: Need feature
 selection?
     /      \
@@ -1222,21 +1222,21 @@ Lasso    Ridge/Elastic
 ### Selection Criteria
 
 **Use Ridge When:**
-- ✅ Want to keep all features
-- ✅ Features are correlated
-- ✅ Need stable, fast solution
-- ✅ Model overfits slightly
+- Want to keep all features
+- Features are correlated
+- Need stable, fast solution
+- Model overfits slightly
 
 **Use Lasso When:**
-- ✅ Need feature selection
-- ✅ Have many features, few matter
-- ✅ Want interpretable model
-- ✅ Suspect redundancy
+- Need feature selection
+- Have many features, few matter
+- Want interpretable model
+- Suspect redundancy
 
 **Use Elastic Net When:**
-- ✅ Have correlated features AND need selection
-- ✅ Unsure between Ridge and Lasso
-- ✅ Want robust, balanced solution
+- Have correlated features AND need selection
+- Unsure between Ridge and Lasso
+- Want robust, balanced solution
 
 ---
 
@@ -1386,8 +1386,8 @@ $$p(C_k|x) = \frac{p(x|C_k) \times p(C_k)}{p(x)}$$
 | 9.0 | 7.0 | 1 |
 | 5.0 | 7.0 | 0 |
 
-**For Job=1:** $\mu_1 = [7.5, 6.57]$, learn $\Sigma_1$  
-**For Job=0:** $\mu_2 = [5.0, 7.0]$, learn $\Sigma_2$  
+**For Job=1:** $\mu_1 = [7.5, 6.57]$, learn $\Sigma_1$
+**For Job=0:** $\mu_2 = [5.0, 7.0]$, learn $\Sigma_2$
 **Priors:** $p(\text{Job}=1) = 0.75$, $p(\text{Job}=0) = 0.25$
 
 **Challenge:** Need to estimate many parameters
@@ -1424,12 +1424,12 @@ Only need $(d+1)$ parameters (weights + bias)!
 
 | Use Generative When | Use Discriminative When |
 |---------------------|------------------------|
-| ✅ Need to generate new samples | ✅ Focus is only on classification |
-| ✅ Have missing data | ✅ Have large datasets |
-| ✅ Have strong prior knowledge about distributions | ✅ Want better performance (usually) |
-| ✅ Classes are well-separated | ✅ Limited computational resources |
-| ✅ Want to model full data distribution | ✅ Need faster training |
-| ✅ Multiple related prediction tasks | ✅ Complex decision boundaries |  
+| Need to generate new samples | Focus is only on classification |
+| Have missing data | Have large datasets |
+| Have strong prior knowledge about distributions | Want better performance (usually) |
+| Classes are well-separated | Limited computational resources |
+| Want to model full data distribution | Need faster training |
+| Multiple related prediction tasks | Complex decision boundaries |
 
 ---
 
@@ -1589,10 +1589,10 @@ $$J(w) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)} \log(h(x^{(i)})) + (1-y^{(i)}) 
 
 ### Why Cross-Entropy?
 
-✅ **Convex** - single global minimum  
-✅ **Penalizes wrong confident predictions heavily**  
-✅ Comes from **maximum likelihood estimation**  
-✅ Works well with sigmoid function  
+**Convex** - single global minimum
+**Penalizes wrong confident predictions heavily**
+Comes from **maximum likelihood estimation**
+Works well with sigmoid function
 
 ### Understanding the Penalty
 
@@ -1759,10 +1759,10 @@ Prediction: Sports
 ```
 
 **Characteristics:**
-- ✅ Simple to implement
-- ✅ Parallelizable
-- ❌ Probabilities don't sum to 1
-- ❌ Class imbalance during training
+- Simple to implement
+- Parallelizable
+- Probabilities don't sum to 1
+- Class imbalance during training
 
 ---
 
@@ -2115,22 +2115,22 @@ Result: Sparse model, feature selection
 ### Model Selection
 
 **Use Logistic Regression When:**
-✅ Need interpretable model  
-✅ Linear decision boundary works  
-✅ Want probability outputs  
-✅ Fast training needed  
-✅ Good baseline  
+Need interpretable model
+Linear decision boundary works
+Want probability outputs
+Fast training needed
+Good baseline
 
 **Use Softmax When:**
-✅ Multi-class problem (K > 2)  
-✅ Need calibrated probabilities  
-✅ Classes are mutually exclusive  
+Multi-class problem (K > 2)
+Need calibrated probabilities
+Classes are mutually exclusive
 
 **Add Regularization When:**
-✅ Model overfits training data  
-✅ Have many features  
-✅ Features are correlated (L2)  
-✅ Need feature selection (L1)  
+Model overfits training data
+Have many features
+Features are correlated (L2)
+Need feature selection (L1)
 
 ### Evaluation Metric Selection
 
@@ -2170,8 +2170,8 @@ Result: Sparse model, feature selection
 
 ---
 
-**Document Version:** Complete ML Guide with Classification  
-**Covers:** CS1 (Fundamentals), CS2 (Workflow), CS3 (Regression), CS5 (Classification)  
+**Document Version:** Complete ML Guide with Classification
+**Covers:** CS1 (Fundamentals), CS2 (Workflow), CS3 (Regression), CS5 (Classification)
 **Suitable for:** Students, Reference Material, Exam Prep
 
 **Last Updated:** Enhanced with CS5 content

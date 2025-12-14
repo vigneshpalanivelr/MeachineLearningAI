@@ -174,12 +174,12 @@ pip install --upgrade tensorflow scikit-learn numpy
 ## Results Summary
 
 All tasks completed with:
-- ✅ PCA analysis and classification
-- ✅ Linear autoencoder comparison
-- ✅ Deep convolutional architectures
-- ✅ MNIST 7-segment LED classifier
-- ✅ All visualizations and metrics
-- ✅ Embedded outputs in notebook
+- PCA analysis and classification
+- Linear autoencoder comparison
+- Deep convolutional architectures
+- MNIST 7-segment LED classifier
+- All visualizations and metrics
+- Embedded outputs in notebook
 
 ## Author
 Advanced Deep Learning - Session 3 Assignment
