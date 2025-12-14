@@ -16,7 +16,7 @@ export default function CSVUpload({ refreshGraph }) {
       form.append("file", file);
 
       console.log("Uploading CSV file:", file.name);
-      const res = await api.post("/api/upload_csv", form);
+      const res = await api.post("/upload_csv", form);
 
       console.log("Upload response:", res.data);
 
@@ -26,7 +26,7 @@ export default function CSVUpload({ refreshGraph }) {
       }
 
       alert(
-        `✅ CSV Upload Successful!\n\n` +
+        `CSV Upload Successful!\n\n` +
         `Added: ${res.data.added} relationships\n` +
         `Total Stations: ${res.data.total_stations}\n` +
         `Total Connections: ${res.data.total_connections}`
@@ -43,7 +43,7 @@ export default function CSVUpload({ refreshGraph }) {
 
     } catch (error) {
       console.error("CSV upload error:", error);
-      alert(`❌ Upload failed: ${error.response?.data?.error || error.message}`);
+      alert(`Upload failed: ${error.response?.data?.error || error.message}`);
     }
   };
 

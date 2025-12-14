@@ -16,7 +16,7 @@ export default function GraphLegend({ nodeCount, edgeCount }) {
       }}
     >
       <Typography variant="h6" gutterBottom sx={{ fontSize: 16, fontWeight: 600 }}>
-        📊 Graph Statistics
+        Graph Statistics
       </Typography>
 
       <Box sx={{ mt: 1 }}>

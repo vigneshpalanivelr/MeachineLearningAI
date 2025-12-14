@@ -15,7 +15,7 @@ export default function AddRelationForm({ refreshGraph }) {
   const [e2, setE2] = useState("");
 
   const handleAdd = async () => {
-    await api.post("/api/add", {
+    await api.post("/add_relationship", {
       entity1: e1,
       relationship: rel,
       entity2: e2,

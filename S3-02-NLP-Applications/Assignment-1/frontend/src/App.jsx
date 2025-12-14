@@ -20,14 +20,14 @@ function App() {
     try {
       setLoading(true);
       console.log("Loading full graph...");
-      const res = await api.get("/api/graph");
+      const res = await api.get("/graph");
       console.log("Graph loaded:", res.data.nodes.length, "nodes,", res.data.edges.length, "edges");
       setGraphData(res.data);
       setNodeCount(res.data.nodes.length);
       setEdgeCount(res.data.edges.length);
     } catch (error) {
       console.error("Failed to load graph:", error);
-      alert("❌ Failed to load graph. Is the backend running on port 5000?");
+      alert("Failed to load graph. Is the backend running on port 5000?");
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ function App() {
 
       setLoading(true);
       console.log(`Querying subgraph: node=${node}, radius=${radius}`);
-      const res = await api.get(`/api/graph?node=${node}&radius=${radius}`);
+      const res = await api.get(`/graph?node=${node}&radius=${radius}`);
       console.log("Subgraph result:", res.data);
 
       if (res.data.error) {
@@ -57,10 +57,10 @@ function App() {
       setGraphData(res.data);
       setNodeCount(res.data.nodes.length);
       setEdgeCount(res.data.edges.length);
-      alert(`✅ Showing ${res.data.nodes.length} stations within ${radius} stop(s) of "${res.data.nodes[0]?.label || node}"`);
+      alert(`Showing ${res.data.nodes.length} stations within ${radius} stop(s) of "${res.data.nodes[0]?.label || node}"`);
     } catch (error) {
       console.error("Subgraph query error:", error);
-      alert(`❌ Station not found: ${error.response?.data?.error || error.message}`);
+      alert(`Station not found: ${error.response?.data?.error || error.message}`);
     } finally {
       setLoading(false);
     }
@@ -75,11 +75,11 @@ function App() {
 
       setLoading(true);
       console.log(`Finding path: ${src} → ${dst}`);
-      const res = await api.get(`/api/query?type=path&src=${src}&dst=${dst}`);
+      const res = await api.get(`/paths?source=${src}&destination=${dst}`);
       console.log("Path result:", res.data);
 
       if (!res.data.path || res.data.path.length === 0) {
-        alert("❌ No path found between these stations");
+        alert("No path found between these stations");
         return;
       }
 
@@ -99,7 +99,7 @@ function App() {
       setNodeCount(nodes.length);
       setEdgeCount(edges.length);
       alert(
-        `✅ Path Found!\n\n` +
+        `Path Found!\n\n` +
         `From: ${res.data.matched.source}\n` +
         `To: ${res.data.matched.destination}\n` +
         `Stops: ${res.data.length}\n\n` +
@@ -107,7 +107,7 @@ function App() {
       );
     } catch (error) {
       console.error("Path finding error:", error);
-      alert(`❌ Error: ${error.response?.data?.error || error.message}`);
+      alert(`Error: ${error.response?.data?.error || error.message}`);
     } finally {
       setLoading(false);
     }

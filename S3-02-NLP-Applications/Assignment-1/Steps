@@ -1,6 +1,6 @@
   Good news! Your current UI IS fully capable of making all backend API calls and displaying results. Your friend implemented everything correctly. Here's the complete breakdown:
 
-  What the UI CAN Do (All Implemented ✅)
+  What the UI CAN Do (All Implemented)
 
   1. Load and Display Full Graph
   - frontend/src/App.jsx:16 - api.get("/api/graph")
@@ -167,3 +167,131 @@
   5. Create submission zip (without node_modules - should be <10MB)
 
   Your UI is ready. Just run it and verify it works! The backend APIs we added earlier match perfectly with what your friend's frontend expects.
+
+
+
+Test Cases for "Add Relationship" Feature
+
+  1. Add New Planned/Future Stations
+
+  Test adding stations that don't exist yet:
+
+  Entity 1: Saket
+  Relationship: extends_to
+  Entity 2: Saket G Block (New Station)
+
+  Entity 1: Noida City Centre
+  Relationship: connects_to
+  Entity 2: Greater Noida (Planned)
+
+  2. Add Cross-Line Connections
+
+  Connect existing stations from different lines:
+
+  Entity 1: Kashmere Gate
+  Relationship: interchange_with
+  Entity 2: Chandni Chowk
+
+  Entity 1: Rajiv Chowk
+  Relationship: walking_distance
+  Entity 2: Barakhamba Road
+
+  3. Add Nearby Landmarks/POIs
+
+  Connect stations to points of interest:
+
+  Entity 1: Chandni Chowk
+  Relationship: near
+  Entity 2: Red Fort
+
+  Entity 1: Central Secretariat
+  Relationship: serves
+  Entity 2: India Gate
+
+  Entity 1: Akshardham
+  Relationship: serves
+  Entity 2: Akshardham Temple
+
+  4. Add Metro Lines as Entities
+
+  Connect stations to their lines:
+
+  Entity 1: Rajiv Chowk
+  Relationship: on_line
+  Entity 2: Blue Line
+
+  Entity 1: Kashmere Gate
+  Relationship: interchange_between
+  Entity 2: Red Line and Yellow Line
+
+  5. Add Distance/Time Relationships
+
+  Add metadata relationships:
+
+  Entity 1: Rajiv Chowk
+  Relationship: 5_min_walk
+  Entity 2: Connaught Place
+
+  Entity 1: New Delhi Railway Station
+  Relationship: accessible_from
+  Entity 2: New Delhi Metro Station
+
+  6. Simple Test Relationships
+
+  For quick testing:
+
+  Entity 1: TestStation1
+  Relationship: test_connection
+  Entity 2: TestStation2
+
+  Entity 1: Nehru Place
+  Relationship: connects_to
+  Entity 2: Kalkaji Mandir
+
+  7. Add Airport/Railway Connections
+
+  Transport hub connections:
+
+  Entity 1: New Delhi
+  Relationship: railway_connection
+  Entity 2: New Delhi Railway Station
+
+  Entity 1: Aerocity
+  Relationship: serves
+  Entity 2: IGI Airport Terminal 3
+
+  Expected Behavior After Adding:
+
+  For each relationship added:
+  - Both entities become nodes (if they don't exist)
+  - Edge created with the relationship as label
+  - Graph refreshes automatically
+  - Legend updates: Stations count +2 (if both new), Connections count +1
+  - New nodes appear in the visualization
+
+  How to Test:
+
+  1. Start fresh: Upload delhi_metro.csv first (283 stations)
+  2. Add a relationship using the form
+  3. Check the legend: Should show 284 or 285 stations (depending on if entities are new)
+  4. Try path finding: Can you find a path to/from your new station?
+  5. Reset to full graph: Click "Reset to Full Graph" to see all nodes including new ones
+
+  Best Test Sequence:
+
+  1. Add: Rajiv Chowk → near → Connaught Place
+     (Legend: Stations: 284, Connections: 285)
+
+  2. Add: Connaught Place → walking_distance → Barakhamba Road
+     (Legend: Stations: 284, Connections: 286) [Barakhamba exists]
+
+  3. Add: TestStation → test_link → TestStation2
+     (Legend: Stations: 286, Connections: 287)
+
+  4. Query neighborhood: Search for "Connaught Place" with radius 1
+     Should show: Rajiv Chowk, Barakhamba Road
+
+  5. Find path: From "Rajiv Chowk" to "Connaught Place"
+     Should show: 1-hop path via "near" relationship
+
+  Try these out and watch the legend update in real-time! 🚇

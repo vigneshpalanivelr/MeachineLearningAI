@@ -41,11 +41,11 @@ const uploadCSV = async () => {
     const form = new FormData();
     form.append("file", file);
     const res = await api.post("/api/upload_csv", form);
-    alert("✅ Uploaded " + res.data.added + " relationships successfully!");
+    alert("Uploaded " + res.data.added + " relationships successfully!");
     setFile(null);
     refreshGraph();
   } catch (error) {
-    alert("❌ Upload failed: " + error.message);
+    alert("Upload failed: " + error.message);
   }
 };
 ```
@@ -104,7 +104,7 @@ const showPath = async (src, dst) => {
       });
     }
     setGraphData({ nodes, edges });
-    alert(`✅ Found path with ${res.data.path.length - 1} stops`);
+    alert(`Found path with ${res.data.path.length - 1} stops`);
   } catch (error) {
     alert("Error finding path: " + error.message);
   }
@@ -148,6 +148,6 @@ const loadGraph = async () => {
 These improvements are OPTIONAL. Your current code works fine for the assignment.
 
 **Recommended Action:**
-1. ✅ Test the application AS-IS first
-2. ✅ If everything works, leave it as-is
-3. ⚠️ Only add error handling if you encounter issues during testing
+1. Test the application AS-IS first
+2. If everything works, leave it as-is
+3. Only add error handling if you encounter issues during testing
