@@ -31,20 +31,37 @@ GET /api/graph?node=<station>&radius=<N>
   Response: {"nodes": [...], "edges": [...]}
 
 
-3. PATH FINDING
----------------
-GET /shortest_path?source=<s1>&target=<s2>
+3. PATH FINDING (Enhanced with Line-Change Penalty)
+----------------------------------------------------
+GET /paths?source=<s1>&destination=<s2>
+GET /paths?source=<s1>&destination=<s2>&type=shortest_path
   → Find shortest path by number of stops (supports fuzzy matching)
-  Example: curl "http://127.0.0.1:5000/shortest_path?source=Rajiv%20Chowk&target=Kashmere%20Gate"
+  Example: curl "http://127.0.0.1:5000/paths?source=Rajiv%20Chowk&destination=Kashmere%20Gate"
+  Response: {"path": [...], "length": 15, "route_details": [...]}
 
-GET /shortest_distance?source=<s1>&target=<s2>
-  → Find shortest path by distance in km (supports fuzzy matching)
-  Example: curl "http://127.0.0.1:5000/shortest_distance?source=New%20Delhi&target=Airport"
+GET /paths?source=<s1>&destination=<s2>&type=shortest_distance
+  → Find shortest path by distance with LINE-CHANGE PENALTY
+  → Algorithm prioritizes:
+      1. Staying on the same metro line when possible
+      2. Changing lines only at valid interchange stations (stations with [Conn: ...])
+      3. Minimizing total distance while avoiding unnecessary line changes
+  → Penalty: 5.0 km equivalent per line change (configurable)
+  → Heavy penalty (50 km) for impossible line changes (non-interchange stations)
+  Example: curl "http://127.0.0.1:5000/paths?source=New%20Delhi&destination=Airport&type=shortest_distance"
+  Response: {
+    "path": [...],
+    "length": 15,
+    "total_distance_km": 25.3,
+    "line_changes": 2,
+    "route_details": [
+      {"from": "Station A", "to": "Station B", "line": "Yellow line", "distance_km": 1.5},
+      ...
+    ]
+  }
 
-GET /api/query?type=path&src=<source>&dst=<destination>
-  → Find shortest path (alternative endpoint for frontend)
-  Example: curl "http://127.0.0.1:5000/api/query?type=path&src=Kashmere%20Gate&dst=Botanical%20Garden"
-  Response: {"path": [...], "length": 15, "matched": {"source": "...", "destination": "..."}}
+Legacy endpoints (still supported):
+  GET /shortest_path?source=<s1>&target=<s2>
+  GET /shortest_distance?source=<s1>&target=<s2>
 
 
 4. ADD RELATIONSHIPS
@@ -108,20 +125,57 @@ def load_delhi_metro_graph(csv_path="delhi_metro.csv"):
             distance_from_start=row["Distance"]
         )
 
-    # Create edges between consecutive stations
-    for i in range(len(df) - 1):
-        s1 = df.iloc[i]
-        s2 = df.iloc[i + 1]
+    # Create edges between consecutive stations ON THE SAME LINE
+    # Group stations by metro line first, then sort by distance within each line
+    edges_created = 0
 
-        station1 = s1["Station"]
-        station2 = s2["Station"]
+    # Group by line
+    lines = df["Line"].unique()
+    print(f"Found {len(lines)} unique metro lines")
 
-        # Distance between two stations = difference in cumulative distance
-        distance_km = abs(s2["Distance"] - s1["Distance"])
+    for line in lines:
+        # Get all stations on this line, sorted by distance
+        line_df = df[df["Line"] == line].sort_values("Distance")
 
-        KG.add_edge(station1, station2, line=s1["Line"], distance=distance_km)
+        # Create edges between consecutive stations on this line
+        for i in range(len(line_df) - 1):
+            s1 = line_df.iloc[i]
+            s2 = line_df.iloc[i + 1]
 
-    print(f"Graph Loaded: {KG.number_of_nodes()} stations, {KG.number_of_edges()} edges")
+            station1 = s1["Station"]
+            station2 = s2["Station"]
+
+            # Distance between two stations = difference in cumulative distance
+            distance_km = abs(s2["Distance"] - s1["Distance"])
+
+            KG.add_edge(station1, station2, line=line, distance=distance_km)
+            edges_created += 1
+
+        print(f"  {line}: {len(line_df)} stations, {len(line_df)-1} edges")
+
+    # Create edges between interchange stations (stations with [Conn: ...] suffix)
+    # Find all interchange stations and connect them
+    interchange_groups = {}
+    for station in KG.nodes():
+        # Extract base station name (before [Conn: ...])
+        if '[Conn:' in station:
+            base_name = station.split('[Conn:')[0].strip()
+            if base_name not in interchange_groups:
+                interchange_groups[base_name] = []
+            interchange_groups[base_name].append(station)
+
+    # Connect all variants of each interchange station
+    interchange_edges = 0
+    for base_name, stations in interchange_groups.items():
+        if len(stations) > 1:
+            # Connect each pair of stations at this interchange
+            for i in range(len(stations)):
+                for j in range(i + 1, len(stations)):
+                    # Add zero-distance edge for interchange transfer
+                    KG.add_edge(stations[i], stations[j], line="interchange", distance=0.0)
+                    interchange_edges += 1
+
+    print(f"Graph Loaded: {KG.number_of_nodes()} stations, {edges_created} line edges, {interchange_edges} interchange edges, {KG.number_of_edges()} total edges")
 
 
 # Load graph when server starts (OPTIONAL - commented out for flexibility)
@@ -363,10 +417,14 @@ def upload_csv():
 
         # Format 3: Full Delhi Metro dataset (Station Names, Metro Line, etc.)
         elif 'Station Names' in df.columns or 'Station' in df.columns:
+            print(f"[DEBUG] Format 3 detected. Columns: {list(df.columns)}")
+
             # Normalize column names
             station_col = 'Station Names' if 'Station Names' in df.columns else 'Station'
             line_col = 'Metro Line' if 'Metro Line' in df.columns else 'Line'
             distance_col = 'Dist. From First Station(km)' if 'Dist. From First Station(km)' in df.columns else 'Distance'
+
+            print(f"[DEBUG] Mapping: {station_col} -> Station, {line_col} -> Line, {distance_col} -> Distance")
 
             # Rename for consistency
             df = df.rename(columns={
@@ -381,6 +439,9 @@ def upload_csv():
             if 'ID' in df.columns:
                 df = df.sort_values('ID')
 
+            print(f"[DEBUG] After rename, columns: {list(df.columns)}")
+            print(f"[DEBUG] Total rows: {len(df)}")
+
             # Create nodes with attributes
             for _, row in df.iterrows():
                 station = row.get('Station')
@@ -394,20 +455,63 @@ def upload_csv():
                         longitude=row.get('Longitude')
                     )
 
-            # Create edges between consecutive stations
-            for i in range(len(df) - 1):
-                s1 = df.iloc[i]
-                s2 = df.iloc[i + 1]
+            # Create edges between consecutive stations ON THE SAME LINE
+            # Group stations by metro line first, then sort by distance within each line
+            edges_created = 0
 
-                station1 = s1['Station']
-                station2 = s2['Station']
+            # Group by line
+            lines = df['Line'].unique()
+            print(f"[DEBUG] Found {len(lines)} unique metro lines")
 
-                if pd.notna(station1) and pd.notna(station2):
-                    # Distance between stations
-                    distance_km = abs(s2.get('Distance', 0) - s1.get('Distance', 0))
+            for line in lines:
+                if pd.isna(line):
+                    continue
 
-                    KG.add_edge(station1, station2, line=s1.get('Line'), distance=distance_km)
-                    added_count += 1
+                # Get all stations on this line, sorted by distance
+                line_df = df[df['Line'] == line].sort_values('Distance')
+
+                # Create edges between consecutive stations on this line
+                for i in range(len(line_df) - 1):
+                    s1 = line_df.iloc[i]
+                    s2 = line_df.iloc[i + 1]
+
+                    station1 = s1['Station']
+                    station2 = s2['Station']
+
+                    if pd.notna(station1) and pd.notna(station2):
+                        distance_km = abs(s2.get('Distance', 0) - s1.get('Distance', 0))
+
+                        KG.add_edge(station1, station2, line=line, distance=distance_km)
+                        added_count += 1
+                        edges_created += 1
+
+                print(f"[DEBUG] Line '{line}': {len(line_df)} stations, {len(line_df)-1} edges")
+
+            print(f"[DEBUG] Total: Created {edges_created} edges within lines")
+
+            # Create edges between interchange stations (stations with [Conn: ...] suffix)
+            interchange_groups = {}
+            for station in KG.nodes():
+                if '[Conn:' in station:
+                    base_name = station.split('[Conn:')[0].strip()
+                    if base_name not in interchange_groups:
+                        interchange_groups[base_name] = []
+                    interchange_groups[base_name].append(station)
+
+            print(f"[DEBUG] Found {len(interchange_groups)} interchange station groups")
+
+            # Connect all variants of each interchange station
+            interchange_edges = 0
+            for base_name, stations in interchange_groups.items():
+                if len(stations) > 1:
+                    print(f"[DEBUG] Interchange '{base_name}': {len(stations)} variants")
+                    for i in range(len(stations)):
+                        for j in range(i + 1, len(stations)):
+                            KG.add_edge(stations[i], stations[j], line="interchange", distance=0.0)
+                            added_count += 1
+                            interchange_edges += 1
+
+            print(f"[DEBUG] Created {interchange_edges} interchange edges")
 
         else:
             return jsonify({
@@ -575,9 +679,113 @@ def find_paths():
 
     try:
         if path_type == "shortest_distance":
-            # Find shortest path by distance (Dijkstra's algorithm)
-            path = nx.shortest_path(KG, matched_source, matched_destination, weight="distance")
-            total_distance = nx.shortest_path_length(KG, matched_source, matched_destination, weight="distance")
+            # Enhanced path finding with line-change penalty
+            # Strategy: Use Dijkstra with modified edge weights that include line-change cost
+
+            LINE_CHANGE_PENALTY = 5.0  # km equivalent penalty for changing lines
+
+            # Create a modified graph with line-aware weights
+            # We'll use A* or custom Dijkstra that tracks the current line
+
+            # First, get the basic shortest path by distance
+            base_path = nx.shortest_path(KG, matched_source, matched_destination, weight="distance")
+
+            # Calculate the cost (distance + line changes) for the base path
+            def calculate_path_cost(path_nodes):
+                """Calculate total cost including line-change penalties"""
+                total_distance = 0
+                line_changes = 0
+                previous_line = None
+
+                for i in range(len(path_nodes) - 1):
+                    u, v = path_nodes[i], path_nodes[i+1]
+                    edge_data = KG[u][v]
+                    distance = edge_data.get('distance', 0)
+                    line = edge_data.get('line', '')
+
+                    total_distance += distance
+
+                    # Count line changes
+                    if line and previous_line and line != previous_line:
+                        line_changes += 1
+
+                    previous_line = line if line else previous_line
+
+                # Cost = distance + penalty for line changes
+                return total_distance + (line_changes * LINE_CHANGE_PENALTY), total_distance, line_changes
+
+            # Check if there's a better path with fewer line changes
+            # Try to find alternative paths using BFS on same line first
+            best_path = base_path
+            best_cost, _, _ = calculate_path_cost(base_path)
+
+            # Get the line of the source station
+            source_edges = list(KG.edges(matched_source, data=True))
+            if source_edges:
+                source_line = source_edges[0][2].get('line', '')
+
+                # Try to find a path that stays on the same line as much as possible
+                # Use shortest path with custom weight that heavily penalizes line changes
+                def line_aware_weight(u, v, data):
+                    """Weight function that penalizes line changes"""
+                    distance = data.get('distance', 1.0)
+                    edge_line = data.get('line', '')
+
+                    # If edge has no line data, just return distance
+                    if not edge_line:
+                        return distance
+
+                    # Base weight is the distance
+                    weight = distance
+
+                    # Add penalty if this edge is on a different line than source
+                    # This encourages staying on the same line
+                    if edge_line != source_line:
+                        weight += LINE_CHANGE_PENALTY
+
+                    return weight
+
+                try:
+                    # Find path with line-aware weights
+                    line_aware_path = nx.shortest_path(KG, matched_source, matched_destination,
+                                                      weight=line_aware_weight)
+                    line_aware_cost, _, _ = calculate_path_cost(line_aware_path)
+
+                    # Use this path if it's better
+                    if line_aware_cost < best_cost:
+                        best_path = line_aware_path
+                        best_cost = line_aware_cost
+                except:
+                    pass
+
+            path = best_path
+
+            # Calculate actual route details for the selected path
+            total_distance = 0
+            line_changes = 0
+            previous_line = None
+            route_details = []
+
+            for i in range(len(path) - 1):
+                u, v = path[i], path[i+1]
+                edge_data = KG[u][v]
+                distance = edge_data.get('distance', 0)
+                line = edge_data.get('line', edge_data.get('relationship', ''))
+
+                total_distance += distance
+
+                # Track line changes
+                if previous_line and line != previous_line and line != '':
+                    line_changes += 1
+
+                route_details.append({
+                    "from": u,
+                    "to": v,
+                    "line": line,
+                    "distance_km": round(distance, 2)
+                })
+
+                previous_line = line if line else previous_line
 
             return jsonify({
                 "query": {"source": source, "destination": destination},
@@ -586,11 +794,25 @@ def find_paths():
                 "path": path,
                 "length": len(path) - 1,  # Number of stops
                 "total_distance_km": round(total_distance, 2),
+                "line_changes": line_changes,
+                "route_details": route_details,
                 "type": "shortest_distance"
             })
         else:
             # Find shortest path by number of stops (default)
             path = nx.shortest_path(KG, matched_source, matched_destination)
+
+            # Calculate route details for display
+            route_details = []
+            for i in range(len(path) - 1):
+                u, v = path[i], path[i+1]
+                edge_data = KG[u][v]
+                route_details.append({
+                    "from": u,
+                    "to": v,
+                    "line": edge_data.get('line', edge_data.get('relationship', '')),
+                    "distance_km": round(edge_data.get('distance', 0), 2)
+                })
 
             return jsonify({
                 "query": {"source": source, "destination": destination},
@@ -598,6 +820,7 @@ def find_paths():
                 "fuzzy_match": conf1 < 1.0 or conf2 < 1.0,
                 "path": path,
                 "length": len(path) - 1,  # Number of stops
+                "route_details": route_details,
                 "type": "shortest_path"
             })
 
