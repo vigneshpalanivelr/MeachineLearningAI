@@ -106,8 +106,15 @@ def load_delhi_metro_graph(csv_path="delhi_metro.csv"):
     print(f"Graph Loaded: {KG.number_of_nodes()} stations, {KG.number_of_edges()} edges")
 
 
-# Load graph when server starts
-load_delhi_metro_graph()
+# Load graph when server starts (OPTIONAL - commented out for flexibility)
+# Uncomment the line below to auto-load delhi_metro.csv on startup
+# load_delhi_metro_graph()
+
+# By default, server starts with an empty graph.
+# You can upload delhi_metro.csv (or any CSV) via the UI after starting the server.
+print("🚇 Delhi Metro Knowledge Graph API Started")
+print(f"📊 Current Graph: {KG.number_of_nodes()} stations, {KG.number_of_edges()} edges")
+print("💡 Upload delhi_metro.csv via the UI to load the full metro network")
 
 
 # Helper function for fuzzy station matching
@@ -632,13 +639,63 @@ def upload_csv_api():
                     KG.add_edge(entity1, entity2, relationship=relationship, line=relationship)
                     added_count += 1
 
+        # Format 3: Full Delhi Metro dataset (Station Names, Metro Line, etc.)
+        elif 'Station Names' in df.columns or 'Station' in df.columns:
+            # Normalize column names
+            station_col = 'Station Names' if 'Station Names' in df.columns else 'Station'
+            line_col = 'Metro Line' if 'Metro Line' in df.columns else 'Line'
+            distance_col = 'Dist. From First Station(km)' if 'Dist. From First Station(km)' in df.columns else 'Distance'
+
+            # Rename for consistency
+            df = df.rename(columns={
+                station_col: 'Station',
+                line_col: 'Line',
+                distance_col: 'Distance'
+            })
+
+            # Sort by ID to ensure correct order
+            if 'ID (Station ID)' in df.columns:
+                df = df.rename(columns={'ID (Station ID)': 'ID'})
+            if 'ID' in df.columns:
+                df = df.sort_values('ID')
+
+            # Create nodes with attributes
+            for _, row in df.iterrows():
+                station = row.get('Station')
+                if pd.notna(station):
+                    KG.add_node(
+                        station,
+                        line=row.get('Line'),
+                        opened=row.get('Opened(Year)') or row.get('Opened'),
+                        layout=row.get('Layout'),
+                        latitude=row.get('Latitude'),
+                        longitude=row.get('Longitude')
+                    )
+
+            # Create edges between consecutive stations
+            for i in range(len(df) - 1):
+                s1 = df.iloc[i]
+                s2 = df.iloc[i + 1]
+
+                station1 = s1['Station']
+                station2 = s2['Station']
+
+                if pd.notna(station1) and pd.notna(station2):
+                    # Distance between stations
+                    distance_km = abs(s2.get('Distance', 0) - s1.get('Distance', 0))
+
+                    KG.add_edge(station1, station2, line=s1.get('Line'), distance=distance_km)
+                    added_count += 1
+
         else:
             return jsonify({
                 "error": "Invalid CSV format",
                 "expected_formats": [
                     "Format 1: source,target,line,distance",
-                    "Format 2: entity1,relationship,entity2"
-                ]
+                    "Format 2: entity1,relationship,entity2",
+                    "Format 3: Station Names,Metro Line,... (Delhi Metro dataset)"
+                ],
+                "found_columns": list(df.columns)
             }), 400
 
         return jsonify({

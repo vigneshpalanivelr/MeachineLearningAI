@@ -8,10 +8,13 @@ import AddRelationForm from "./components/AddRelationForm";
 import CSVUpload from "./components/CSVUpload";
 import QueryPanel from "./components/QueryPanel";
 import GraphView from "./components/GraphView";
+import GraphLegend from "./components/GraphLegend";
 
 function App() {
   const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
   const [loading, setLoading] = useState(false);
+  const [nodeCount, setNodeCount] = useState(0);
+  const [edgeCount, setEdgeCount] = useState(0);
 
   const loadGraph = async () => {
     try {
@@ -20,6 +23,8 @@ function App() {
       const res = await api.get("/api/graph");
       console.log("Graph loaded:", res.data.nodes.length, "nodes,", res.data.edges.length, "edges");
       setGraphData(res.data);
+      setNodeCount(res.data.nodes.length);
+      setEdgeCount(res.data.edges.length);
     } catch (error) {
       console.error("Failed to load graph:", error);
       alert("❌ Failed to load graph. Is the backend running on port 5000?");
@@ -50,6 +55,8 @@ function App() {
       }
 
       setGraphData(res.data);
+      setNodeCount(res.data.nodes.length);
+      setEdgeCount(res.data.edges.length);
       alert(`✅ Showing ${res.data.nodes.length} stations within ${radius} stop(s) of "${res.data.nodes[0]?.label || node}"`);
     } catch (error) {
       console.error("Subgraph query error:", error);
@@ -89,6 +96,8 @@ function App() {
       }
 
       setGraphData({ nodes, edges });
+      setNodeCount(nodes.length);
+      setEdgeCount(edges.length);
       alert(
         `✅ Path Found!\n\n` +
         `From: ${res.data.matched.source}\n` +
@@ -128,8 +137,9 @@ function App() {
             />
           </Grid>
 
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
             <GraphView graphData={graphData} />
+            <GraphLegend nodeCount={nodeCount} edgeCount={edgeCount} />
           </Grid>
         </Grid>
       </Container>
