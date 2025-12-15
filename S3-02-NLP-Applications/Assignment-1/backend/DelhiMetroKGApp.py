@@ -31,7 +31,7 @@ GET /api/graph?node=<station>&radius=<N>
   Response: {"nodes": [...], "edges": [...]}
 
 
-3. PATH FINDING (Enhanced with Line-Change Penalty)
+3. PATH FINDING
 ----------------------------------------------------
 GET /paths?source=<s1>&destination=<s2>
 GET /paths?source=<s1>&destination=<s2>&type=shortest_path
@@ -86,8 +86,6 @@ USAGE WITH FRONTEND:
 Start backend:  cd backend && python3 DelhiMetroKGApp.py
 Start frontend: cd frontend && npm start
 Access UI:      http://localhost:3000
-
-The React frontend uses /api/* endpoints for all operations.
 """
 
 from flask import Flask, request, jsonify
@@ -178,7 +176,7 @@ def load_delhi_metro_graph(csv_path="delhi_metro.csv"):
     print(f"Graph Loaded: {KG.number_of_nodes()} stations, {edges_created} line edges, {interchange_edges} interchange edges, {KG.number_of_edges()} total edges")
 
 
-# Load graph when server starts (OPTIONAL - commented out for flexibility)
+# Load graph when server starts
 # Uncomment the line below to auto-load delhi_metro.csv on startup
 # load_delhi_metro_graph()
 

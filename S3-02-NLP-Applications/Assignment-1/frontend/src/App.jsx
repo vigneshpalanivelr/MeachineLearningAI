@@ -84,27 +84,56 @@ function App() {
       }
 
       const nodes = res.data.path.map((n) => ({ id: n, label: n }));
+
+      // Use route_details from backend to get actual line names
       const edges = [];
-      for (let i = 0; i < res.data.path.length - 1; i++) {
-        edges.push({
-          from: res.data.path[i],
-          to: res.data.path[i + 1],
-          label: "path",
-          color: { color: "#4caf50" },
-          width: 3,
+      if (res.data.route_details && res.data.route_details.length > 0) {
+        // Use detailed route information with actual line names
+        res.data.route_details.forEach((segment) => {
+          edges.push({
+            from: segment.from,
+            to: segment.to,
+            label: segment.line || "path",  // Use actual line name
+            title: `${segment.line || "path"} - ${segment.distance_km} km`,
+            color: {
+              color: segment.line === "interchange" ? "#FF9800" : "#4caf50"
+            },
+            width: 3,
+          });
         });
+      } else {
+        // Fallback: create edges from path array
+        for (let i = 0; i < res.data.path.length - 1; i++) {
+          edges.push({
+            from: res.data.path[i],
+            to: res.data.path[i + 1],
+            label: "path",
+            color: { color: "#4caf50" },
+            width: 3,
+          });
+        }
       }
 
       setGraphData({ nodes, edges });
       setNodeCount(nodes.length);
       setEdgeCount(edges.length);
-      alert(
-        `Path Found!\n\n` +
+
+      // Enhanced alert with line change information
+      let alertMsg = `Path Found!\n\n` +
         `From: ${res.data.matched.source}\n` +
         `To: ${res.data.matched.destination}\n` +
-        `Stops: ${res.data.length}\n\n` +
-        `Route: ${res.data.path.join(" → ")}`
-      );
+        `Stops: ${res.data.length}\n`;
+
+      if (res.data.line_changes !== undefined) {
+        alertMsg += `Line Changes: ${res.data.line_changes}\n`;
+      }
+      if (res.data.total_distance_km !== undefined) {
+        alertMsg += `Total Distance: ${res.data.total_distance_km} km\n`;
+      }
+
+      alertMsg += `\nRoute: ${res.data.path.join(" → ")}`;
+
+      alert(alertMsg);
     } catch (error) {
       console.error("Path finding error:", error);
       alert(`Error: ${error.response?.data?.error || error.message}`);
