@@ -21,48 +21,51 @@
       - [**1. Step Edge (Ideal Edge)**](#1-step-edge-ideal-edge)
       - [**2. Ramp Edge (Gradual Edge)**](#2-ramp-edge-gradual-edge)
       - [**3. Roof Edge (Ridge)**](#3-roof-edge-ridge)
-  - [4.2 Mathematical Foundation of Edge Detection](#42-mathematical-foundation-of-edge-detection)
-    - [4.2.1 Image Gradients](#421-image-gradients)
-    - [Understanding 3×3 Neighborhoods - Complete Tutorial (from PDF pages 31-37)](#understanding-33-neighborhoods---complete-tutorial-from-pdf-pages-31-37)
-    - [Two Methods for Gradient Calculation (from PDF pages 54-61)](#two-methods-for-gradient-calculation-from-pdf-pages-54-61)
-    - [Complete Numerical Example: All Methods on Same Pattern](#complete-numerical-example-all-methods-on-same-pattern)
-    - [Enhanced Section 4.2.1 - Complete Numerical Examples](#enhanced-section-421---complete-numerical-examples)
-    - [4.2.2 First-Order Derivatives](#422-first-order-derivatives)
-    - [4.2.3 Second-Order Derivatives](#423-second-order-derivatives)
-    - [4.2.4 Effect of Noise on Edge Detection](#424-effect-of-noise-on-edge-detection)
-  - [4.3 Gradient-Based Edge Detectors](#43-gradient-based-edge-detectors)
-    - [Understanding Gradient Direction and Quadrant Adjustments](#understanding-gradient-direction-and-quadrant-adjustments)
-    - [Complete Worked Example with Quadrant Adjustment (from PDF pages 27-30)](#complete-worked-example-with-quadrant-adjustment-from-pdf-pages-27-30)
-    - [Additional Numerical Example: Horizontal Edge Pattern](#additional-numerical-example-horizontal-edge-pattern)
-    - [Additional Example: Different Noise Scenarios](#additional-example-different-noise-scenarios)
-    - [Boundary Pixel Cases](#boundary-pixel-cases)
-    - [Complete Comparison: All Patterns and Methods](#complete-comparison-all-patterns-and-methods)
-    - [4.3.1 Roberts Cross Operator](#431-roberts-cross-operator)
-    - [4.3.2 Prewitt Operator](#432-prewitt-operator)
-    - [Mathematical Intuition: Why Prewitt and Sobel Work Better](#mathematical-intuition-why-prewitt-and-sobel-work-better)
-    - [4.3.3 Sobel Operator](#433-sobel-operator)
-    - [4.3.4 Comparison: Roberts vs Prewitt vs Sobel](#434-comparison-roberts-vs-prewitt-vs-sobel)
-  - [4.4 Second-Order Edge Detection](#44-second-order-edge-detection)
-    - [4.4.1 Laplacian Operator](#441-laplacian-operator)
-    - [4.4.2 Laplacian of Gaussian (LoG)](#442-laplacian-of-gaussian-log)
-  - [4.5 Canny Edge Detection Algorithm](#45-canny-edge-detection-algorithm)
-    - [4.5.1 Overview and Motivation](#451-overview-and-motivation)
-    - [4.5.2 Step 1: Gaussian Smoothing](#452-step-1-gaussian-smoothing)
-    - [4.5.3 Step 2: Gradient Computation](#453-step-2-gradient-computation)
-    - [4.5.4 Step 3: Non-Maximum Suppression](#454-step-3-non-maximum-suppression)
-    - [4.5.5 Step 4: Double Thresholding](#455-step-4-double-thresholding)
-    - [4.5.6 Step 5: Edge Tracking by Hysteresis](#456-step-5-edge-tracking-by-hysteresis)
-    - [4.5.7 Complete Numerical Example](#457-complete-numerical-example)
-    - [4.5.8 Parameter Selection Guidelines](#458-parameter-selection-guidelines)
-  - [4.6 Hough Transform for Line Detection](#46-hough-transform-for-line-detection)
-    - [4.6.1 The Line Detection Problem](#461-the-line-detection-problem)
-    - [4.6.2 Parameter Space Representation](#462-parameter-space-representation)
-    - [4.6.3 Hough Transform Algorithm](#463-hough-transform-algorithm)
-    - [4.6.4 Complete Numerical Example](#464-complete-numerical-example)
+  - [4.2 Edge Detection Approach](#42-edge-detection-approach)
+    - [4.2.1 The Standard 3-Step Pipeline](#421-the-standard-3-step-pipeline)
+    - [4.2.2 Performance Requirements for Good Edge Detection](#422-performance-requirements-for-good-edge-detection)
+  - [4.3 Mathematical Foundation of Edge Detection](#43-mathematical-foundation-of-edge-detection)
+    - [4.3.1 Image Gradients](#431-image-gradients)
+      - [Understanding 3x3 Neighborhoods - Complete Tutorial](#understanding-3x3-neighborhoods---complete-tutorial)
+      - [Two Methods for Gradient Calculation](#two-methods-for-gradient-calculation)
+      - [Complete Numerical Example: All Methods on Same Pattern](#complete-numerical-example-all-methods-on-same-pattern)
+      - [Enhanced Section 4.3.1 - Complete Numerical Examples](#enhanced-section-431---complete-numerical-examples)
+    - [4.3.2 First-Order Derivatives](#432-first-order-derivatives)
+    - [4.3.3 Second-Order Derivatives](#433-second-order-derivatives)
+    - [4.3.4 Effect of Noise on Edge Detection](#434-effect-of-noise-on-edge-detection)
+  - [4.4 Gradient-Based Edge Detectors](#44-gradient-based-edge-detectors)
+    - [4.4.1 Gradient Calculation Fundamentals](#441-gradient-calculation-fundamentals)
+      - [Understanding Gradient Direction and Quadrant Adjustments](#understanding-gradient-direction-and-quadrant-adjustments)
+      - [Complete Worked Example with Quadrant Adjustment](#complete-worked-example-with-quadrant-adjustment)
+      - [Additional Numerical Example: Horizontal Edge Pattern](#additional-numerical-example-horizontal-edge-pattern)
+      - [Additional Example: Different Noise Scenarios](#additional-example-different-noise-scenarios)
+      - [Boundary Pixel Cases](#boundary-pixel-cases)
+      - [Complete Comparison: All Patterns and Methods](#complete-comparison-all-patterns-and-methods)
+    - [4.4.2 Roberts Cross Operator](#442-roberts-cross-operator)
+    - [4.4.3 Prewitt Operator](#443-prewitt-operator)
+    - [4.4.4 Sobel Operator](#444-sobel-operator)
+    - [4.4.5 Comparison: Roberts vs Prewitt vs Sobel](#445-comparison-roberts-vs-prewitt-vs-sobel)
+    - [4.4.6 Practical Operator Selection Guide](#446-practical-operator-selection-guide)
+  - [4.5 Second-Order Edge Detection](#45-second-order-edge-detection)
+    - [4.5.1 Laplacian Operator](#451-laplacian-operator)
+    - [4.5.2 Laplacian of Gaussian (LoG)](#452-laplacian-of-gaussian-log)
+  - [4.6 Canny Edge Detection Algorithm](#46-canny-edge-detection-algorithm)
+    - [4.6.1 Overview and Motivation](#461-overview-and-motivation)
+    - [4.6.2 Step 1: Gaussian Smoothing](#462-step-1-gaussian-smoothing)
+    - [4.6.3 Step 2: Gradient Computation](#463-step-2-gradient-computation)
+    - [4.6.4 Step 3: Non-Maximum Suppression](#464-step-3-non-maximum-suppression)
+    - [4.6.5 Step 4: Double Thresholding](#465-step-4-double-thresholding)
+    - [4.6.6 Step 5: Edge Tracking by Hysteresis](#466-step-5-edge-tracking-by-hysteresis)
+    - [4.6.7 Complete Numerical Example](#467-complete-numerical-example)
+    - [4.6.8 Parameter Selection Guidelines](#468-parameter-selection-guidelines)
+  - [4.7 Hough Transform for Line Detection](#47-hough-transform-for-line-detection)
+    - [4.7.1 The Line Detection Problem](#471-the-line-detection-problem)
+    - [4.7.2 Parameter Space Representation](#472-parameter-space-representation)
+    - [4.7.3 Hough Transform Algorithm](#473-hough-transform-algorithm)
+    - [4.7.4 Complete Numerical Example](#474-complete-numerical-example)
     - [ENHANCED VISUAL EXPLANATIONS FOR HOUGH TRANSFORM](#enhanced-visual-explanations-for-hough-transform)
-    - [4.6.4 Complete Numerical Example](#464-complete-numerical-example-1)
-    - [4.6.5 Practical Considerations](#465-practical-considerations)
-    - [4.6.6 Extensions: Circle and Generalized Hough Transform](#466-extensions-circle-and-generalized-hough-transform)
+    - [4.7.5 Practical Considerations](#475-practical-considerations)
+    - [4.7.6 Extensions: Circle and Generalized Hough Transform](#476-extensions-circle-and-generalized-hough-transform)
   - [Industry Applications \& Case Studies](#industry-applications--case-studies)
     - [Real-World Implementations](#real-world-implementations)
   - [Flashcards for Quick Revision](#flashcards-for-quick-revision)
@@ -75,7 +78,7 @@
 
 | Category | Resource | Description |
 |----------|----------|-------------|
-| **Textbook** | Gonzalez & Woods, Chapter 10 | Edge Detection (Pages 714-750) |
+| **Textbook** | Gonzalez & Woods, Chapter 10 | Edge Detection |
 | **Textbook** | Gonzalez & Woods, Pages 737-742 | Hough Transform |
 | **OpenCV Docs** | [Canny Edge Detection](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html) | Implementation guide |
 | **OpenCV Docs** | [Hough Line Transform](https://docs.opencv.org/4.x/d9/db0/tutorial_hough_lines.html) | Line detection tutorial |
@@ -218,7 +221,7 @@ Edges in images are caused by four primary physical factors:
 │                                 │    ╱  ╲                         │
 │     Object                      │   ╱    ╲     Intensity Profile  │
 │     ████████                    │  ╱      ╲                       │
-│     ████████   ←─               │ ╱        ╲      ╱╲ (roof)      │
+│     ████████   ←─               │ ╱        ╲      ╱╲ (roof)       │
 │                Gap              │                                 │
 │     Background                  │  Common in: cube corners,       │
 │     ────────                    │  curved surfaces                │
@@ -235,12 +238,12 @@ Edges in images are caused by four primary physical factors:
 │  REFLECTANCE CHANGE             │  ILLUMINATION (SHADOW)          │
 │                                 │                                 │
 │  White Paint | Black Paint      │      Light Source               │
-│  ████████████|▓▓▓▓▓▓▓▓▓▓▓▓      │          ☀                     │
+│  ████████████|▓▓▓▓▓▓▓▓▓▓▓▓      │          ☀                      │
 │              ↑                  │           ↓                     │
-│          Sharp edge             │      ┌───┐                     │
-│                                 │      │Obj│    ← Casts shadow   │
-│  Intensity Profile:             │      └───┘                     │
-│  High ████████|                 │      ╱╱╱╱╱   ← Shadow boundary │
+│          Sharp edge             │      ┌───┐                      │
+│                                 │      │Obj│    ← Casts shadow    │
+│  Intensity Profile:             │      └───┘                      │
+│  High ████████|                 │      ╱╱╱╱╱   ← Shadow boundary  │
 │              |                  │                                 │
 │              |▓▓▓▓▓▓▓▓          │  Intensity Profile:             │
 │   Low        |                  │  High ────────╲                 │
@@ -371,16 +374,124 @@ Roof Base: 3-6 pixels (typical)
 | **Real-World** | Rare (ideal case) | Most common | Lines, vessels |
 | **Detection** | Easy (high contrast) | Moderate | Challenging |
 
-## 4.2 Mathematical Foundation of Edge Detection
+---
 
-### 4.2.1 Image Gradients
+## 4.2 Edge Detection Approach
+
+Edge detection is a **multi-step process** that transforms a raw image into a set of edge points. Understanding this systematic approach is crucial for implementing and debugging edge detection algorithms.
+
+### 4.2.1 The Standard 3-Step Pipeline
+
+The edge detection process follows three main steps:
+
+```mermaid
+graph LR
+    A[Raw Image] --> B[Step 1: Smoothing]
+    B --> C[Step 2: Edge Detection]
+    C --> D[Step 3: Localization]
+    D --> E[Edge Map]
+
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#fff4e1
+    style D fill:#fff4e1
+    style E fill:#e8f5e9
+```
+
+### Step 1: Image Smoothing (Noise Reduction)
+
+**Problem:** Raw images contain noise that creates false edges
+
+**Solution:** Apply smoothing filters before edge detection
+
+**Key Points:**
+- Use Gaussian filter to reduce noise
+- Noise can create spurious edge responses
+- **Trade-off:** Excessive smoothing blurs real edges
+- Must balance noise reduction vs. edge preservation
+
+**Example:**
+```
+Noisy Image:        After Gaussian:
+100 105 98  102     100 101 100 101
+103 200 99  101  →  101 102 101 100
+99  104 101 103     100 100 101 102
+```
+
+### Step 2: Detection of Edge Points
+
+**Problem:** How to identify locations where intensity changes rapidly?
+
+**Solution:** Use gradient operators to compute local derivatives
+
+**Key Points:**
+- This is a **local operation** using gradients
+- Compute partial derivatives ∂f/∂x and ∂f/∂y at every pixel
+- Gradient points in direction of maximum intensity change
+- Common operators: Roberts, Prewitt, Sobel
+
+**Gradient Properties:**
+- **Gradient magnitude**: Indicates edge strength (how strong)
+- **Gradient direction**: Points perpendicular to edge (which direction)
+- **Edge direction**: Orthogonal to gradient vector
+
+### Step 3: Edge Localization
+
+**Problem:** Not all high-gradient points are true edges
+
+**Solution:** Apply thresholding and edge linking
+
+**Key Points:**
+- Select only candidate points that are true edge members
+- Remove spurious detections (false positives)
+- Link edge points into continuous curves
+- Apply non-maximum suppression (for Canny)
+
+---
+
+### 4.2.2 Performance Requirements for Good Edge Detection
+
+A robust edge detector must satisfy multiple criteria:
+
+| Requirement | Description | Why Important |
+|-------------|-------------|---------------|
+| ✓ **Good Detection** | Filter responds to edges, not noise | Minimizes false positives |
+| ✓ **Good Localization** | Detected edges close to true edges | Accurate positioning |
+| ✓ **Single Response** | Only one detection per true edge | Avoids thick/multiple edges |
+| ✓ **High Detection Rate** | Finds most real edges | Minimizes false negatives |
+| ✓ **Low Noise Sensitivity** | Robust to image noise | Works on real images |
+
+**Canny's Criteria (1986):**
+
+John Canny formalized these into three mathematical criteria:
+
+1. **Good Detection:** Maximize signal-to-noise ratio
+   $$\text{SNR} = \frac{\int_{-W}^{W} f(-x)h(x)dx}{\sqrt{n_0 \int_{-\infty}^{\infty} h^2(x)dx}}$$
+
+2. **Good Localization:** Minimize distance between detected and true edge
+   $$\text{Localization} = \frac{\int_{-W}^{W} f'(-x)h'(x)dx}{\sqrt{n_0 \int_{-\infty}^{\infty} h'^2(x)dx}}$$
+
+3. **Single Response:** Minimize multiple responses to single edge
+   - Achieved through non-maximum suppression
+
+Where:
+- $f(x)$ = edge model
+- $h(x)$ = filter impulse response
+- $n_0$ = noise power spectral density
+- $W$ = filter width
+
+---
+
+## 4.3 Mathematical Foundation of Edge Detection
+
+### 4.3.1 Image Gradients
 
 The **gradient** of an image is a vector that points in the direction of the greatest rate of intensity increase.
 
 
 ---
 
-### Understanding 3×3 Neighborhoods - Complete Tutorial (from PDF pages 31-37)
+#### Understanding 3x3 Neighborhoods - Complete Tutorial
 
 **What is a 3×3 Neighborhood?**
 
@@ -437,20 +548,6 @@ For simplicity in formulas, we label the 9 positions:
 Left Middle Right
 column column column
 ```
-
-**Position Mapping:**
-
-| Label | Position | Relative to center |
-|-------|----------|-------------------|
-| z₁ | (x-1, y-1) | Upper-left diagonal |
-| z₂ | (x, y-1) | Directly above |
-| z₃ | (x+1, y-1) | Upper-right diagonal |
-| z₄ | (x-1, y) | Directly left |
-| z₅ | (x, y) | **CENTER** |
-| z₆ | (x+1, y) | Directly right |
-| z₇ | (x-1, y+1) | Lower-left diagonal |
-| z₈ | (x, y+1) | Directly below |
-| z₉ | (x+1, y+1) | Lower-right diagonal |
 
 **Why Do We Need 9 Pixels?**
 
@@ -528,7 +625,7 @@ Now we can apply Prewitt, Sobel, or other operators.
 
 ---
 
-### Two Methods for Gradient Calculation (from PDF pages 54-61)
+#### Two Methods for Gradient Calculation
 
 The PDF shows **two different approaches** for computing gradients. Understanding both is important!
 
@@ -547,14 +644,29 @@ The PDF uses:
 - For $g_y$: Compare pixel **right** vs pixel **left** of center
 
 **Correct formulas:**
-$$g_x = f(x+1, y) - f(x-1, y)$$ (in image coordinates, this is bottom - top)
-$$g_y = f(x, y+1) - f(x, y-1)$$ (in image coordinates, this is right - left)
+$$
+g_x = f(x+1, y) - f(x-1, y)
+$$
+(in image coordinates, this is bottom - top)
+
+$$
+g_y = f(x, y+1) - f(x, y-1)
+$$
+(in image coordinates, this is right - left)
 
 **In z-notation:**
-$$g_x = z_8 - z_2$$ (bottom center - top center)
-$$g_y = z_6 - z_4$$ (right center - left center)
 
-**Example from PDF (pages 54-61):**
+$$
+g_x = z_8 - z_2
+$$
+(bottom center - top center)
+
+$$
+g_y = z_6 - z_4
+$$
+(right center - left center)
+
+**Example from PDF:**
 
 Given neighborhood:
 ```
@@ -624,51 +736,121 @@ $$g_y = (2 + 2 + 0) - (0 + 0 + 0) = 4 - 0 = 4$$
 
 ---
 
-### Complete Numerical Example: All Methods on Same Pattern
+#### Complete Numerical Example: All Methods on Same Pattern
 
-**Given Pattern:**
+**Objective:** We want to find the **Edge Strength** and **Edge Direction** at the center pixel. To do this, we need to measure how pixel brightness changes in two directions: Horizontal (X) and Vertical (Y).
+
+**Given Pattern (Input Image):**
 ```
-┌───┬───┬───┐
-│ 0 │ 2 │ 2 │
-│ 0 │ 0 │ 2 │
-│ 0 │ 0 │ 0 │
-└───┴───┴───┘
+      Col 0   Col 1   Col 2
+Row 0 │   0   │   2   │   2   │
+      ├───────┼───────┼───────┤
+Row 1 │   0   │   0   │   2   │
+      ├───────┼───────┼───────┤
+Row 2 │   0   │   0   │   0   │
 ```
 
-**Method A: Central Difference**
+**Step 0: Map Pixels to Variables (Setup)**
+Before calculating, we label the neighbors of our center pixel (row 1, col 1):
+- **Top Row ($z_1, z_2, z_3$):** 0, 2, 2
+- **Middle Row ($z_4, z_5, z_6$):** 0, 0, 2  (Center $z_5=0$ is our target)
+- **Bottom Row ($z_7, z_8, z_9$):** 0, 0, 0
 
-$g_x = z_8 - z_2 = 0 - 2 = -2$
-$g_y = z_6 - z_4 = 2 - 0 = 2$
-$M = \sqrt{4+4} = 2\sqrt{2} \approx 2.83$
-$\alpha = \tan^{-1}(2/-2) = 135°$
+---
 
-**Method B: Prewitt**
+#### Method A: Central Difference (Simplest)
 
-$g_x = (0+0+0) - (0+2+2) = -4$
-$g_y = (2+2+0) - (0+0+0) = 4$
-$M = \sqrt{16+16} = 4\sqrt{2} \approx 5.66$
-$\alpha = \tan^{-1}(4/-4) = 135°$
+**Step 1: Calculate Horizontal Change ($g_x$)**
+*Goal:* How much does brightness change from Left to Right?
+*Logic:* Compare the pixel to the Right ($z_6$) vs the pixel to the Left ($z_4$).
+$$g_x = z_6 - z_4 = 2 - 0 = 2$$
+*Result:* Positive 2 means it gets brighter moving right.
 
-**Method C: Sobel**
+**Step 2: Calculate Vertical Change ($g_y$)**
+*Goal:* How much does brightness change from Top to Bottom?
+*Logic:* Compare the pixel Below ($z_8$) vs the pixel Above ($z_2$).
+$$g_y = z_8 - z_2 = 0 - 2 = -2$$
+*Result:* Negative 2 means it gets darker moving down.
 
-$g_x = (0+2(0)+0) - (0+2(2)+2) = -6$
-$g_y = (2+2(2)+0) - (0+2(0)+0) = 6$
-$M = \sqrt{36+36} = 6\sqrt{2} \approx 8.49$
-$\alpha = \tan^{-1}(6/-6) = 135°$
+**Step 3: Combine to Find Edge Strength (Magnitude)**
+*Goal:* We have two separate changes. What is the total "strength" of the change?
+*Logic:* Use the Pythagorean theorem to combine the vector components.
+$$M = \sqrt{g_x^2 + g_y^2} = \sqrt{2^2 + (-2)^2} = \sqrt{4+4} = \sqrt{8} \approx 2.83$$
+
+**Step 4: Find Edge Direction**
+*Goal:* Which way is the "hill" of brightness pointing?
+$$\alpha = \tan^{-1}\left(\frac{g_y}{g_x}\right) = \tan^{-1}\left(\frac{-2}{2}\right) = -45° \text{ (or } 315°)$$
+
+---
+
+#### Method B: Prewitt Operator (Better for Noise)
+
+**Step 1: Calculate Horizontal Change ($g_x$)**
+*Goal:* Same goal (Left vs Right), but using **averaging** to ignore noise.
+*Logic:* Compare Sum of Right Column vs Sum of Left Column.
+- **Right Column Sum:** $2 + 2 + 0 = 4$
+- **Left Column Sum:** $0 + 0 + 0 = 0$
+$$g_x = (\text{Sum Right}) - (\text{Sum Left}) = 4 - 0 = 4$$
+
+**Step 2: Calculate Vertical Change ($g_y$)**
+*Goal:* Top vs Bottom, with averaging.
+*Logic:* Compare Sum of Bottom Row vs Sum of Top Row.
+- **Bottom Row Sum:** $0 + 0 + 0 = 0$
+- **Top Row Sum:** $0 + 2 + 2 = 4$
+$$g_y = (\text{Sum Bottom}) - (\text{Sum Top}) = 0 - 4 = -4$$
+
+**Step 3: Edge Strength**
+$$M = \sqrt{4^2 + (-4)^2} = \sqrt{16+16} = \sqrt{32} \approx 5.66$$
+*Interpretation:* This value (5.66) is ~2x higher than Central Difference (2.83). Prewitt "amplifies" the edge signal.
+
+---
+
+#### Method C: Sobel Operator (Best Standard)
+
+**Step 1: Calculate Horizontal Change ($g_x$)**
+*Goal:* Left vs Right, but give **more weight** to the center row (closest pixels).
+*Logic:* right - left, with $2 \times$ weight for the middle pixels ($z_6$ and $z_4$).
+- **Right Term:** $z_3 + 2(z_6) + z_9 = 2 + 2(2) + 0 = 6$
+- **Left Term:** $z_1 + 2(z_4) + z_7 = 0 + 2(0) + 0 = 0$
+$$g_x = 6 - 0 = 6$$
+
+**Step 2: Calculate Vertical Change ($g_y$)**
+*Goal:* Top vs Bottom, weighted.
+- **Bottom Term:** $z_7 + 2(z_8) + z_9 = 0 + 0 + 0 = 0$
+- **Top Term:** $z_1 + 2(z_2) + z_3 = 0 + 2(2) + 2 = 6$
+$$g_y = 0 - 6 = -6$$
+
+**Step 3: Edge Strength**
+$$M = \sqrt{6^2 + (-6)^2} = \sqrt{36+36} = \sqrt{72} \approx 8.49$$
+*Interpretation:* Strongest response (8.49). This is the easiest edge to detect ("threshold") against noise.
+
+---
 
 **Summary Table:**
 
 | Method | gx | gy | Magnitude | Direction | Relative Strength |
 |--------|----|----|-----------|-----------|------------------|
-| Central Diff | -2 | 2 | 2.83 | 135° | 1.0× (baseline) |
-| Prewitt | -4 | 4 | 5.66 | 135° | 2.0× |
-| Sobel | -6 | 6 | 8.49 | 135° | 3.0× |
+| Central Diff | 2 | -2 | 2.83 | -45° | 1.0× (baseline) |
+| Prewitt | 4 | -4 | 5.66 | -45° | 2.0× |
+| Sobel | 6 | -6 | 8.49 | -45° | 3.0× |
 
-**Conclusion:**
-- All methods agree on edge direction (135°)
-- Sobel produces strongest response (3× baseline)
-- Use Sobel for best noise handling + strong response
+**Final Conclusion:**
+1. **Direction:** All methods agree the edge is at -45° (Diagonal).
+2. **Strength:** Sobel gives the strongest signal (Magnitude 8.49 vs 2.83).
+3. **Why Next Step?** We calculate components ($g_x, g_y$) first *because* we need vectors to find the diagonal magnitude. We find magnitude *because* that tells us "Is this an edge?". We find direction *because* we need to know "Which way does it point?".
 
+
+
+### Why Gradients for Edge Detection?
+
+**Problem:** How do we mathematically detect where intensity changes rapidly?
+
+**Solution:** Use gradients to measure the rate and direction of intensity change
+
+**Intuition:**
+- Edges appear as "cliffs" in the intensity landscape
+- Gradients point "uphill" - toward increasing intensity
+- Large gradient magnitude = steep cliff = strong edge
 
 **Definition:**
 
@@ -758,9 +940,9 @@ graph TB
     style H fill:#e8f5e9
 ```
 
-### Enhanced Section 4.2.1 - Complete Numerical Examples
+#### Enhanced Section 4.3.1 - Complete Numerical Examples
 
-**Numerical Example 1: Vertical Edge (from PDF pages 7-19)**
+**Numerical Example 1: Vertical Edge**
 
 **Given:** 3×3 neighborhood with shaded pixels = 0, white pixels = 2
 
@@ -824,191 +1006,157 @@ Edge direction = gradient direction + 90° = 90° + 90° = 180° (or 0°)
 
 ---
 
-**Numerical Example 2: Diagonal Edge Pattern (from PDF pages 38-53)**
+### Numerical Example 2: Diagonal Edge Pattern
 
-**Given:** More complex pattern from the PDF
+**Objective:** Analyze a diagonal edge where brightness increases towards the Top-Right corner.
 
+**Given Pattern:**
 ```
-Full image (partial):
-┌───┬───┬───┬───┬───┬───┐
-│ 0 │ 2 │ 2 │ 2 │ 2 │ 2 │
-├───┼───┼───┼───┼───┼───┤
-│ 0 │ 0 │ 2 │ 2 │ 2 │ 2 │
-├───┼───┼───┼───┼───┼───┤
-│ 0 │ 0 │ ■ │ 2 │ 2 │ 2 │ ← ■ is center pixel
-├───┼───┼───┼───┼───┼───┤
-│ 0 │ 0 │ 0 │ 0 │ 2 │ 2 │
-├───┼───┼───┼───┼───┼───┤
-│ 0 │ 0 │ 0 │ 0 │ 0 │ 2 │
-└───┴───┴───┴───┴───┴───┘
+      Col 0   Col 1   Col 2
+Row 0 │   0   │   2   │   2   │
+      ├───────┼───────┼───────┤
+Row 1 │   0   │   0   │   2   │  ← Center is 0
+      ├───────┼───────┼───────┤
+Row 2 │   0   │   0   │   0   │
 ```
 
-**Step 1: Extract 3×3 neighborhood around center pixel**
+**Step 0: Map Pixels (Setup)**
+- **Top Row ($z_1, z_2, z_3$):** 0, 2, 2
+- **Middle Row ($z_4, z_5, z_6$):** 0, 0, 2 (Left neighbor $z_4=0$, Right neighbor $z_6=2$)
+- **Bottom Row ($z_7, z_8, z_9$):** 0, 0, 0 (Bottom neighbor $z_8=0$, Top neighbor $z_2=2$)
 
-```
-┌───┬───┬───┐
-│ 0 │ 2 │ 2 │  ← position (y-1)
-├───┼───┼───┤
-│ 0 │ 0 │ 2 │  ← position (y) - center row
-├───┼───┼───┤
-│ 0 │ 0 │ 0 │  ← position (y+1)
-└───┴───┴───┘
-  ↑   ↑   ↑
-(x-1)(x)(x+1)
-```
+**Method:** Using **Central Difference** (Simple convolution).
 
-Label pixels:
-- $z_1 = 0$, $z_2 = 2$, $z_3 = 2$ (top row)
-- $z_4 = 0$, $z_5 = 0$, $z_6 = 2$ (middle row)
-- $z_7 = 0$, $z_8 = 0$, $z_9 = 0$ (bottom row)
+**Step 1: Calculate Horizontal Gradient ($g_x$)**
+*Goal:* Change from Left to Right.
+*Logic:* Compare Right ($z_6$) vs Left ($z_4$).
+$$g_x = z_6 - z_4 = 2 - 0 = 2$$
+*Interpretation:* Positive 2 means it gets **Brighter** as we move Right.
 
-**Step 2: Calculate using central difference method (as shown in PDF)**
+**Step 2: Calculate Vertical Gradient ($g_y$)**
+*Goal:* Change from Top to Bottom.
+*Logic:* Compare Bottom ($z_8$) vs Top ($z_2$).
+$$g_y = z_8 - z_2 = 0 - 2 = -2$$
+*Interpretation:* Negative 2 means it gets **Darker** as we move Down.
 
-The PDF uses central differences for simpler kernels:
+**Step 3: Calculate Edge Strength (Magnitude)**
+*Goal:* Total strength of the edge.
+$$M = \sqrt{2^2 + (-2)^2} = \sqrt{4+4} = \sqrt{8} \approx 2.83$$
 
-For $g_x$: Compare pixel above center vs pixel below center
-$$g_x = f(x+1, y) - f(x-1, y)$$
+**Step 4: Calculate Gradient Direction**
+*Goal:* Which way does brightness increase?
+$$\alpha = \tan^{-1}\left(\frac{g_y}{g_x}\right) = \tan^{-1}\left(\frac{-2}{2}\right) = \tan^{-1}(-1) = -45° \text{ (or } 315°)$$
 
-Where:
-- $f(x-1, y) = z_2 = 2$ (pixel above center)
-- $f(x+1, y) = z_8 = 0$ (pixel below center)
+**Visual Check:**
+- $g_x$ is positive (points Right).
+- $g_y$ is negative (points Up, since Y grows down).
+- Resulting vector points **Up-Right** (North-East).
+- Angle -45° corresponds exactly to North-East.
 
-$$g_x = 0 - 2 = -2$$
+**Step 5: Determine Edge Direction**
+*Goal:* The edge runs perpendicular to the gradient.
+$$\text{Edge Angle} = \text{Gradient Angle} + 90° = -45° + 90° = 45°$$
+*Conclusion:* The edge runs at 45° (South-West to North-East diagonal), which matches the visual pattern of the zeros separating from the twos.
 
-For $g_y$: Compare pixel right of center vs pixel left of center
-$$g_y = f(x, y+1) - f(x, y-1)$$
-
-Where:
-- $f(x, y-1) = z_4 = 0$ (pixel left of center)
-- $f(x, y+1) = z_6 = 2$ (pixel right of center)
-
-$$g_y = 2 - 0 = 2$$
-
-**Step 3: Form gradient vector**
-
-$$\nabla f = \begin{bmatrix} g_x \\ g_y \end{bmatrix} = \begin{bmatrix} -2 \\ 2 \end{bmatrix}$$
-
-**Step 4: Calculate magnitude**
-
-$$M = \sqrt{(-2)^2 + 2^2} = \sqrt{4 + 4} = \sqrt{8} = 2\sqrt{2} \approx 2.83$$
-
-**Step 5: Calculate direction**
-
-$$\alpha = \tan^{-1}\left(\frac{g_y}{g_x}\right) = \tan^{-1}\left(\frac{2}{-2}\right) = \tan^{-1}(-1) = -45°$$
-
-Since $g_x < 0$ and $g_y > 0$ (second quadrant):
-$$\alpha = 180° - 45° = 135°$$
-
-**Interpretation:** Gradient points upper-left (toward darker region).
-
-**Step 6: Edge direction**
-
-Edge direction = $\alpha - 90° = 135° - 90° = 45°$
-
-**Conclusion:** Diagonal edge running northeast-southwest at 45°.
-
-**Visual summary:**
-
-```
-Neighborhood:     Gradient:           Edge:
-  0 2 2             ↖ 135°            ⟋ 45°
-  0 ■ 2          (upper-left)      (diagonal)
-  0 0 0
-```
-
+**Summary:**
+- **Gradient:** Points North-East (-45°) towards the bright region.
+- **Edge:** Runs Diagonal (45°).
 ---
 
-**Numerical Example 3: Using Sobel Operator (from PDF page 11)**
+### Numerical Example 3: Using Sobel Operator (from PDF page 11)
 
-**Given:**
+**Objective:** Detect a diagonal edge in a larger, brighter region using the Sobel operator.
+
+**Given Pattern:**
 ```
-┌─────┬─────┬─────┐
-│ 100 │ 100 │ 100 │
-├─────┼─────┼─────┤
-│ 100 │ 100 │ 200 │
-├─────┼─────┼─────┤
-│ 100 │ 200 │ 200 │
-└─────┴─────┴─────┘
+      Col 0   Col 1   Col 2
+Row 0 │  100  │  100  │  100  │
+      ├───────┼───────┼───────┤
+Row 1 │  100  │  100  │  200  │  ← Center is 100
+      ├───────┼───────┼───────┤
+Row 2 │  100  │  200  │  200  │
 ```
 
-Labeled:
-- $z_1=100$, $z_2=100$, $z_3=100$
-- $z_4=100$, $z_5=100$, $z_6=200$
-- $z_7=100$, $z_8=200$, $z_9=200$
+**Step 0: Map Pixels (Setup)**
+- **Top ($z_1, z_2, z_3$):** 100, 100, 100
+- **Middle ($z_4, z_5, z_6$):** 100, 100, 200
+- **Bottom ($z_7, z_8, z_9$):** 100, 200, 200
 
-**Step 1: Calculate $g_x$ using Sobel**
+**Method:** Sobel (Weighted 3×3).
 
-Formula: $g_x = (z_7 + 2z_8 + z_9) - (z_1 + 2z_2 + z_3)$
-
-Substitute:
-$$g_x = (100 + 2(200) + 200) - (100 + 2(100) + 100)$$
-$$g_x = (100 + 400 + 200) - (100 + 200 + 100)$$
+**Step 1: Calculate Horizontal Gradient ($g_x$)**
+*Goal:* Change Left to Right (Weighted).
+*Logic:* (Right Column Weighted) - (Left Column Weighted).
+- Right: $100 + 2(200) + 200 = 700$
+- Left: $100 + 2(100) + 100 = 400$
 $$g_x = 700 - 400 = 300$$
+*Interpretation:* Strong brightness increase ($+300$) moving Right.
 
-**Step 2: Calculate $g_y$ using Sobel**
-
-Formula: $g_y = (z_3 + 2z_6 + z_9) - (z_1 + 2z_4 + z_7)$
-
-Substitute:
-$$g_y = (100 + 2(200) + 200) - (100 + 2(100) + 100)$$
-$$g_y = (100 + 400 + 200) - (100 + 200 + 100)$$
+**Step 2: Calculate Vertical Gradient ($g_y$)**
+*Goal:* Change Top to Bottom (Weighted).
+*Logic:* (Bottom Row Weighted) - (Top Row Weighted).
+- Bottom: $100 + 2(200) + 200 = 700$
+- Top: $100 + 2(100) + 100 = 400$
 $$g_y = 700 - 400 = 300$$
+*Interpretation:* Strong brightness increase ($+300$) moving Down.
 
-**Step 3: Calculate magnitude**
+**Step 3: Calculate Magnitude**
+$$M = \sqrt{300^2 + 300^2} = \sqrt{180000} \approx 424.26$$
+*Approximation:* $|300| + |300| = 600$ (Faster to compute).
 
-Exact:
-$$M = \sqrt{300^2 + 300^2} = \sqrt{90000 + 90000} = \sqrt{180000} = 300\sqrt{2} \approx 424.26$$
-
-Approximation:
-$$M \approx |300| + |300| = 600$$
-
-**Step 4: Calculate direction**
-
+**Step 4: Calculate Direction**
 $$\alpha = \tan^{-1}\left(\frac{300}{300}\right) = \tan^{-1}(1) = 45°$$
-
-**Step 5: Edge direction**
-
-Edge direction = $45° + 90° = 135°$ (or $45° - 90° = -45°$)
-
-**Conclusion:** Edge runs at 135° (northwest to southeast direction).
+*Conclusion:* Gradient points South-East (Down-Right). The edge runs perpendicular at -45° (South-West to North-East).
 
 ---
 
-**Comparison: Prewitt vs Sobel on Same Pattern**
+### Comparison: Prewitt vs Sobel on Same Pattern
 
-Using the pattern with diagonal edge (Example 2):
+**Objective:** Compare how different operators respond to the **Diagonal Edge Pattern** from Example 2.
 
+**Given Pattern (from Example 2):**
 ```
-┌───┬───┬───┐
-│ 0 │ 2 │ 2 │
-│ 0 │ 0 │ 2 │
-│ 0 │ 0 │ 0 │
-└───┴───┴───┘
+0 2 2  (Top Row)
+0 0 2  (Middle Row)
+0 0 0  (Bottom Row)
 ```
 
-**Using Prewitt:**
+#### 1. Using Prewitt (Uniform Averaging)
+*Logic:* Simple Sums.
+- $g_x = (\text{Sum Right}) - (\text{Sum Left}) = (2+2+0) - (0+0+0) = 4$
+- $g_y = (\text{Sum Bottom}) - (\text{Sum Top}) = (0+0+0) - (0+2+2) = -4$
+- **Magnitude:** $M = \sqrt{4^2 + (-4)^2} \approx 5.66$
+- **Direction:** $\tan^{-1}(-4/4) = -45°$
 
-$g_x = (0 + 0 + 0) - (0 + 2 + 2) = 0 - 4 = -4$
-$g_y = (2 + 2 + 0) - (0 + 0 + 0) = 4 - 0 = 4$
-$M = \sqrt{16 + 16} = \sqrt{32} = 4\sqrt{2} \approx 5.66$
-Direction = 135°
+#### 2. Using Sobel (Center Weighted)
+*Logic:* Center pixel gets $2\times$ weight.
+- Right Col Sum (weighted): $2 + 2(2) + 0 = 6$
+- Left Col Sum (weighted): $0 + 2(0) + 0 = 0$
+$$g_x = 6 - 0 = 6$$
 
-**Using Sobel:**
+- Bottom Row Sum (weighted): $0 + 0 + 0 = 0$
+- Top Row Sum (weighted): $0 + 2(2) + 2 = 6$
+$$g_y = 0 - 6 = -6$$
 
-$g_x = (0 + 2(0) + 0) - (0 + 2(2) + 2) = 0 - 6 = -6$
-$g_y = (2 + 2(2) + 0) - (0 + 2(0) + 0) = 6 - 0 = 6$
-$M = \sqrt{36 + 36} = \sqrt{72} = 6\sqrt{2} \approx 8.49$
-Direction = 135°
+- **Magnitude:** $M = \sqrt{6^2 + (-6)^2} = \sqrt{72} \approx 8.49$
+- **Direction:** $\tan^{-1}(-6/6) = -45°$
 
-**Observation:**
-- Both detect same edge direction (135°)
-- Sobel produces 50% stronger magnitude (8.49 vs 5.66)
-- Sobel's center weighting gives more emphasis to reliable pixels
+#### Final Comparison Results
+
+| Feature | Prewitt Result | Sobel Result | Why? |
+|---------|----------------|--------------|------|
+| **Direction** | -45° | -45° | Both correctly identify the diagonal orientation. |
+| **Magnitude** | 5.66 | **8.49** | Sobel is **1.5x stronger** here. It amplifies the signal because the "bright" pixels were in the center row/col, which Sobel emphasizes. |
+| **Noise** | Good | **Better** | Sobel's central weighting smooths out random noise better than uniform averaging. |
+
+**Takeaway:** Sobel is generally preferred because it gives a stronger response to valid edges while suppressing noise through Gaussian-like smoothing.
 
 
 
 
-### 4.2.2 First-Order Derivatives
+
+
+### 4.3.2 First-Order Derivatives
 
 First-order derivatives detect edges by finding local maxima in the gradient magnitude.
 
@@ -1053,7 +1201,7 @@ $$
 | **Noise sensitive** | Amplifies high-frequency noise | Requires smoothing before detection |
 | **Produces thick edges** | Multiple pixels flagged as edges | Need thinning (non-max suppression) |
 
-### 4.2.3 Second-Order Derivatives
+### 4.3.3 Second-Order Derivatives
 
 Second-order derivatives detect edges by finding **zero-crossings** (where derivative changes sign).
 
@@ -1120,7 +1268,7 @@ Laplacian Response
 | **Orientation Info** | Yes (gradient direction) | No |
 | **Common Operators** | Roberts, Prewitt, Sobel | Laplacian, LoG |
 
-### 4.2.4 Effect of Noise on Edge Detection
+### 4.3.4 Effect of Noise on Edge Detection
 
 Noise significantly impacts edge detection performance. Understanding this relationship is crucial for designing robust algorithms.
 
@@ -1139,20 +1287,20 @@ Consider a ramp edge with increasing noise levels:
 │ NOISE LEVEL COMPARISON                                 │
 ├────────────────────────────────────────────────────────┤
 │                                                        │
-│ Clean Signal (σ = 0):                                 │
-│ Intensity: ────────┌─────────                         │
-│                    │ ← Clear edge                     │
+│ Clean Signal (σ = 0):                                  │
+│ Intensity: ────────┌─────────                          │
+│                    │ ← Clear edge                      │
 │                                                        │
-│ Low Noise (σ = 0.1):                                  │
-│ Intensity: ─~─~─~─┌─~─~─~─                           │
+│ Low Noise (σ = 0.1):                                   │
+│ Intensity: ─~─~─~─┌─~─~─~─                             │
 │                    │ ← Edge still clear                │
 │                                                        │
-│ Medium Noise (σ = 1.0):                               │
-│ Intensity: ─~╱~╲~╱┌╲~╱~╲─                            │
+│ Medium Noise (σ = 1.0):                                │
+│ Intensity: ─~╱~╲~╱┌╲~╱~╲─                              │
 │                    │ ← Edge harder to detect           │
 │                                                        │
-│ High Noise (σ = 10.0):                                │
-│ Intensity: ╱~╲╱~╲╱~╲╱~╲╱~                            │
+│ High Noise (σ = 10.0):                                 │
+│ Intensity: ╱~╲╱~╲╱~╲╱~╲╱~                              │
 │            Multiple false edges!                       │
 │                                                        │
 └────────────────────────────────────────────────────────┘
@@ -1270,7 +1418,9 @@ graph TD
 
 ---
 
-### Understanding Gradient Direction and Quadrant Adjustments
+### 4.4.1 Gradient Calculation Fundamentals
+
+#### Understanding Gradient Direction and Quadrant Adjustments
 
 **The Arctangent Problem**
 
@@ -1315,7 +1465,7 @@ $$\alpha = \text{atan2}(g_y, g_x)$$
 
 ---
 
-### Complete Worked Example with Quadrant Adjustment (from PDF pages 27-30)
+#### Complete Worked Example with Quadrant Adjustment
 
 **Given:**
 ```
@@ -1382,7 +1532,7 @@ The edge runs **perpendicular** to this: diagonal from lower-left to upper-right
 
 ---
 
-### Additional Numerical Example: Horizontal Edge Pattern
+#### Additional Numerical Example: Horizontal Edge Pattern
 
 **Pattern: Horizontal Edge**
 
@@ -1454,7 +1604,7 @@ Edge direction = perpendicular to gradient = 0° or 180° (horizontal line)
 
 ---
 
-### Additional Example: Different Noise Scenarios
+#### Additional Example: Different Noise Scenarios
 
 **Example A: Clean Diagonal Edge**
 
@@ -1503,7 +1653,7 @@ Using only center column:
 
 ---
 
-### Boundary Pixel Cases
+#### Boundary Pixel Cases
 
 **Problem:** What happens at image edges where we can't form a complete 3×3 neighborhood?
 
@@ -1515,9 +1665,9 @@ Image:        Neighborhood needed:
 │ ■ │ 5 │      │ ? │ ? │ ? │ ← These don't exist!
 ├───┼───┼      ├───┼───┼───┤
 │ 3 │ 2 │      │ ? │ ■ │ 5 │
-                ├───┼───┼───┤
-                │ 3 │ 2 │ ? │
-                └───┴───┴───┘
+               ├───┼───┼───┤
+               │ 3 │ 2 │ ? │
+               └───┴───┴───┘
 ```
 
 **Solutions:**
@@ -1573,7 +1723,7 @@ Image:        Neighborhood needed:
 
 ---
 
-### Complete Comparison: All Patterns and Methods
+#### Complete Comparison: All Patterns and Methods
 
 **Pattern 1: Vertical Edge**
 ```
@@ -1613,508 +1763,72 @@ Image:        Neighborhood needed:
 Each pattern tests different edge orientations and demonstrates that gradient operators correctly detect edge direction in all cases!
 
 
-### 4.3.1 Roberts Cross Operator
+### 4.4.2 Roberts Cross Operator
 
-The **Roberts Cross** operator uses the smallest possible (2×2) kernels to approximate gradients along diagonal directions.
+**Objective:** Detect edges using the smallest possible calculation (2×2 diagonals) for maximum speed.
 
-**Kernels:**
+**The Logic:**
+Instead of comparing horizontal or vertical neighbors, Roberts compares **diagonal** pixels. If these diagonal pixels have different values, an edge exists.
 
+**Kernels (Masks):**
 $$
-G_x = \begin{bmatrix}
-+1 & 0 \\
-0 & -1
-\end{bmatrix} \quad
-G_y = \begin{bmatrix}
-0 & +1 \\
--1 & 0
-\end{bmatrix}
+M_x = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix} (\searrow), \quad
+M_y = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix} (\swarrow)
 $$
 
-**Gradient Computation:**
-
-Given a 2×2 region:
-
-$$
-\begin{bmatrix}
-z_1 & z_2 \\
-z_3 & z_4
-\end{bmatrix}
-$$
-
-$$
-g_x = z_4 - z_1 \quad \text{(diagonal difference)}
-$$
-
-$$
-g_y = z_2 - z_3 \quad \text{(diagonal difference)}
-$$
+#### Example 1: Basic 2×2 Calculation
+**Given:** 2×2 block
+```
+10  50
+50  10
+```
+**Calculation:**
+- $g_x = 10 - 10 = 0$ (Main diagonal is constant)
+- $g_y = 50 - 50 = 0$ (Anti-diagonal is constant)
+- **Result:** No edge.
 
 **Numerical Example:**
+**Problem:** Apply Roberts to the bottom-right corner of this 3×3 region.
 
-Consider a 2×2 image region:
+**Given Region:**
+```
+      Col 0   Col 1   Col 2
+Row 0 │  10   │  10   │  50   │
+      ├───────┼───────┼───────┤
+Row 1 │  10   │  10   │  50   │
+      ├───────┼───────┼───────┤
+Row 2 │  10   │  10   │  50   │
+```
 
+**Step 1: Identify Working Region**
+We focus on the bottom-right 2×2 block ($z_5, z_6, z_8, z_9$):
 $$
 \begin{bmatrix}
-100 & 150 \\
-100 & 150
+z_5=10 & z_6=50 \\
+z_8=10 & z_9=50
 \end{bmatrix}
 $$
 
-**Step 1: Compute gradients**
-
-$$
-g_x = 150 - 100 = 50
-$$
-
-$$
-g_y = 150 - 100 = 50
-$$
-
-**Step 2: Compute magnitude**
-
-$$
-M = \sqrt{50^2 + 50^2} = \sqrt{2500 + 2500} = \sqrt{5000} \approx 70.7
-$$
-
-**Step 3: Compute direction**
-
-$$
-\theta = \tan^{-1}\left(\frac{50}{50}\right) = \tan^{-1}(1) = 45°
-$$
-
-
-
-**Design Philosophy:**
-Introduced by Judith M.S. Prewitt in 1970, this operator represents the first systematic combination of smoothing and differentiation in a single convolution kernel. The key insight: average three pixels perpendicular to the gradient direction before differencing, providing basic noise suppression while maintaining reasonable edge localization.
-
-**Mathematical Foundation - Kernel Decomposition:**
-Prewitt kernels are **separable** - they can be decomposed into 1D operations:
-
-$$G_x = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \otimes \begin{bmatrix} -1 & 0 & 1 \end{bmatrix} = \text{smooth}_y \times \text{diff}_x$$
-
-This separability enables computational optimization:
-- **Direct convolution**: 9 multiplications + 8 additions per pixel
-- **Separable implementation**: 6 multiplications + 4 additions per pixel
-- **Speedup**: ~33% faster
-
-**Detailed Step-by-Step Process:**
-
-**Step 1: Image Preparation**
-- Pad image borders (1-pixel border for 3×3 kernel)
-- Convert to grayscale if needed
-- Optional: Pre-smooth with small Gaussian (σ=0.5) for very noisy images
-
-**Step 2: Horizontal Gradient Computation**
-For each pixel (x,y):
-1. Extract 3×3 neighborhood centered at (x,y)
-2. Apply Gx kernel:
-   - Column 1 (left): Sum all 3 pixels, multiply by -1
-   - Column 2 (center): Ignore (multiply by 0)
-   - Column 3 (right): Sum all 3 pixels, multiply by +1
-3. Result: gx(x,y) = (right_sum) - (left_sum)
-
-**Step 3: Vertical Gradient Computation**
-For each pixel (x,y):
-1. Use same 3×3 neighborhood
-2. Apply Gy kernel:
-   - Row 1 (top): Sum all 3 pixels, multiply by -1
-   - Row 2 (middle): Ignore (multiply by 0)
-   - Row 3 (bottom): Sum all 3 pixels, multiply by +1
-3. Result: gy(x,y) = (bottom_sum) - (top_sum)
-
-**Step 4: Magnitude Calculation**
-- Exact: M(x,y) = √(gx² + gy²)
-- Fast approximation: M(x,y) = |gx| + |gy|
-- Approximation error: ~15% maximum, but 10× faster
-
-**Step 5: Direction Calculation**
-- θ(x,y) = atan2(gy, gx) in radians [-π, +π]
-- Convert to degrees: θ_deg = θ × 180/π
-- Map to [0°, 360°): if θ_deg < 0, add 360°
-
-**Step 6: Thresholding**
-- Adaptive: Threshold = 0.3 × mean(M) + 0.7 × median(M)
-- Fixed: Threshold = user-specified value (e.g., 50 for 8-bit images)
-- Binary edge map: Edge(x,y) = 1 if M(x,y) ≥ threshold, else 0
-
-**Uniform Averaging Analysis:**
-The [1,1,1] averaging provides:
-- **Smoothing strength**: Each perpendicular pixel contributes equally (1/3 weight)
-- **Frequency response**: Low-pass filter with cutoff at ~1/3 of Nyquist frequency
-- **Noise reduction**: ~√3 ≈ 1.73× improvement over Roberts
-- **Edge blurring**: ~1 pixel blur in perpendicular direction
-
-**Comparison with Sobel:**
-| Aspect | Prewitt [1,1,1] | Sobel [1,2,1] |
-|--------|-----------------|---------------|
-| Center weight | 1/3 (33%) | 2/4 (50%) |
-| Smoothing | Uniform | Gaussian-like |
-| Isotropy | Moderate | Better |
-| SNR | Good | Excellent |
-| Complexity | Same | Same |
-
-**Practical Implementation Tips:**
-```python
-# Efficient separable implementation pseudocode
-# Horizontal gradient
-smooth_y = [1, 1, 1]  # vertical smoothing
-diff_x = [-1, 0, 1]   # horizontal difference
-gx = convolve_1d(convolve_1d(image, smooth_y, axis=0), diff_x, axis=1)
-
-# Vertical gradient
-smooth_x = [1, 1, 1]  # horizontal smoothing
-diff_y = [-1, 0, 1]   # vertical difference
-gy = convolve_1d(convolve_1d(image, smooth_x, axis=1), diff_y, axis=0)
-```
-
-**When to Choose Prewitt:**
-✓ **Educational purposes** (simple, intuitive)
-✓ **Baseline comparisons** (well-documented behavior)
-✓ **Low-moderate noise** (σ_noise < 5 for 8-bit images)
-✓ **When Sobel unavailable** (simpler to implement from scratch)
-
-✗ **Production systems**: Sobel generally preferred for better performance
-
-
-
-
-
-**Design Philosophy:**
-Irwin Sobel developed this operator in 1968 (presented in 1970) to address Prewitt's limitations in directional sensitivity and noise handling. The key innovation: weighted [1,2,1] smoothing that approximates Gaussian filtering while maintaining separability and computational efficiency. This makes Sobel the industry standard gradient operator, offering the best practical balance of accuracy, noise robustness, and speed.
-
-**Mathematical Foundation - Why [1,2,1]?**
-
-The weighting [1,2,1] (normalized to [1/4, 2/4, 1/4]) approximates a discretized Gaussian:
-
-$$G(x;\sigma) \approx [1,2,1]/4 \text{ for } \sigma \approx 0.85$$
-
-This provides several advantages:
-1. **Gaussian approximation**: Optimal smoothing filter (minimizes space-frequency uncertainty)
-2. **Center emphasis**: Pixels closer to target location are more reliable
-3. **Separability**: Kernel decomposes into 1D operations
-4. **Integer coefficients**: No floating-point operations needed
-
-**Detailed Derivation:**
-Starting from the 1D Gaussian:
-$$G(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-x^2/(2\sigma^2)}$$
-
-For σ ≈ 0.85 and discrete positions [-1, 0, 1]:
-- G(-1) ≈ 0.24
-- G(0) ≈ 0.47
-- G(1) ≈ 0.24
-
-Scaling to integers: [1, 2, 1] (sum = 4)
-
-**Complete Step-by-Step Application:**
-
-**Step 1: Kernel Positioning**
-- Center the 3×3 kernel on target pixel (x,y)
-- Requires 1-pixel border padding
-
-**Step 2: Value Extraction**
-Extract 3×3 neighborhood:
-```
-[z₁  z₂  z₃]
-[z₄  z₅  z₆]
-[z₇  z₈  z₉]
-```
-
-**Step 3: Horizontal Gradient (gx) - Detailed**
-Apply Sobel Gx kernel element-wise:
-```
-gx = (-1)×z₁ + (0)×z₂ + (+1)×z₃
-   + (-2)×z₄ + (0)×z₅ + (+2)×z₆
-   + (-1)×z₇ + (0)×z₈ + (+1)×z₉
-```
-
-Simplified:
-```
-gx = (z₃ + 2×z₆ + z₉) - (z₁ + 2×z₄ + z₇)
-   = right_weighted_sum - left_weighted_sum
-```
-
-**Physical interpretation**: Weighted difference between right and left columns, with double emphasis on middle row (more reliable).
-
-**Step 4: Vertical Gradient (gy) - Detailed**
-Apply Sobel Gy kernel:
-```
-gy = (-1)×z₁ + (-2)×z₂ + (-1)×z₃
-   + (0)×z₄  + (0)×z₅  + (0)×z₆
-   + (+1)×z₇ + (+2)×z₈ + (+1)×z₉
-```
-
-Simplified:
-```
-gy = (z₇ + 2×z₈ + z₉) - (z₁ + 2×z₂ + z₃)
-   = bottom_weighted_sum - top_weighted_sum
-```
-
-**Physical interpretation**: Weighted difference between bottom and top rows, with double emphasis on middle column.
-
-**Step 5: Gradient Magnitude - Multiple Methods**
-
-**Method A: Exact (L2 norm)**
-$$M = \sqrt{g_x^2 + g_y^2}$$
-- Pros: Mathematically correct, true Euclidean distance
-- Cons: Expensive (square root operation)
-- Use when: Accuracy critical, offline processing
-
-**Method B: Manhattan Distance (L1 norm)**
-$$M \approx |g_x| + |g_y|$$
-- Pros: Very fast (no multiplication or square root)
-- Cons: ~15% overestimation at 45°
-- Use when: Real-time processing, relative magnitudes sufficient
-
-**Method C: Max-based Approximation**
-$$M \approx \max(|g_x|, |g_y|) + 0.5 \times \min(|g_x|, |g_y|)$$
-- Pros: Better accuracy than L1, still fast
-- Cons: Slightly more complex
-- Use when: Good accuracy-speed trade-off needed
-
-**Step 6: Gradient Direction**
-$$\theta = \text{atan2}(g_y, g_x)$$
-
-Results in [-π, +π] radians or [-180°, +180°] degrees
-
-**Important**: θ points perpendicular to edge!
-- Edge is horizontal (―) → θ = 90° (gradient points ↑ or ↓)
-- Edge is vertical (|) → θ = 0° or 180° (gradient points → or ←)
-
-**Step 7: Direction Quantization (for Canny NMS)**
-Map θ to nearest 45° sector:
-- Sector 0 (0°): -22.5° ≤ θ < 22.5°
-- Sector 1 (45°): 22.5° ≤ θ < 67.5°
-- Sector 2 (90°): 67.5° ≤ θ < 112.5°
-- Sector 3 (135°): 112.5° ≤ θ < 157.5°
-
-**Step 8: Thresholding Strategies**
-
-**Strategy A: Fixed Threshold**
-- Set T manually (e.g., T=100 for 8-bit images)
-- Simple but requires per-image tuning
-
-**Strategy B: Percentile-based**
-- T = P_th percentile of M values (e.g., P=70)
-- Adaptive to image content
-
-**Strategy C: Otsu's Method**
-- Find threshold that maximizes inter-class variance
-- Optimal for bimodal histograms (edge vs. non-edge)
-
-**Strategy D: Hysteresis (Canny-style)**
-- Two thresholds: T_high and T_low
-- Keep strong edges (M ≥ T_high)
-- Keep weak edges (M ≥ T_low) if connected to strong
-- Reject M < T_low
-
-**Isotropy Analysis:**
-Sobel's weighted smoothing provides superior isotropy:
-
-Response magnitude at different angles:
-- 0° edge: M_0 = full response
-- 45° edge: M_45 = 0.90 × M_0 (10% drop)
-- 90° edge: M_90 = full response
-
-Compare to Prewitt:
-- 0° edge: M_0 = full response
-- 45° edge: M_45 = 0.80 × M_0 (20% drop)
-- 90° edge: M_90 = full response
-
-Sobel's 10% variation vs. Prewitt's 20% means more uniform detection across orientations.
-
-**Noise Suppression Analysis:**
-Signal-to-Noise Ratio (SNR) improvement:
-
-For white Gaussian noise with variance σ²:
-- Roberts SNR: baseline (no smoothing)
-- Prewitt SNR: ~1.73× better (√3 from 3-pixel averaging)
-- Sobel SNR: ~2.00× better (weighted averaging favors center)
-
-**Computational Optimization:**
-
-**Separable Implementation:**
-```python
-# Horizontal gradient
-smooth_y = [1, 2, 1]  # Gaussian-like vertical smoothing
-diff_x = [-1, 0, 1]   # central difference horizontal
-gx = convolve_1d(convolve_1d(image, smooth_y, axis=0), diff_x, axis=1) / 4
-
-# Vertical gradient
-smooth_x = [1, 2, 1]  # Gaussian-like horizontal smoothing
-diff_y = [-1, 0, 1]   # central difference vertical
-gy = convolve_1d(convolve_1d(image, smooth_x, axis=1), diff_y, axis=0) / 4
-```
-
-**Integer-only Implementation (for embedded systems):**
-```c
-// Use bit shifts instead of division
-gx = ((z3 + (z6<<1) + z9) - (z1 + (z4<<1) + z7)) >> 2;
-gy = ((z7 + (z8<<1) + z9) - (z1 + (z2<<1) + z3)) >> 2;
-
-// Fast magnitude approximation
-magnitude = abs(gx) + abs(gy);
-```
-
-**Common Pitfalls:**
-1. **Forgetting to normalize**: Sobel produces larger values than Prewitt (factor of ~1.33)
-2. **Wrong direction interpretation**: θ is gradient direction, not edge direction (perpendicular!)
-3. **Boundary issues**: 1-pixel border cannot be processed (pad image first)
-4. **Overflow in 8-bit**: gx,gy can exceed ±255, use int16 or larger
-
-**When to Choose Sobel:**
-✓ **Default choice** for most applications
-✓ **Production systems** (best accuracy-speed-robustness balance)
-✓ **Moderate-high noise** (σ_noise up to 10 for 8-bit images)
-✓ **Multi-orientation edges** (good isotropy)
-✓ **Pre-processing for Canny** (standard choice)
-
-✗ **Rarely avoid**: Only when very simple implementation needed (use Prewitt) or already pre-smoothed (use Roberts)
-
-**Real-World Performance:**
-- 640×480 image: ~2-3ms on modern CPU (separable implementation)
-- Embedded ARM Cortex-M7: ~15-20ms (integer-only, single-threaded)
-- GPU (CUDA): <0.5ms (parallelized)
-
-
-
-**Characteristics:**
-
-| Property | Value/Description |
-|----------|-------------------|
-| **Kernel Size** | 3×3 |
-| **Smoothing** | Weighted [1, 2, 1] (Gaussian-like)|-------------------|
-| **Kernel Size** | 3×3 |
-| **Smoothing** | Uniform [1, 1, 1] averaging|-------------------|
-| **Kernel Size** | 2×2 (smallest possible) |
-| **Computation** | Fast (4 operations) |
-| **Edge Orientation** | ±45° diagonals |
-| **Noise Sensitivity** | Very high (no smoothing) |
-| **Localization** | Excellent (small kernel) |
-| **Isotropy** | Poor (diagonal bias) |
-
-**Visual Representation:**
-
-```
-Roberts Gx (diagonal):     Roberts Gy (anti-diagonal):
-
-  ┌───┬───┐                 ┌───┬───┐
-  │ +1│  0│                 │  0│ +1│
-  ├───┼───┤                 ├───┼───┤
-  │  0│ -1│                 │ -1│  0│
-  └───┴───┘                 └───┴───┘
-
-  Detects: ╲ edges          Detects: ╱ edges
-```
-
-**Design Philosophy:**
-The Roberts Cross operator was designed in 1963 for early edge detection systems with limited computational resources. Its 2×2 kernel size makes it the fastest possible gradient approximation, achieving edge detection in just 4 multiplications per pixel. The diagonal orientation (±45°) naturally captures edges that don't align with horizontal/vertical axes.
-
-**Mathematical Foundation:**
-Roberts approximates the gradient along diagonal directions using simple difference operators:
-- **Positive diagonal gradient**: Measures intensity change along ↗ direction
-- **Negative diagonal gradient**: Measures intensity change along ↖ direction
-
-The diagonal approach provides natural smoothing along one axis while differentiating along the perpendicular axis, though this smoothing is minimal compared to 3×3 operators.
-
-**Kernel Derivation:**
-Starting from the discrete gradient approximation along diagonals:
-$$\frac{\partial f}{\partial d_1} \approx f(x+1,y+1) - f(x,y) = z_4 - z_1$$
-$$\frac{\partial f}{\partial d_2} \approx f(x,y+1) - f(x+1,y) = z_3 - z_2$$
-
-This leads directly to the 2×2 kernels.
-
-**Step-by-Step Application Process:**
-
-1. **Position kernel**: Place 2×2 kernel over target pixel location
-2. **Extract values**: Read 4 pixel intensities (z₁, z₂, z₃, z₄)
-3. **Compute gx**: Apply positive diagonal kernel → gx = z₄ - z₁
-4. **Compute gy**: Apply negative diagonal kernel → gy = z₂ - z₃
-5. **Calculate magnitude**: M = √(gx² + gy²) or M ≈ |gx| + |gy| (faster)
-6. **Calculate direction**: θ = tan⁻¹(gy/gx)
-7. **Threshold**: Compare M to threshold value for binary edge map
-
-**Practical Implementation Considerations:**
-- **Boundary handling**: Requires 1-pixel border (cannot process image edges)
-- **Integer optimization**: Use bit shifts for √2 approximation: M ≈ (|gx| + |gy|) × 0.707 ≈ (|gx| + |gy|) × 181/256
-- **Lookup tables**: Pre-compute magnitude values for common intensity differences
-- **Threshold selection**: Typically 10-30% of maximum possible gradient for clean images
-
-**Noise Analysis:**
-Roberts' extreme noise sensitivity stems from:
-- **No spatial averaging**: Each pixel contributes once, noise isn't suppressed
-- **Small support**: Only 4 pixels determine gradient (vs. 9 for 3×3 operators)
-- **Direct differencing**: Any corrupt pixel directly affects output
-
-Example noise impact:
-- Clean edge (50→200): M = 212
-- With ±5 noise: M = 198-226 (±14 variation, 7% error)
-- With ±20 noise: M = 170-254 (±40 variation, 20% error)
-
-**When to Choose Roberts:**
-✓ **Pre-smoothed images** (Gaussian filter already applied)
-✓ **High-contrast edges** (large intensity differences)
-✓ **Speed-critical applications** (embedded systems, real-time video)
-✓ **Diagonal feature detection** (specific to ±45° edges)
-
-✗ **Avoid for:** Noisy images, weak edges, general-purpose detection
-
-
+**Step 2: Calculate Diagonals**
+- **$g_x$ (Main Diagonal):** $z_9 - z_5 = 50 - 10 = 40$
+- **$g_y$ (Anti-Diagonal):** $z_8 - z_6 = 10 - 50 = -40$
+
+**Step 3: Magnitude & Direction**
+- **Magnitude:** $M = \sqrt{40^2 + (-40)^2} \approx 56.6$ (Strong Edge)
+- **Direction:** $\theta = \tan^{-1}(-40/40) = -45^\circ$
 
 **When to Use Roberts:**
-- Very low-noise images
-- Need maximum speed
-- Diagonal edge orientation is acceptable
-- Image is pre-smoothed
+*   **Speed Critical:** Fastest operator (only 4 arithmetic operations).
+*   **Sharp Edges:** Provides excellent localization (minimal blurring).
+*   **Clean Images:** Use ONLY when noise is very low or image is pre-smoothed.
 
 **Practice Problem (5 marks):**
-
-**Q1.** Apply the Roberts Cross operator to detect edges:
-
-(a) Explain why Roberts uses 2×2 kernels instead of 3×3
-(b) Compute the gradient magnitude and direction for:
-
-$$
-\begin{bmatrix}
-80 & 80 \\
-160 & 160
-\end{bmatrix}
-$$
-
-(c) What is the main limitation of Roberts operator?
-
 <details>
-<summary><b>Click for Answer</b></summary>
+<summary>Click to see solution for Gradient Magnitude of [80, 80; 160, 160]</summary>
 
-**(a) Why 2×2 Kernels?**
-
-**Reasons for 2×2 size:**
-
-1. **Computational Efficiency**: Minimum kernel size for gradient approximation
-   - Only 4 multiplications per pixel
-   - Fastest edge detection possible
-
-2. **Edge Localization**: Small kernel = precise edge location
-   - Less spatial averaging
-   - Better pinpointing of edge position
-
-3. **Diagonal Orientation**: Naturally suited for diagonal edges
-   - 2×2 captures diagonal differences directly
-   - Aligned with ±45° edge directions
-
-4. **Historical Context**: Early computers had limited processing power
-   - Designed for real-time applications in 1960s
-   - Trade-off: speed over noise robustness
-
-**Trade-off:** Speed and localization vs. noise sensitivity
-
-**(b) Numerical Computation:**
-
-Given:
+**Given:**
 $$
-\begin{bmatrix}
-z_1=80 & z_2=80 \\
-z_3=160 & z_4=160
-\end{bmatrix}
+\begin{bmatrix} 80 & 80 \\ 160 & 160 \end{bmatrix}
 $$
 
 **Step 1: Apply Roberts Gx**
@@ -2192,338 +1906,19 @@ $$
 
 ---
 
-### 4.3.2 Prewitt Operator
+### 4.4.3 Prewitt Operator
 
-The **Prewitt operator** combines **smoothing** and **differentiation** using 3×3 kernels with uniform averaging.
+**Objective:** Detect edges more robustly by **averaging** noise before differentiation.
 
-**Kernels:**
-
+**Mathematical Foundation:**
+Prewitt combines smoothing and differentiation:
 $$
-G_x = \begin{bmatrix}
--1 & 0 & +1 \\
--1 & 0 & +1 \\
--1 & 0 & +1
-\end{bmatrix} \quad
-G_y = \begin{bmatrix}
--1 & -1 & -1 \\
-0 & 0 & 0 \\
-+1 & +1 & +1
-\end{bmatrix}
+\text{Prewitt Kernel} = \underbrace{\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}}_{\text{Average}} \times \underbrace{\begin{bmatrix} -1 & 0 & 1 \end{bmatrix}}_{\text{Difference}}
 $$
 
-**Decomposition:**
-
-Prewitt can be decomposed into smoothing and differentiation:
-
-$$
-G_x = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \otimes \begin{bmatrix} -1 & 0 & 1 \end{bmatrix}
-$$
-
-
----
-
-### Mathematical Intuition: Why Prewitt and Sobel Work Better
-
-**The Fundamental Problem with Simple Finite Differences**
-
-Basic gradient formula:
-$$g_x = f(x+1, y) - f(x-1, y)$$
-$$g_y = f(x, y+1) - f(x, y-1)$$
-
-**Limitations:**
-1. Uses only 2 pixels (ignores 7 neighbors)
-2. Extremely sensitive to noise
-3. No smoothing effect
-4. Poor edge localization
-
-**Example of noise sensitivity:**
-
-```
-Clean edge:           With noise (±1):
-  5  5 10              4  6 11
-  5  5 10  → gx=5      6  4  9  → gx varies!
-  5  5 10              4  5 11
-```
-
-Single noisy pixel causes large gradient errors.
-
----
-
-**Prewitt Operator: Combining Smoothing and Differentiation**
-
-**Key Innovation:** Separate smoothing from differentiation, then combine them.
-
-**Kernel Decomposition:**
-
-$$G_x = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \otimes \begin{bmatrix} -1 & 0 & 1 \end{bmatrix}$$
-
-This decomposes into:
-
-1. **Vertical smoothing:** $\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$ - Average 3 pixels vertically
-2. **Horizontal differentiation:** $\begin{bmatrix} -1 & 0 & 1 \end{bmatrix}$ - Compute horizontal difference
-
-**Mathematical Interpretation:**
-
-For $g_x$ (detecting horizontal edges):
-- **Smooth perpendicular to edge:** Average along columns (3 pixels)
-- **Differentiate along edge direction:** Difference across rows
-
-Formula breakdown:
-$$g_x = (z_7 + z_8 + z_9) - (z_1 + z_2 + z_3)$$
-
-This compares:
-- **Bottom row sum** (3 pixels) vs **Top row sum** (3 pixels)
-- Each pixel has equal weight = 1
-- Averaging effect: Noise reduced by factor of $\sqrt{3} \approx 1.73$
-
-**Visual representation:**
-
-```
-Prewitt Gx:
-┌────┬────┬────┐
-│ -1 │  0 │ +1 │  ← Each column: average of 3 pixels
-│ -1 │  0 │ +1 │     then differentiate horizontally
-│ -1 │  0 │ +1 │
-└────┴────┴────┘
-  ↑    ↑    ↑
-Left Center Right
-(avg) (skip) (avg)
-```
-
-**Why uniform weights [1, 1, 1]?**
-- Simple: All pixels contribute equally
-- Reduces noise through averaging
-- Computationally efficient
-- Good baseline performance
-
----
-
-**Sobel Operator: Gaussian-Like Weighted Smoothing**
-
-**Key Innovation:** Weight center pixels more than edge pixels (approximates Gaussian).
-
-**Kernel Decomposition:**
-
-$$G_x = \begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix} \otimes \begin{bmatrix} -1 & 0 & 1 \end{bmatrix}$$
-
-Components:
-
-1. **Gaussian-like smoothing:** $\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}$ (normalized: [1/4, 2/4, 1/4])
-2. **Central difference:** $\begin{bmatrix} -1 & 0 & 1 \end{bmatrix}$
-
-**Mathematical Foundation - Why [1, 2, 1]?**
-
-The weights [1, 2, 1] approximate a discretized 1D Gaussian:
-
-For Gaussian $G(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-x^2/(2\sigma^2)}$ with $\sigma \approx 0.85$:
-
-At positions x = -1, 0, +1:
-- $G(-1) \approx 0.24 \approx 1/4$
-- $G(0) \approx 0.47 \approx 2/4$ ← Center gets double weight
-- $G(+1) \approx 0.24 \approx 1/4$
-
-Scaling to integers: [1, 2, 1] (sum = 4)
-
-**Why this is better:**
-
-1. **Geometric reasoning - Distance from center:**
-
-```
-┌─────┬─────┬─────┐
-│ √2  │  1  │ √2  │ ← Corners farther: less weight
-├─────┼─────┼─────┤
-│  1  │  0  │  1  │ ← Sides closer: more weight
-├─────┼─────┼─────┤
-│ √2  │  1  │ √2  │ ← Corners farther: less weight
-└─────┴─────┴─────┘
-```
-
-Center row pixels (distance = 1) get weight = 2
-Corner pixels (distance = √2) get weight = 1
-
-2. **Reliability reasoning:**
-- Center pixels are closest to evaluation point
-- More reliable for gradient estimation
-- Should contribute more to the result
-
-3. **Gaussian approximation:**
-- Optimal smoothing filter (minimizes space-frequency uncertainty)
-- Better noise suppression than uniform averaging
-- Preserves edge information better
-
-**Formula breakdown:**
-$$g_x = (z_7 + 2z_8 + z_9) - (z_1 + 2z_2 + z_3)$$
-
-Comparing bottom vs top:
-- Edge pixels (z₇, z₉, z₁, z₃): weight = 1
-- Center pixels (z₈, z₂): weight = 2
-
-**Noise reduction analysis:**
-
-For white Gaussian noise with variance $\sigma^2$:
-- **Roberts** (no smoothing): SNR = baseline
-- **Prewitt** (uniform): SNR improvement = $\sqrt{3} \approx 1.73\times$
-- **Sobel** (weighted): SNR improvement = $2.0\times$
-
----
-
-**Computational Efficiency: Separability**
-
-Both Prewitt and Sobel are **separable** - can be computed as two 1D operations:
-
-**Instead of:** 9 multiplications + 8 additions = 17 operations
-
-**Use separable form:**
-- Smooth: 3 multiplications + 2 additions = 5 operations
-- Differentiate: 3 multiplications + 2 additions = 5 operations
-- **Total:** 10 operations
-
-**Savings:** ~40% reduction in operations!
-
-**Implementation:**
-
-```python
-# Efficient separable Sobel
-smooth_y = [1, 2, 1] / 4  # Vertical Gaussian-like smoothing
-diff_x = [-1, 0, 1]       # Horizontal central difference
-
-gx = convolve_1d(convolve_1d(image, smooth_y, axis=0), diff_x, axis=1)
-```
-
----
-
-**Isotropy: Direction-Independent Performance**
-
-**Problem:** Some operators respond differently to edges at different angles.
-
-**Isotropy test:** Apply operator to edges at 0°, 45°, 90°, 135°, measure response.
-
-**Results:**
-
-| Operator | 0° Response | 45° Response | 90° Response | Variation |
-|----------|-------------|--------------|--------------|-----------|
-| Roberts | 1.0 | 1.0 | 0.0 | High (diagonal bias) |
-| Prewitt | 1.0 | 0.8 | 1.0 | Moderate (20%) |
-| Sobel | 1.0 | 0.9 | 1.0 | Low (10%) |
-
-**Why Sobel has better isotropy:**
-- Weighted smoothing accounts for pixel distances
-- Better approximation of circular symmetry
-- More uniform response across all orientations
-
----
-
-**Frequency Response Characteristics**
-
-In frequency domain, ideal edge detector should:
-1. Pass high frequencies (edges)
-2. Suppress very high frequencies (noise)
-3. Have smooth cutoff transition
-
-**Comparative frequency response:**
-
-```
-Magnitude Response:
-
-1.0 │        Ideal
-    │         ╱╲
-    │        ╱  ╲___
-0.8 │    Sobel ╱    ╲___
-    │       ╱          ╲___
-0.6 │  Prewitt ╱           ╲___
-    │      ╱                   ╲___
-0.4 │ Simple ╱                     ╲___
-    │    ╱                             ╲___
-0.2 │   ╱                                 ╲___
-    │  ╱                                       ╲___
-0.0 └──────────────────────────────────────────────→
-    Low freq        Edge freq           Noise freq
-```
-
-**Interpretation:**
-- **Simple difference**: Poor noise suppression
-- **Prewitt**: Good noise suppression, moderate edge preservation
-- **Sobel**: Best balance - excellent noise suppression with edge preservation
-
----
-
-**Complete Comparison Table**
-
-| Aspect | Simple Diff | Prewitt | Sobel |
-|--------|------------|---------|-------|
-| **Pixels used** | 2 | 9 (equal) | 9 (weighted) |
-| **Smoothing** | None | Uniform [1,1,1] | Gaussian [1,2,1] |
-| **Noise sensitivity** | Very high | Medium | Low |
-| **Edge localization** | Poor | Good | Better |
-| **SNR improvement** | 1.0× | 1.73× | 2.0× |
-| **Isotropy** | Poor | Moderate (20% var) | Good (10% var) |
-| **Computation** | 2 ops | 17 ops (10 separable) | 17 ops (10 separable) |
-| **Use case** | Pre-smoothed | Educational | Production |
-
----
-
-**Practical Implications**
-
-**When to choose:**
-
-**Prewitt:**
-- Educational purposes (easier to understand)
-- Baseline comparisons
-- Low-moderate noise environments
-- When implementation simplicity matters
-
-**Sobel:**
-- Production systems (industry standard)
-- Moderate-high noise images
-- When accuracy matters
-- Default choice for most applications
-
-**Why Sobel is preferred:**
-1. Better noise handling (2× vs 1.73× improvement)
-2. Superior isotropy (10% vs 20% variation)
-3. Gaussian approximation (theoretically optimal)
-4. Same computational cost as Prewitt (when using separable form)
-5. More robust across varying image conditions
-
----
-
-**Summary: Mathematical Intuition (3-Mark Answer Format)**
-
-1. **Decomposition Principle:** Prewitt and Sobel decompose gradient computation into two separate operations: smoothing (noise reduction) perpendicular to edge direction and differentiation along edge direction. This makes them robust to noise unlike simple finite differences that use only 2 pixels.
-
-2. **Weighting Strategy:** Prewitt uses uniform averaging [1,1,1] across 3 pixels providing $\sqrt{3}$ noise reduction. Sobel uses weighted averaging [1,2,1] that approximates Gaussian smoothing, giving double weight to center pixels (closer and more reliable), achieving 2× noise reduction and better isotropy (10% variation vs Prewitt's 20%).
-
-3. **Gradient Computation:** Both compute magnitude as $M = \sqrt{g_x^2 + g_y^2}$ representing edge strength, and direction as $\alpha = \tan^{-1}(g_y/g_x)$ pointing toward maximum intensity increase. The edge itself runs perpendicular to gradient direction. Sobel's Gaussian-like weighting provides superior noise suppression while preserving edge information better than uniform averaging.
-
-
-$$
-\underbrace{\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}}_{\text{Smooth in y}} \otimes \underbrace{\begin{bmatrix} -1 & 0 & 1 \end{bmatrix}}_{\text{Differentiate in x}}
-$$
-
-**Gradient Computation:**
-
-For a 3×3 region:
-
-$$
-\begin{bmatrix}
-z_1 & z_2 & z_3 \\
-z_4 & z_5 & z_6 \\
-z_7 & z_8 & z_9
-\end{bmatrix}
-$$
-
-$$
-g_x = (z_3 + z_6 + z_9) - (z_1 + z_4 + z_7)
-$$
-
-$$
-g_y = (z_7 + z_8 + z_9) - (z_1 + z_2 + z_3)
-$$
-
-**Complete Numerical Example:**
+**Numerical Example:**
 
 **Given:** 5×5 image with a vertical edge
-
 $$
 \begin{bmatrix}
 50 & 50 & 50 & 200 & 200 \\
@@ -2537,7 +1932,6 @@ $$
 **Task:** Compute gradient at center pixel (position [2,2] with 0-indexing).
 
 **Step 1: Extract 3×3 neighborhood**
-
 $$
 \begin{bmatrix}
 50 & 50 & 200 \\
@@ -2545,459 +1939,185 @@ $$
 50 & 50 & 200
 \end{bmatrix}
 $$
-
 Label pixels for clarity:
-- z_1=50, z_2=50, z_3=200 (top row)
-- z_4=50, z_5=50, z_6=200 (middle row)
-- z_7=50, z_8=50, z_9=200 (bottom row)
+- $z_1=50, z_2=50, z_3=200$ (top row)
+- $z_4=50, z_5=50, z_6=200$ (middle row)
+- $z_7=50, z_8=50, z_9=200$ (bottom row)
 
 **Step 2: Compute $g_x$ (horizontal gradient)**
-
 $$
 g_x = (z_3 + z_6 + z_9) - (z_1 + z_4 + z_7)
 $$
-
 $$
 g_x = (200 + 200 + 200) - (50 + 50 + 50) = 600 - 150 = 450
 $$
 
 **Step 3: Compute $g_y$ (vertical gradient)**
-
 $$
 g_y = (z_7 + z_8 + z_9) - (z_1 + z_2 + z_3)
 $$
-
 $$
 g_y = (50 + 50 + 200) - (50 + 50 + 200) = 300 - 300 = 0
 $$
 
 **Step 4: Compute magnitude**
-
 $$
 M = \sqrt{g_x^2 + g_y^2} = \sqrt{450^2 + 0^2} = 450
 $$
 
 **Step 5: Compute direction**
-
 $$
-\theta = \tan^{-1}\left(\frac{g_y}{g_x}\right) = \tan^{-1}\left(\frac{0}{450}\right) = 0°
+\theta = \tan^{-1}\left(\frac{g_y}{g_x}\right) = \tan^{-1}\left(\frac{0}{450}\right) = 0^\circ
 $$
+**Interpretation:** A strong vertical edge is detected ($M=450$), correctly oriented at $0^\circ$.
 
-**Interpretation:**
-- Magnitude = 450: Strong edge detected
-- Direction = 0°: Gradient points horizontally (right)
-- Edge orientation = 90°: Edge is vertical (perpendicular to gradient)
+---
 
-**Characteristics:**
+**When to Choose Prewitt:**
+*   **Education:** Great for learning how smoothing filters work (uniform).
+*   **Baseline Benchmark:** Standard for comparing against modern operators.
+*   **Uniform Sensitivity:** Good general-purpose detector if Gaussian weighting isn't critical.
 
-| Property | Value/Description |
-|----------|-------------------|
-| **Kernel Size** | 3×3 |
-| **Smoothing** | Uniform [1, 1, 1] averaging |
-| **Noise Handling** | Good (better than Roberts) |
-| **Isotropy** | Moderate |
-| **Computation** | Medium (18 operations) |
-| **Edge Width** | 1-2 pixels |
+---
 
+### 4.4.4 Sobel Operator
 
-### 4.3.3 Sobel Operator
+**Objective:** The Industry Standard. Improves on Prewitt by giving **more weight** to the center pixels (nearest neighbors).
 
-The **Sobel operator** is similar to Prewitt but uses **weighted averaging** with emphasis on the center row/column, providing better noise suppression and isotropy.
+**Why it's better:**
+- Uses **[1, 2, 1]** weighting (Gaussian approximation).
+- The center pixel is closer, so it's more reliable.
+- Provides better rotation invariance (Isotropy).
 
-**Kernels:**
+**Comparison Formula:**
+- **Prewitt:** $g_x = (z_3 + z_6 + z_9) - (z_1 + z_4 + z_7)$
+- **Sobel:** $g_x = (z_3 + \mathbf{2}z_6 + z_9) - (z_1 + \mathbf{2}z_4 + z_7)$
 
-$$
-G_x = \begin{bmatrix}
--1 & 0 & +1 \\
--2 & 0 & +2 \\
--1 & 0 & +1
-\end{bmatrix} \quad
-G_y = \begin{bmatrix}
--1 & -2 & -1 \\
-0 & 0 & 0 \\
-+1 & +2 & +1
-\end{bmatrix}
-$$
-
-**Decomposition:**
-
-Sobel uses weighted [1, 2, 1] smoothing (approximates Gaussian):
-
-$$
-G_x = \begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix} \otimes \begin{bmatrix} -1 & 0 & 1 \end{bmatrix}
-$$
-
-$$
-\underbrace{\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}}_{\text{Gaussian-like smooth}} \otimes \underbrace{\begin{bmatrix} -1 & 0 & 1 \end{bmatrix}}_{\text{Central difference}}
-$$
-
-**Why [1, 2, 1] weighting?**
-
-1. **Approximates Gaussian smoothing**: $G(\sigma) \approx [1, 2, 1]/4$
-2. **Gives more weight to center**: Pixels closer to center are more reliable
-3. **Better isotropy**: More uniform response across orientations
-4. **Separable**: Efficient computation
-
-**Gradient Computation:**
-
-For a 3×3 region:
-
-$$
-\begin{bmatrix}
-z_1 & z_2 & z_3 \\
-z_4 & z_5 & z_6 \\
-z_7 & z_8 & z_9
-\end{bmatrix}
-$$
-
-$$
-g_x = (z_3 + 2z_6 + z_9) - (z_1 + 2z_4 + z_7)
-$$
-
-$$
-g_y = (z_7 + 2z_8 + z_9) - (z_1 + 2z_2 + z_3)
-$$
-
-**Complete Numerical Example:**
-
-**Given:** Same 5×5 image with vertical edge
-
-$$
-\begin{bmatrix}
-50 & 50 & 50 & 200 & 200 \\
-50 & 50 & 50 & 200 & 200 \\
-50 & 50 & 50 & 200 & 200 \\
-50 & 50 & 50 & 200 & 200 \\
-50 & 50 & 50 & 200 & 200
-\end{bmatrix}
-$$
-
-**Task:** Compute Sobel gradient at center pixel.
-
-**Step 1: Extract 3×3 neighborhood**
-
-$$
-\begin{bmatrix}
-50 & 50 & 200 \\
-50 & 50 & 200 \\
-50 & 50 & 200
-\end{bmatrix}
-$$
-
-**Step 2: Compute $g_x$ (horizontal gradient)**
-
-$$
-g_x = (z_3 + 2z_6 + z_9) - (z_1 + 2z_4 + z_7)
-$$
-
-$$
-g_x = (200 + 2×200 + 200) - (50 + 2×50 + 50)
-$$
-
-$$
-g_x = (200 + 400 + 200) - (50 + 100 + 50) = 800 - 200 = 600
-$$
-
-**Step 3: Compute $g_y$ (vertical gradient)**
-
-$$
-g_y = (z_7 + 2z_8 + z_9) - (z_1 + 2z_2 + z_3)
-$$
-
-$$
-g_y = (50 + 2×50 + 200) - (50 + 2×50 + 200)
-$$
-
-$$
-g_y = 300 - 300 = 0
-$$
-
-**Step 4: Compute magnitude**
-
-$$
-M = \sqrt{600^2 + 0^2} = 600
-$$
-
-**Step 5: Compute direction**
-
-$$
-\theta = \tan^{-1}(0/600) = 0°
-$$
-
-**Comparison with Prewitt:**
-- Prewitt magnitude: 450
-- Sobel magnitude: 600
-- Sobel gives **stronger response** due to center weighting
-
-**Characteristics:**
-
-| Property | Value/Description |
-|----------|-------------------|
-| **Kernel Size** | 3×3 |
-| **Smoothing** | Weighted [1, 2, 1] (Gaussian-like) |
-| **Noise Handling** | Excellent (best among 3×3 operators) |
-| **Isotropy** | Good (best among 3×3 operators) |
-| **Computation** | Medium (18 operations) |
-| **Edge Width** | 1-2 pixels |
-| **Most Common** | YES (industry standard) |
-
-**Why Sobel is Most Popular:**
-
-1. Good balance of noise reduction and edge localization
-2. Computationally efficient (separable kernels)
-3. Better isotropy than Prewitt or Roberts
-4. Widely supported in libraries (OpenCV, MATLAB, etc.)
-
-### 4.3.4 Comparison: Roberts vs Prewitt vs Sobel
-
-**Summary Table:**
-
-| Feature | Roberts | Prewitt | Sobel |
-|---------|---------|---------|-------|
-| **Kernel Size** | 2×2 | 3×3 | 3×3 |
-| **Operations** | 4 | 18 | 18 |
-| **Speed** | Fastest | Medium | Medium |
-| **Smoothing** | None | Uniform [1,1,1] | Weighted [1,2,1] |
-| **Noise Sensitivity** | Very High | Medium | Low |
-| **Edge Localization** | Excellent | Good | Good |
-| **Isotropy** | Poor (45° bias) | Moderate | Best |
-| **Edge Orientation** | Diagonal (±45°) | H/V (0°/90°) | H/V (0°/90°) |
-| **Typical Use** | Pre-smoothed images | General purpose | Industry standard |
-
-**Noise Performance Comparison:**
-
+**Numerical Example:**
+Given 3x3 block:
 ```
-Clean Image:          σ=0.1 Noise:         σ=1.0 Noise:
-Roberts    ███        ██▒▒                 ▒▒░░░░
-           ███        ██▒▒                 ▒▒░░░░
+10 50 10
+10 50 10
+10 50 10
+```
+$g_x$ (Sobel) = $(10+2(10)+10) - (10+2(10)+10) = 40 - 40 = 0$ (Symmetric).
+#### Detailed Numerical Example (5x5 Context)
 
-Prewitt    ███        ███▒                 ██▒▒░░
-           ███        ███▒                 ██▒▒░░
+**Objective**: Apply Sobel to the center pixel ($z_{13}$) of a 5x5 region.
 
-Sobel      ███        ████                 ███▒▒▒
-           ███        ████                 ███▒▒▒
-
-Legend: █ Strong edge  ▒ Weak edge  ░ Noise
+**Given 5x5 Image Region:**
+```
+      Col 0   Col 1   Col 2   Col 3   Col 4
+Row 0   100     100     100     100     100
+Row 1   100     100     100     100     100
+Row 2   100     100      50      50      50  <- Edge starts here (z13=50)
+Row 3    50      50      50      50      50
+Row 4    50      50      50      50      50
 ```
 
-**Magnitude Response Comparison:**
-
-For the same vertical edge:
-
-| Operator | Magnitude | Relative Strength |
-|----------|-----------|-------------------|
-| Roberts | 70.7 | 1.0× (baseline) |
-| Prewitt | 450 | 6.4× |
-| Sobel | 600 | 8.5× |
-
-**Directional Response (Isotropy):**
-
-Testing edge detection at different orientations (0°, 45°, 90°, 135°):
-
-| Operator | 0° | 45° | 90° | 135° | Variance | Isotropy |
-|----------|-----|-----|-----|------|----------|----------|
-| Roberts | 50% | 100% | 50% | 100% | High | Poor |
-| Prewitt | 100% | 80% | 100% | 80% | Medium | Moderate |
-| Sobel | 100% | 90% | 100% | 90% | Low | **Best** |
-
-**Selection Guide:**
-
-```mermaid
-graph TD
-    A[Need Edge Detection?] --> B{Noise Level?}
-    B -->|Very Low| C[Roberts<br/>2×2, fastest]
-    B -->|Low-Medium| D{Priority?}
-    B -->|High| E[Sobel<br/>Best noise handling]
-
-    D -->|Speed| F[Prewitt<br/>Uniform averaging]
-    D -->|Accuracy| E
-
-    style C fill:#ffe6e6
-    style F fill:#fff4e6
-    style E fill:#e6ffe6
+**Step 1: Extract 3x3 Neighborhood**
+We operate on the 3x3 block centered at $z_{13}$ (Row 2, Col 2):
 ```
+100 (z1)  100 (z2)  100 (z3)
+100 (z4)   50 (z5)   50 (z6)
+ 50 (z7)   50 (z8)   50 (z9)
+```
+*(Note: Using standard grid notation where z5 is the center)*
 
-**Practical Recommendations:**
+**Step 2: Compute $g_x$ (Horizontal Gradient)**
+$$
+\begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}
+$$
+**Calculation:**
+- Right Col Sum: $100 + 2(50) + 50 = 250$
+- Left Col Sum: $100 + 2(100) + 50 = 350$
+$$g_x = 250 - 350 = -100$$
 
-1. **Default choice**: **Sobel** (best all-around performance)
-2. **Speed critical**: **Roberts** (if image is pre-smoothed)
-3. **Implementation simplicity**: **Prewitt** (uniform weights easier)
-4. **Noisy images**: **Sobel** (superior noise suppression)
-5. **Diagonal edges**: **Roberts** (optimized for 45° edges)
+**Step 3: Compute $g_y$ (Vertical Gradient)**
+$$
+\begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ -1 & -2 & -1 \end{bmatrix}
+$$
+**Calculation:**
+- Top Row Sum: $100 + 2(100) + 100 = 400$
+- Bottom Row Sum: $50 + 2(50) + 50 = 200$
+$$g_y = 400 - 200 = 200$$
+
+**Step 4: Compute Gradient Magnitude**
+$$
+M = \sqrt{g_x^2 + g_y^2}
+$$
+$$
+M = \sqrt{(-100)^2 + (200)^2} = \sqrt{10000 + 40000} = \sqrt{50000} \approx 223.6
+$$
+
+**Step 5: Compute Gradient Direction**
+$$
+\theta = \tan^{-1}\left(\frac{g_y}{g_x}\right)
+$$
+$$
+\theta = \tan^{-1}\left(\frac{200}{-100}\right) = \tan^{-1}(-2) \approx 116.5^\circ \text{ (or } -63.4^\circ \text{)}
+$$
+**Interpretation:** A strong edge ($M=223.6$) is detected, oriented at roughly $116.5^\circ$.
+
+---
+
+### 4.4.5 Comparison: Roberts vs Prewitt vs Sobel
+
+### 4.4.6 Practical Operator Selection Guide
+
+| Scenario | Best Operator | Why? |
+|----------|---------------|------|
+| **Very Noisy Image** | **Sobel** | Gaussian smoothing suppresses noise best. |
+| **Speed is Critical** | **Roberts** | Only 4 calculations per pixel (vs 18). |
+| **Simple Edges** | **Prewitt** | Good baseline, easier math (no multiplication). |
+| **Diagonal Edges** | **Roberts** | Naturally aligns with diagonals. |
+| **General Purpose** | **Sobel** | Best balance of accuracy and checking. |
+
+**Visual Summary of Performance:**
+- **Roberts:** Sharpest edges but "speckled" with noise.
+- **Prewitt:** Smoother edges, less noise.
+- **Sobel:** The smoothest edges, excellent for real-world photos.
+
+---
 
 **Practice Problem (10 marks):**
 
-**Q2.** Compare Prewitt and Sobel operators for edge detection:
-
-(a) Explain the key difference in their smoothing approach
-(b) Why does Sobel provide better isotropy?
-(c) Compute gradients for both operators on:
-
+**Q2.** Given the following 3×3 image region:
 $$
 \begin{bmatrix}
-100 & 100 & 180 \\
-100 & 100 & 180 \\
-100 & 100 & 180
+100 & 100 & 200 \\
+100 & 100 & 200 \\
+100 & 100 & 200
 \end{bmatrix}
 $$
+
+(a) Calculate the **Horizontal Gradient ($g_x$)** using the **Prewitt** operator. (3 marks)
+(b) Calculate the **Horizontal Gradient ($g_x$)** using the **Sobel** operator. (3 marks)
+(c) Compare your results. Which operator produces a higher magnitude output and why? (4 marks)
 
 <details>
 <summary><b>Click for Answer</b></summary>
 
-**(a) Smoothing Approach Difference:**
+**(a) Prewitt Calculation:**
+- Sum Right Col: $200+200+200 = 600$
+- Sum Left Col: $100+100+100 = 300$
+- $g_x = 600 - 300 = 300$
 
-**Prewitt:**
-- Uses **uniform averaging**: [1, 1, 1]
-- All three pixels contribute equally
-- Simple arithmetic mean
-- Formula: $\text{smooth} = \frac{p_1 + p_2 + p_3}{3}$
+**(b) Sobel Calculation:**
+- Weighted Sum Right: $200 + 2(200) + 200 = 800$
+- Weighted Sum Left: $100 + 2(100) + 100 = 400$
+- $g_x = 800 - 400 = 400$
 
-**Sobel:**
-- Uses **weighted averaging**: [1, 2, 1]
-- Center pixel gets double weight
-- Approximates Gaussian smoothing
-- Formula: $\text{smooth} = \frac{p_1 + 2p_2 + p_3}{4}$
-- More emphasis on reliable center information
-
-**Mathematical Comparison:**
-
-For pixels [50, 60, 50]:
-
-Prewitt: $(50 + 60 + 50)/3 = 53.3$
-Sobel: $(50 + 2×60 + 50)/4 = 55.0$ ← Center (60) has more influence
-
-**Why Weighted is Better:**
-1. **Distance weighting**: Closer pixels are more correlated
-2. **Gaussian approximation**: [1,2,1] ≈ discretized Gaussian
-3. **Noise suppression**: Center pixel typically more reliable
-
-**(b) Why Sobel Has Better Isotropy:**
-
-**Isotropy** = uniform response to edges at all orientations.
-
-**Sobel's advantages:**
-
-1. **Weighted scheme** accounts for pixel distances from center
-   - Circular symmetry approximation
-   - Not just simple box filter
-
-2. **Gaussian-like kernel** provides more uniform angular response
-   ```
-   Prewitt: [1 1 1]    → Box approximation
-   Sobel:   [1 2 1]    → Better circular approximation
-   ```
-
-3. **More accurate derivative** estimation at center
-   - Reduces directional bias
-   - Better for edges at non-cardinal angles
-
-4. **Mathematical Property:**
-   - Sobel kernel norm more consistent across rotations
-   - Less variation in response magnitude
-
-**Quantitative Comparison:**
-
-For 45° edge:
-- Prewitt response: 80% of 0° response
-- Sobel response: 90% of 0° response
-- Sobel has 12.5% less directional bias
-
-**(c) Numerical Computation:**
-
-Given:
-$$
-\begin{bmatrix}
-z_1=100 & z_2=100 & z_3=180 \\
-z_4=100 & z_5=100 & z_6=180 \\
-z_7=100 & z_8=100 & z_9=180
-\end{bmatrix}
-$$
-
-**Prewitt Computation:**
-
-$$
-g_x = (z_3 + z_6 + z_9) - (z_1 + z_4 + z_7)
-$$
-
-$$
-g_x = (180 + 180 + 180) - (100 + 100 + 100) = 540 - 300 = 240
-$$
-
-$$
-g_y = (z_7 + z_8 + z_9) - (z_1 + z_2 + z_3)
-$$
-
-$$
-g_y = (100 + 100 + 180) - (100 + 100 + 180) = 0
-$$
-
-$$
-M_{\text{Prewitt}} = \sqrt{240^2 + 0^2} = 240
-$$
-
-$$
-\theta_{\text{Prewitt}} = \tan^{-1}(0/240) = 0°
-$$
-
-**Sobel Computation:**
-
-$$
-g_x = (z_3 + 2z_6 + z_9) - (z_1 + 2z_4 + z_7)
-$$
-
-$$
-g_x = (180 + 2×180 + 180) - (100 + 2×100 + 100)
-$$
-
-$$
-g_x = (180 + 360 + 180) - (100 + 200 + 100) = 720 - 400 = 320
-$$
-
-$$
-g_y = (z_7 + 2z_8 + z_9) - (z_1 + 2z_2 + z_3)
-$$
-
-$$
-g_y = (100 + 2×100 + 180) - (100 + 2×100 + 180) = 0
-$$
-
-$$
-M_{\text{Sobel}} = \sqrt{320^2 + 0^2} = 320
-$$
-
-$$
-\theta_{\text{Sobel}} = \tan^{-1}(0/320) = 0°
-$$
-
-**Comparison Summary:**
-
-| Metric | Prewitt | Sobel | Difference |
-|--------|---------|-------|------------|
-| $g_x$ | 240 | 320 | +33% |
-| $g_y$ | 0 | 0 | Same |
-| Magnitude | 240 | 320 | +33% |
-| Direction | 0° | 0° | Same |
-
-**Analysis:**
-- Sobel gives **33% stronger response** due to center weighting (factor of 2)
-- Both correctly identify vertical edge (θ = 0°)
-- Both correctly compute zero vertical gradient
-- Sobel's higher magnitude provides better SNR in noisy images
-
-**Conclusion:** For this vertical edge, both detect correctly, but Sobel provides stronger, more robust detection. The difference becomes more pronounced with:
-- Noisy images
-- Oblique edges (non 0°/90°)
-- Weak edges
-
+**(c) Comparison:**
+- Sobel Magnitude (400) > Prewitt Magnitude (300).
+- **Reason:** Sobel applies a weight of **2** to the central pixels. Since the edge is vertical and consistent, this weighting effectively amplifies the gradient response, resulting in a stronger edge signal (33% higher).
 </details>
 
 ---
 
-## 4.4 Second-Order Edge Detection
+## 4.5 Second-Order Edge Detection
 
-Second-order derivatives provide an alternative approach to edge detection using zero-crossing detection instead of gradient magnitude thresholding.
-
-### 4.4.1 Laplacian Operator
+### 4.5.1 Laplacian Operator
 
 The **Laplacian** is an isotropic second-order derivative operator that responds to intensity changes regardless of edge direction.
 
@@ -3181,7 +2301,7 @@ $$
 - Produces closed contours (can be unwanted)
 
 
-### 4.4.2 Laplacian of Gaussian (LoG)
+### 4.5.2 Laplacian of Gaussian (LoG)
 
 The **Laplacian of Gaussian** (LoG) combines smoothing and edge detection in a single operation, addressing the noise sensitivity of the pure Laplacian.
 
@@ -3542,7 +2662,54 @@ The **Canny edge detector**, developed by John Canny in 1986, is considered the 
 2. **Good Localization**: Edges should be close to true edge positions
 3. **Single Response**: One detector response per edge (no multiple responses)
 
-### 4.5.1 Overview and Motivation
+### 4.6.1 Overview and Motivation
+
+**Why Canny? Understanding the Problems and Solutions**
+
+**Problems with Simple Gradient Operators:**
+
+1. **Problem: Noise Sensitivity**
+   - Single-pixel noise creates false edges
+   - Example: Salt-and-pepper noise triggers Roberts/Sobel responses
+   - Result: Edge map cluttered with spurious detections
+
+2. **Problem: Thick Edges (Multiple Responses)**
+   - Gradient is high across several pixels near edge
+   - Result: Edges are 3-5 pixels wide instead of 1 pixel
+   - Issue: Violates "single response" criterion
+
+3. **Problem: Threshold Selection Difficulty**
+   - Single threshold creates dilemma:
+     * Too high → Miss important weak edges
+     * Too low → Include too much noise
+   - No single value works for all edges in image
+
+4. **Problem: Disconnected Edges**
+   - Edges break at points where gradient dips slightly
+   - Result: Fragmented edge maps, broken contours
+   - Makes edge tracking and object recognition difficult
+
+**Canny's Solutions:**
+
+The Canny edge detector (John Canny, 1986) systematically addresses each limitation:
+
+| Problem | Canny's Solution | How It Works | Benefit |
+|---------|-----------------|--------------|---------|
+| Noise sensitivity | **Gaussian smoothing** | Reduces noise before edge detection | Fewer false edges |
+| Thick edges | **Non-maximum suppression** | Keeps only local maxima along gradient direction | 1-pixel wide edges |
+| Threshold selection | **Double thresholding** | Two thresholds: strong ($T_H$) + weak ($T_L$) edges | Better edge classification |
+| Disconnected edges | **Hysteresis tracking** | Links weak edges to strong edges | Connected contours |
+
+**Visual Comparison:**
+
+```
+Simple Sobel Result:        Canny Result:
+████████                    ███
+████████  (thick, noisy)    ███  (thin, clean)
+████████                    ███
+   ███                         ███
+   ███  (disconnected)         ███  (connected)
+```
 
 **Why Canny is Superior:**
 
@@ -3553,6 +2720,13 @@ The **Canny edge detector**, developed by John Canny in 1986, is considered the 
 | Disconnected edge segments | Connected edge contours |
 | Fixed threshold (binary decision) | Adaptive thresholding (hysteresis) |
 | No edge tracking | Edge linking by connectivity |
+
+**The Canny Advantage:**
+
+- **Optimal:** Mathematically proven to satisfy Canny's three criteria
+- **Robust:** Works well on variety of images without parameter tuning
+- **Widely Used:** Industry standard in computer vision applications
+- **Well-Localized:** Edges positioned accurately at true boundaries
 
 **The Five Steps:**
 
@@ -3579,7 +2753,7 @@ graph TD
 - **T**racking by hysteresis
 
 
-### 4.5.2 Step 1: Gaussian Smoothing
+### 4.6.2 Step 1: Gaussian Smoothing
 
 **Purpose:** Reduce noise before edge detection to prevent false edges.
 
@@ -3638,7 +2812,7 @@ $$
 
 **Computational saving: 60%**
 
-### 4.5.3 Step 2: Gradient Computation
+### 4.6.3 Step 2: Gradient Computation
 
 **Purpose:** Find edge strength (magnitude) and direction at each pixel.
 
@@ -3717,7 +2891,7 @@ Gradient Direction Sectors:
 ```
 
 
-### 4.5.4 Step 3: Non-Maximum Suppression
+### 4.6.4 Step 3: Non-Maximum Suppression
 
 **Purpose:** Thin edges to single-pixel width by suppressing non-maximum pixels along gradient direction.
 
@@ -3794,7 +2968,7 @@ For each pixel (x, y):
         M_NMS(x, y) = 0          // Suppress
 ```
 
-### 4.5.5 Step 4: Double Thresholding
+### 4.6.5 Step 4: Double Thresholding
 
 **Purpose:** Classify edge pixels into three categories using two thresholds.
 
@@ -3813,7 +2987,7 @@ $$
 \end{cases}
 $$
 
-### 4.5.6 Step 5: Edge Tracking by Hysteresis
+### 4.6.6 Step 5: Edge Tracking by Hysteresis
 
 **Purpose:** Connect weak edges to strong edges to form continuous contours.
 
@@ -3842,11 +3016,11 @@ graph TD
 
 > A weak edge pixel is kept **only if** it is connected (8-connectivity) to a strong edge pixel.
 
-### 4.5.7 Complete Numerical Example
+### 4.6.7 Complete Numerical Example
 
 [Detailed 7×7 example with all 5 steps showing complete calculations]
 
-### 4.5.8 Parameter Selection Guidelines
+### 4.6.8 Parameter Selection Guidelines
 
 | Parameter | Typical Value | Notes |
 |-----------|---------------|-------|
@@ -3858,7 +3032,7 @@ graph TD
 
 ## 4.6 Hough Transform for Line Detection
 
-### 4.6.1 The Line Detection Problem
+### 4.7.1 The Line Detection Problem
 
 **Challenge:** Detecting lines in images after edge detection.
 
@@ -3867,7 +3041,7 @@ graph TD
 - Noise creates gaps
 - Need to group edge pixels into lines
 
-### 4.6.2 Parameter Space Representation
+### 4.7.2 Parameter Space Representation
 
 **Cartesian Form (slope-intercept):**
 
@@ -3892,7 +3066,7 @@ where:
 - Bounded parameter space: $\rho \in [-D, D]$, $\theta \in [0, \pi]$
 - where $D = \sqrt{width^2 + height^2}$
 
-### 4.6.3 Hough Transform Algorithm
+### 4.7.3 Hough Transform Algorithm
 
 **Core Algorithm - Detailed Explanation:**
 
@@ -4036,7 +3210,7 @@ $$\rho_k = x\cos(\theta_k) + y\sin(\theta_k)$$
 - For $n_\rho = 1000$, $n_\theta = 180$: ~180KB memory
 
 
-### 4.6.4 Complete Numerical Example
+### 4.7.4 Complete Numerical Example
 
 **Problem Setup:**
 
@@ -4845,7 +4019,7 @@ $$\text{Memory} = n_\rho \times n_\theta \times \text{sizeof(int)}$$
 For typical case: $1000 \times 180 \times 4 = 720$ KB
 
 
-### 4.6.4 Complete Numerical Example
+### 4.7.4 Complete Numerical Example
 
 **Given:** 5×5 edge image with 3 edge points
 
@@ -4910,7 +4084,7 @@ $$
 
 Perfect! This is the diagonal line through our points.
 
-### 4.6.5 Practical Considerations
+### 4.7.5 Practical Considerations
 
 **Computational Complexity:**
 - For $N$ edge pixels, $n_\theta$ angle bins:
@@ -4925,7 +4099,7 @@ Perfect! This is the diagonal line through our points.
 | $\Delta\theta$ | 1° | Finer → better angle resolution, slower |
 | Threshold | 60-80% of max votes | Higher → fewer false positives, may miss weak lines |
 
-### 4.6.6 Extensions: Circle and Generalized Hough Transform
+### 4.7.6 Extensions: Circle and Generalized Hough Transform
 
 **Circle Detection:**
 
