@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CycleGAN: Complete Deep Dive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #2980b9;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 5px solid #3498db;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .intro {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .key-point {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .code-block code {
+            color: #f8f8f2;
+        }
+        
+        .keyword { color: #66d9ef; }
+        .string { color: #e6db74; }
+        .comment { color: #75715e; }
+        .function { color: #a6e22e; }
+        .number { color: #ae81ff; }
+        
+        .architecture-box {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .advantages {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .limitations {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .formula {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+            overflow-x: auto;
+        }
+        
+        .diagram {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .section-number {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .note {
+            background: #e1f5fe;
+            border-left: 4px solid #03a9f4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border: 2px solid #dee2e6;
+        }
+        
+        .toc h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 10px;
+        }
+        
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .summary-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+        
+        .star {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 CycleGAN: Complete Deep Dive</h1>
+        
+        <div class="intro">
+            <p><strong>CycleGAN (Cycle-Consistent Generative Adversarial Network)</strong> is a groundbreaking deep learning model for <strong>unpaired image-to-image translation</strong>. It revolutionized the field by enabling style transfer and domain adaptation without requiring paired training examples.</p>
+            <p><strong>Published:</strong> 2017 | <strong>Authors:</strong> Jun-Yan Zhu, Taesung Park, Phillip Isola, Alexei A. Efros | <strong>Institution:</strong> UC Berkeley</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>📑 Table of Contents</h3>
+            <ul>
+                <li><a href="#section1">1. What is CycleGAN?</a></li>
+                <li><a href="#section2">2. The Problem CycleGAN Solves</a></li>
+                <li><a href="#section3">3. Core Concept: Cycle Consistency</a></li>
+                <li><a href="#section4">4. Architecture Components</a></li>
+                <li><a href="#section5">5. Loss Functions</a></li>
+                <li><a href="#section6">6. Network Architecture Details</a></li>
+                <li><a href="#section7">7. Training Process</a></li>
+                <li><a href="#section8">8. Key Techniques</a></li>
+                <li><a href="#section9">9. Applications</a></li>
+                <li><a href="#section10">10. Advantages</a></li>
+                <li><a href="#section11">11. Limitations</a></li>
+                <li><a href="#section12">12. Training Tips</a></li>
+                <li><a href="#section13">13. Comparison with Other Methods</a></li>
+                <li><a href="#section14">14. Mathematical Formulation</a></li>
+                <li><a href="#section15">15. Code Example</a></li>
+            </ul>
+        </div>
+
+        <!-- Section 1 -->
+        <h2 id="section1"><span class="section-number">1</span>What is CycleGAN?</h2>
+        
+        <p><strong>CycleGAN</strong> (Cycle-Consistent Generative Adversarial Network) is a deep learning model for <span class="highlight">unpaired image-to-image translation</span>.</p>
+        
+        <div class="key-point">
+            <h4>🔑 Key Innovation:</h4>
+            <p>Traditional image translation requires <strong>paired training data</strong> (e.g., same scene in summer AND winter). CycleGAN works with <strong>unpaired data</strong> (collection of summer images + collection of winter images).</p>
+        </div>
+
+        <!-- Section 2 -->
+        <h2 id="section2"><span class="section-number">2</span>The Problem CycleGAN Solves</h2>
+        
+        <h3>Traditional Approach (Pix2Pix):</h3>
+        <div class="architecture-box">Requires: Paired data
+Example: Photo → Segmentation map
+
+Training data needed:
+[Photo of horse, Exact same photo as zebra]  ← Hard to get!
+[Photo of horse, Exact same photo as zebra]
+[Photo of horse, Exact same photo as zebra]
+        </div>
+
+        <h3>CycleGAN Approach:</h3>
+        <div class="architecture-box">Requires: Unpaired data
+Example: Horse photos → Zebra photos
+
+Training data needed:
+Collection A: [horse1, horse2, horse3, ...]  ← Easy to collect!
+Collection B: [zebra1, zebra2, zebra3, ...]  ← Just need separate photos!
+        </div>
+
+        <!-- Section 3 -->
+        <h2 id="section3"><span class="section-number">3</span>Core Concept: Cycle Consistency <span class="star">⭐</span></h2>
+        
+        <div class="key-point">
+            <h4>The Cycle Idea:</h4>
+            <p>If you translate:</p>
+            <ol>
+                <li><strong>Image A → Domain B</strong> (horse → zebra)</li>
+                <li><strong>Then translate back → Domain A</strong> (zebra → horse)</li>
+            </ol>
+            <p>You should get <strong>the original image back</strong>!</p>
+        </div>
+
+        <div class="diagram">
+Original Horse Image → [Generator G] → Zebra-like Image
+                                            ↓
+                                     [Generator F]
+                                            ↓
+                                   Reconstructed Horse ≈ Original Horse
+        </div>
+
+        <p>This is called <span class="highlight">cycle consistency</span> and is the core innovation of CycleGAN.</p>
+
+        <!-- Section 4 -->
+        <h2 id="section4"><span class="section-number">4</span>Architecture Components</h2>
+        
+        <p>CycleGAN has <strong>4 neural networks</strong>:</p>
+        
+        <h3>Two Generators:</h3>
+        <ul>
+            <li><strong>G: A → B</strong> (e.g., Horse → Zebra)</li>
+            <li><strong>F: B → A</strong> (e.g., Zebra → Horse)</li>
+        </ul>
+        
+        <h3>Two Discriminators:</h3>
+        <ul>
+            <li><strong>D_A</strong>: Distinguishes real A from fake A (generated by F)</li>
+            <li><strong>D_B</strong>: Distinguishes real B from fake B (generated by G)</li>
+        </ul>
+
+        <div class="diagram">
+┌─────────────────────────────────────────────────────────┐
+│                 CycleGAN Architecture                    │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  Domain A (Horses)              Domain B (Zebras)        │
+│        │                              │                  │
+│   Real Image A                   Real Image B            │
+│        │                              │                  │
+│        ├──────► G ──────►       Generated B              │
+│        │                      (fake zebra)               │
+│        │                              │                  │
+│        │                              ├──────► D_B       │
+│        │                              │     (Real/Fake?) │
+│        │                              │                  │
+│        │                         ◄────┴── F ◄────┤       │
+│        │                    Reconstructed A       │      │
+│        │                    (should ≈ Real A)     │      │
+│        │                                          │      │
+│        └──────────► D_A ◄───────── Generated A ◄─┘      │
+│                    (Real/Fake?)    (fake horse)          │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+        </div>
+
+        <!-- Section 5 -->
+        <h2 id="section5"><span class="section-number">5</span>Loss Functions</h2>
+        
+        <p>CycleGAN uses <strong>3 loss functions</strong> to train the networks effectively:</p>
+
+        <h3>5.1 Adversarial Loss (GAN Loss)</h3>
+        <p>Makes generated images look realistic.</p>
+        
+        <div class="formula">
+            <strong>For G (A → B):</strong><br>
+            L<sub>GAN</sub>(G, D<sub>B</sub>, A, B) = 𝔼[log D<sub>B</sub>(b)] + 𝔼[log(1 - D<sub>B</sub>(G(a)))]
+        </div>
+        
+        <div class="note">
+            <strong>Translation:</strong>
+            <ul>
+                <li>D<sub>B</sub> should classify real B images as real (maximize log D<sub>B</sub>(b))</li>
+                <li>D<sub>B</sub> should classify fake B images as fake (maximize log(1 - D<sub>B</sub>(G(a))))</li>
+                <li>G tries to fool D<sub>B</sub> (minimize this loss)</li>
+            </ul>
+        </div>
+
+        <div class="formula">
+            <strong>For F (B → A):</strong><br>
+            L<sub>GAN</sub>(F, D<sub>A</sub>, B, A) = 𝔼[log D<sub>A</sub>(a)] + 𝔼[log(1 - D<sub>A</sub>(F(b)))]
+        </div>
+
+        <h3>5.2 Cycle Consistency Loss <span class="star">⭐</span> (The Innovation!)</h3>
+        <p>Ensures the cycle returns to the original image.</p>
+        
+        <div class="formula">
+            L<sub>cyc</sub>(G, F) = 𝔼[||F(G(a)) - a||<sub>1</sub>] + 𝔼[||G(F(b)) - b||<sub>1</sub>]
+        </div>
+        
+        <div class="note">
+            <strong>Translation:</strong>
+            <ul>
+                <li><strong>Forward cycle:</strong> a → G(a) → F(G(a)) should ≈ a</li>
+                <li><strong>Backward cycle:</strong> b → F(b) → G(F(b)) should ≈ b</li>
+                <li>Uses L1 distance (mean absolute error)</li>
+            </ul>
+        </div>
+
+        <div class="key-point">
+            <strong>Why L1?</strong>
+            <ul>
+                <li>L1 encourages less blurring than L2</li>
+                <li>Preserves sharp details better</li>
+            </ul>
+        </div>
+
+        <h3>5.3 Identity Loss (Optional)</h3>
+        <p>Preserves color composition when input is already in target domain.</p>
+        
+        <div class="formula">
+            L<sub>identity</sub>(G, F) = 𝔼[||G(b) - b||<sub>1</sub>] + 𝔼[||F(a) - a||<sub>1</sub>]
+        </div>
+        
+        <div class="note">
+            <strong>Translation:</strong>
+            <ul>
+                <li>If you give G a zebra image, it should return the zebra unchanged</li>
+                <li>If you give F a horse image, it should return the horse unchanged</li>
+            </ul>
+        </div>
+
+        <div class="key-point">
+            <strong>Why needed?</strong>
+            <ul>
+                <li>Prevents unnecessary changes (e.g., don't change a zebra's stripes)</li>
+                <li>Helps preserve colors when input is already close to target</li>
+            </ul>
+        </div>
+
+        <h3>Total Loss:</h3>
+        <div class="formula">
+            L(G, F, D<sub>A</sub>, D<sub>B</sub>) = L<sub>GAN</sub>(G, D<sub>B</sub>) + L<sub>GAN</sub>(F, D<sub>A</sub>) 
+                            + λ<sub>cyc</sub> × L<sub>cyc</sub>(G, F) 
+                            + λ<sub>identity</sub> × L<sub>identity</sub>(G, F)
+            <br><br>
+            <strong>Where:</strong><br>
+            • λ<sub>cyc</sub> = 10 (typically)<br>
+            • λ<sub>identity</sub> = 0.5 × λ<sub>cyc</sub> (typically)
+        </div>
+
+        <!-- Section 6 -->
+        <h2 id="section6"><span class="section-number">6</span>Network Architecture Details</h2>
+        
+        <h3>Generator Architecture (ResNet-based)</h3>
+        
+        <div class="architecture-box">
+Input Image (256×256×3)
+    ↓
+[Convolution] → 64 filters
+    ↓
+[Convolution] → 128 filters
+    ↓
+[Convolution] → 256 filters
+    ↓
+[9 ResNet Blocks] → 256 filters each
+    │
+    ├─ [Conv → InstanceNorm → ReLU → Conv → InstanceNorm]
+    └─ + Skip Connection
+    ↓
+[Deconvolution] → 128 filters
+    ↓
+[Deconvolution] → 64 filters
+    ↓
+[Convolution] → 3 filters (RGB)
+    ↓
+[Tanh Activation]
+    ↓
+Output Image (256×256×3)
+        </div>
+
+        <div class="note">
+            <strong>Key Features:</strong>
+            <ul>
+                <li><strong>ResNet blocks:</strong> Preserve information through skip connections</li>
+                <li><strong>Instance Normalization:</strong> Better than batch norm for style transfer</li>
+                <li><strong>Encoder-Decoder:</strong> Downsamples then upsamples</li>
+                <li><strong>Tanh output:</strong> Scales output to [-1, 1]</li>
+            </ul>
+        </div>
+
+        <h3>Discriminator Architecture (PatchGAN)</h3>
+        
+        <div class="architecture-box">
+Input Image (256×256×3)
+    ↓
+[Conv 64] → LeakyReLU
+    ↓
+[Conv 128] → InstanceNorm → LeakyReLU
+    ↓
+[Conv 256] → InstanceNorm → LeakyReLU
+    ↓
+[Conv 512] → InstanceNorm → LeakyReLU
+    ↓
+[Conv 1] → Output (70×70 patch predictions)
+        </div>
+
+        <div class="note">
+            <strong>Key Features:</strong>
+            <ul>
+                <li><strong>PatchGAN:</strong> Outputs 70×70 grid instead of single value</li>
+                <li>Each patch position predicts real/fake for that region</li>
+                <li>Focuses on high-frequency details</li>
+                <li>More efficient than classifying whole image</li>
+            </ul>
+        </div>
+
+        <!-- Section 7 -->
+        <h2 id="section7"><span class="section-number">7</span>Training Process</h2>
+        
+        <h3>Step-by-Step Training:</h3>
+        
+        <div class="code-block">
+<code><span class="keyword">for</span> epoch <span class="keyword">in</span> epochs:
+    <span class="keyword">for</span> batch <span class="keyword">in</span> dataloader:
+        real_A, real_B = batch  <span class="comment"># Unpaired samples!</span>
+        
+        <span class="comment"># ==========================================</span>
+        <span class="comment"># Step 1: Train Generators (G and F)</span>
+        <span class="comment"># ==========================================</span>
+        
+        <span class="comment"># Forward cycle: A → B → A</span>
+        fake_B = G(real_A)              <span class="comment"># Generate fake zebra</span>
+        reconstructed_A = F(fake_B)     <span class="comment"># Reconstruct horse</span>
+        
+        <span class="comment"># Backward cycle: B → A → B</span>
+        fake_A = F(real_B)              <span class="comment"># Generate fake horse</span>
+        reconstructed_B = G(fake_A)     <span class="comment"># Reconstruct zebra</span>
+        
+        <span class="comment"># Calculate losses</span>
+        loss_GAN_G = GAN_loss(D_B(fake_B), target=<span class="number">1</span>)  <span class="comment"># Fool D_B</span>
+        loss_GAN_F = GAN_loss(D_A(fake_A), target=<span class="number">1</span>)  <span class="comment"># Fool D_A</span>
+        
+        loss_cycle_A = L1_loss(reconstructed_A, real_A)
+        loss_cycle_B = L1_loss(reconstructed_B, real_B)
+        
+        loss_identity_A = L1_loss(F(real_A), real_A)
+        loss_identity_B = L1_loss(G(real_B), real_B)
+        
+        <span class="comment"># Total generator loss</span>
+        loss_G = (loss_GAN_G + loss_GAN_F +
+                  <span class="number">10</span> * (loss_cycle_A + loss_cycle_B) +
+                  <span class="number">5</span> * (loss_identity_A + loss_identity_B))
+        
+        <span class="comment"># Backprop and update G and F</span>
+        loss_G.<span class="function">backward</span>()
+        optimizer_G.<span class="function">step</span>()
+        
+        <span class="comment"># ==========================================</span>
+        <span class="comment"># Step 2: Train Discriminators (D_A and D_B)</span>
+        <span class="comment"># ==========================================</span>
+        
+        <span class="comment"># Discriminator D_B (for domain B)</span>
+        loss_D_B_real = GAN_loss(D_B(real_B), target=<span class="number">1</span>)
+        loss_D_B_fake = GAN_loss(D_B(fake_B.<span class="function">detach</span>()), target=<span class="number">0</span>)
+        loss_D_B = (loss_D_B_real + loss_D_B_fake) * <span class="number">0.5</span>
+        
+        <span class="comment"># Discriminator D_A (for domain A)</span>
+        loss_D_A_real = GAN_loss(D_A(real_A), target=<span class="number">1</span>)
+        loss_D_A_fake = GAN_loss(D_A(fake_A.<span class="function">detach</span>()), target=<span class="number">0</span>)
+        loss_D_A = (loss_D_A_real + loss_D_A_fake) * <span class="number">0.5</span>
+        
+        <span class="comment"># Backprop and update D_A and D_B</span>
+        loss_D_A.<span class="function">backward</span>()
+        loss_D_B.<span class="function">backward</span>()
+        optimizer_D.<span class="function">step</span>()</code>
+        </div>
+
+        <!-- Section 8 -->
+        <h2 id="section8"><span class="section-number">8</span>Key Techniques</h2>
+        
+        <h3>8.1 Instance Normalization</h3>
+        
+        <div class="code-block">
+<code><span class="comment"># Better than Batch Normalization for style transfer</span>
+InstanceNorm2d(num_features)
+
+<span class="comment"># Normalizes each sample independently</span>
+<span class="comment"># Doesn't depend on batch statistics</span></code>
+        </div>
+
+        <h3>8.2 Replay Buffer</h3>
+        
+        <div class="code-block">
+<code><span class="comment"># Store previously generated fake images</span>
+<span class="comment"># Prevents mode collapse</span>
+<span class="comment"># Discriminator sees history, not just current batch</span>
+
+<span class="keyword">class</span> <span class="function">ReplayBuffer</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, max_size=<span class="number">50</span>):
+        <span class="keyword">self</span>.buffer = []
+        <span class="keyword">self</span>.max_size = max_size
+    
+    <span class="keyword">def</span> <span class="function">push_and_pop</span>(<span class="keyword">self</span>, data):
+        <span class="keyword">if</span> <span class="function">len</span>(<span class="keyword">self</span>.buffer) &lt; <span class="keyword">self</span>.max_size:
+            <span class="keyword">self</span>.buffer.<span class="function">append</span>(data)
+            <span class="keyword">return</span> data
+        <span class="keyword">else</span>:
+            <span class="keyword">if</span> random.<span class="function">random</span>() &gt; <span class="number">0.5</span>:
+                i = random.<span class="function">randint</span>(<span class="number">0</span>, <span class="keyword">self</span>.max_size - <span class="number">1</span>)
+                temp = <span class="keyword">self</span>.buffer[i].<span class="function">clone</span>()
+                <span class="keyword">self</span>.buffer[i] = data
+                <span class="keyword">return</span> temp
+            <span class="keyword">else</span>:
+                <span class="keyword">return</span> data</code>
+        </div>
+
+        <h3>8.3 Learning Rate Scheduling</h3>
+        
+        <div class="code-block">
+<code><span class="comment"># Keep constant for first 100 epochs</span>
+<span class="comment"># Linear decay for next 100 epochs</span>
+
+<span class="keyword">def</span> <span class="function">lambda_rule</span>(epoch):
+    <span class="keyword">if</span> epoch &lt; <span class="number">100</span>:
+        <span class="keyword">return</span> <span class="number">1.0</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="number">1.0</span> - (epoch - <span class="number">100</span>) / <span class="number">100</span></code>
+        </div>
+
+        <!-- Section 9 -->
+        <h2 id="section9"><span class="section-number">9</span>Applications</h2>
+        
+        <h3>Style Transfer:</h3>
+        <ul>
+            <li>Photo → Painting (Monet, Van Gogh, Cezanne)</li>
+            <li>Summer → Winter</li>
+            <li>Day → Night</li>
+        </ul>
+
+        <h3>Object Transfiguration:</h3>
+        <ul>
+            <li>Horse ↔ Zebra</li>
+            <li>Apple ↔ Orange</li>
+            <li>Cat ↔ Dog</li>
+        </ul>
+
+        <h3>Domain Adaptation:</h3>
+        <ul>
+            <li>Synthetic → Real images</li>
+            <li>Sketches → Photos</li>
+            <li>Aerial → Map view</li>
+        </ul>
+
+        <h3>Medical Imaging:</h3>
+        <ul>
+            <li>MRI → CT scans</li>
+            <li>Cross-modality synthesis</li>
+        </ul>
+
+        <h3>Photo Enhancement:</h3>
+        <ul>
+            <li>Low-res → High-res</li>
+            <li>Blurry → Sharp</li>
+            <li>Remove artifacts</li>
+        </ul>
+
+        <!-- Section 10 -->
+        <h2 id="section10"><span class="section-number">10</span>Advantages</h2>
+        
+        <div class="advantages">
+            <ul>
+                <li>✅ <strong>No paired data needed</strong> - Huge advantage over traditional methods!</li>
+                <li>✅ <strong>Bidirectional translation</strong> - Get two models for the price of one</li>
+                <li>✅ <strong>Cycle consistency</strong> - Preserves content while changing style</li>
+                <li>✅ <strong>Quality results</strong> - State-of-the-art unpaired translation</li>
+                <li>✅ <strong>Versatile</strong> - Works across many domains and applications</li>
+            </ul>
+        </div>
+
+        <!-- Section 11 -->
+        <h2 id="section11"><span class="section-number">11</span>Limitations</h2>
+        
+        <div class="limitations">
+            <ul>
+                <li>❌ <strong>Geometric changes difficult</strong> - Can't change shape dramatically</li>
+                <li>❌ <strong>Training instability</strong> - GANs are notoriously hard to train</li>
+                <li>❌ <strong>Computational cost</strong> - 4 networks to train simultaneously</li>
+                <li>❌ <strong>Mode collapse</strong> - May ignore input diversity</li>
+                <li>❌ <strong>Artifacts</strong> - Can produce unrealistic details</li>
+                <li>❌ <strong>Dataset requirements</strong> - Still needs lots of data (1000+ images)</li>
+            </ul>
+        </div>
+
+        <!-- Section 12 -->
+        <h2 id="section12"><span class="section-number">12</span>Training Tips</h2>
+        
+        <h3>Data Requirements:</h3>
+        <ul>
+            <li>1000+ images per domain (more is better)</li>
+            <li>Similar composition preferred</li>
+            <li>Augmentation helps (flip, crop, color jitter)</li>
+        </ul>
+
+        <h3>Hyperparameters:</h3>
+        <div class="code-block">
+<code>batch_size = <span class="number">1</span>          <span class="comment"># Yes, really! Better for InstanceNorm</span>
+lr = <span class="number">0.0002</span>            <span class="comment"># Learning rate</span>
+beta1 = <span class="number">0.5</span>            <span class="comment"># Adam optimizer</span>
+lambda_cyc = <span class="number">10</span>        <span class="comment"># Cycle consistency weight</span>
+lambda_identity = <span class="number">5</span>    <span class="comment"># Identity loss weight</span></code>
+        </div>
+
+        <h3>Architecture Choices:</h3>
+        <ul>
+            <li>6 ResNet blocks for 128×128 images</li>
+            <li>9 ResNet blocks for 256×256+ images</li>
+            <li>PatchGAN discriminator (70×70)</li>
+        </ul>
+
+        <!-- Section 13 -->
+        <h2 id="section13"><span class="section-number">13</span>Comparison with Other Methods</h2>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Paired Data?</th>
+                    <th>Bidirectional?</th>
+                    <th>Quality</th>
+                    <th>Speed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>CycleGAN</strong></td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                    <td>⭐⭐⭐⭐</td>
+                    <td>⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>Pix2Pix</strong></td>
+                    <td>✅ Yes</td>
+                    <td>❌ No</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                    <td>⭐⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>StarGAN</strong></td>
+                    <td>❌ No</td>
+                    <td>✅ Multi-domain</td>
+                    <td>⭐⭐⭐</td>
+                    <td>⭐⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>UNIT</strong></td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                    <td>⭐⭐⭐</td>
+                    <td>⭐⭐</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Section 14 -->
+        <h2 id="section14"><span class="section-number">14</span>Mathematical Formulation</h2>
+        
+        <h3>Complete Objective:</h3>
+        
+        <div class="formula">
+            <strong>min</strong><sub>G,F</sub> <strong>max</strong><sub>D<sub>A</sub>,D<sub>B</sub></sub> L(G, F, D<sub>A</sub>, D<sub>B</sub>) = 
+            <br><br>
+            &nbsp;&nbsp;L<sub>GAN</sub>(G, D<sub>B</sub>, A, B) + L<sub>GAN</sub>(F, D<sub>A</sub>, B, A)<br>
+            &nbsp;&nbsp;+ λ × L<sub>cyc</sub>(G, F)<br>
+            &nbsp;&nbsp;+ λ<sub>id</sub> × L<sub>identity</sub>(G, F)
+            <br><br>
+            <strong>Where:</strong><br>
+            • L<sub>GAN</sub> = Adversarial loss (make fakes look real)<br>
+            • L<sub>cyc</sub> = Cycle consistency loss (F(G(x)) ≈ x)<br>
+            • L<sub>identity</sub> = Identity mapping loss (G(y) ≈ y)<br>
+            • λ, λ<sub>id</sub> = Weighting factors
+        </div>
+
+        <!-- Section 15 -->
+        <h2 id="section15"><span class="section-number">15</span>Code Example (PyTorch)</h2>
+        
+        <div class="code-block">
+<code><span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn
+
+<span class="keyword">class</span> <span class="function">ResNetBlock</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, dim):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        <span class="keyword">self</span>.conv_block = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">ReflectionPad2d</span>(<span class="number">1</span>),
+            nn.<span class="function">Conv2d</span>(dim, dim, <span class="number">3</span>),
+            nn.<span class="function">InstanceNorm2d</span>(dim),
+            nn.<span class="function">ReLU</span>(<span class="keyword">True</span>),
+            nn.<span class="function">ReflectionPad2d</span>(<span class="number">1</span>),
+            nn.<span class="function">Conv2d</span>(dim, dim, <span class="number">3</span>),
+            nn.<span class="function">InstanceNorm2d</span>(dim)
+        )
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, x):
+        <span class="keyword">return</span> x + <span class="keyword">self</span>.conv_block(x)  <span class="comment"># Skip connection</span>
+
+<span class="keyword">class</span> <span class="function">Generator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, input_nc=<span class="number">3</span>, output_nc=<span class="number">3</span>, ngf=<span class="number">64</span>, n_blocks=<span class="number">9</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        
+        <span class="comment"># Encoder</span>
+        model = [
+            nn.<span class="function">ReflectionPad2d</span>(<span class="number">3</span>),
+            nn.<span class="function">Conv2d</span>(input_nc, ngf, <span class="number">7</span>),
+            nn.<span class="function">InstanceNorm2d</span>(ngf),
+            nn.<span class="function">ReLU</span>(<span class="keyword">True</span>)
+        ]
+        
+        <span class="comment"># Downsampling</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>):
+            mult = <span class="number">2</span> ** i
+            model += [
+                nn.<span class="function">Conv2d</span>(ngf * mult, ngf * mult * <span class="number">2</span>, <span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),
+                nn.<span class="function">InstanceNorm2d</span>(ngf * mult * <span class="number">2</span>),
+                nn.<span class="function">ReLU</span>(<span class="keyword">True</span>)
+            ]
+        
+        <span class="comment"># ResNet blocks</span>
+        mult = <span class="number">2</span> ** <span class="number">2</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(n_blocks):
+            model += [ResNetBlock(ngf * mult)]
+        
+        <span class="comment"># Upsampling</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>):
+            mult = <span class="number">2</span> ** (<span class="number">2</span> - i)
+            model += [
+                nn.<span class="function">ConvTranspose2d</span>(ngf * mult, ngf * mult // <span class="number">2</span>, <span class="number">3</span>,
+                                  stride=<span class="number">2</span>, padding=<span class="number">1</span>, output_padding=<span class="number">1</span>),
+                nn.<span class="function">InstanceNorm2d</span>(ngf * mult // <span class="number">2</span>),
+                nn.<span class="function">ReLU</span>(<span class="keyword">True</span>)
+            ]
+        
+        <span class="comment"># Output</span>
+        model += [
+            nn.<span class="function">ReflectionPad2d</span>(<span class="number">3</span>),
+            nn.<span class="function">Conv2d</span>(ngf, output_nc, <span class="number">7</span>),
+            nn.<span class="function">Tanh</span>()
+        ]
+        
+        <span class="keyword">self</span>.model = nn.<span class="function">Sequential</span>(*model)
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, x):
+        <span class="keyword">return</span> <span class="keyword">self</span>.model(x)
+
+<span class="comment"># Training loop (simplified)</span>
+G = <span class="function">Generator</span>()  <span class="comment"># A → B</span>
+F = <span class="function">Generator</span>()  <span class="comment"># B → A</span>
+D_A = <span class="function">Discriminator</span>()
+D_B = <span class="function">Discriminator</span>()
+
+criterion_GAN = nn.<span class="function">MSELoss</span>()
+criterion_cycle = nn.<span class="function">L1Loss</span>()
+
+<span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="function">range</span>(<span class="number">200</span>):
+    <span class="keyword">for</span> real_A, real_B <span class="keyword">in</span> dataloader:
+        <span class="comment"># Generate fake images</span>
+        fake_B = G(real_A)
+        fake_A = F(real_B)
+        
+        <span class="comment"># Cycle consistency</span>
+        rec_A = F(fake_B)
+        rec_B = G(fake_A)
+        
+        <span class="comment"># Generator losses</span>
+        loss_GAN_G = criterion_GAN(D_B(fake_B), torch.<span class="function">ones_like</span>(D_B(fake_B)))
+        loss_GAN_F = criterion_GAN(D_A(fake_A), torch.<span class="function">ones_like</span>(D_A(fake_A)))
+        loss_cycle = criterion_cycle(rec_A, real_A) + criterion_cycle(rec_B, real_B)
+        
+        loss_G = loss_GAN_G + loss_GAN_F + <span class="number">10</span> * loss_cycle
+        
+        <span class="comment"># Update generators</span>
+        optimizer_G.<span class="function">zero_grad</span>()
+        loss_G.<span class="function">backward</span>()
+        optimizer_G.<span class="function">step</span>()
+        
+        <span class="comment"># Discriminator losses (similar pattern)</span>
+        <span class="comment"># ... update D_A and D_B ...</span></code>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-box">
+            <h3>📝 Summary</h3>
+            <p><strong>CycleGAN is a breakthrough</strong> in unpaired image-to-image translation. Its <strong>cycle consistency</strong> constraint enables learning mappings between domains without requiring paired training examples, opening up countless applications where paired data is difficult or impossible to obtain.</p>
+            <br>
+            <p><strong>🔑 Key Takeaway:</strong> If you can go <strong>A→B</strong> and then <strong>B→A</strong> to get back to <strong>A</strong>, you've learned a meaningful translation!</p>
+            <br>
+            <p><strong>💡 Innovation:</strong> The cycle consistency loss is elegant and powerful - it's a simple idea that solves a complex problem.</p>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #3498db; color: #7f8c8d;">
+            <p><strong>CycleGAN: Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks</strong></p>
+            <p>Jun-Yan Zhu, Taesung Park, Phillip Isola, Alexei A. Efros | UC Berkeley | ICCV 2017</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                📄 Paper: <a href="https://arxiv.org/abs/1703.10593" style="color: #3498db;">arXiv:1703.10593</a> | 
+                💻 Code: <a href="https://github.com/junyanz/CycleGAN" style="color: #3498db;">GitHub</a>
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>

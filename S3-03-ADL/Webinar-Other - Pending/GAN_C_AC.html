@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional GAN vs Auxiliary Classifier GAN: Complete Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 5px solid #764ba2;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .header-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header-box h1 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .comparison-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid #dee2e6;
+        }
+        
+        .comparison-card.cgan {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        }
+        
+        .comparison-card.acgan {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+        
+        .comparison-card h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .architecture-box {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .key-difference {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .key-difference h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .keyword { color: #66d9ef; }
+        .string { color: #e6db74; }
+        .comment { color: #75715e; }
+        .function { color: #a6e22e; }
+        .number { color: #ae81ff; }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .pros {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .pros h4 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .cons {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .cons h4 {
+            color: #721c24;
+            margin-top: 0;
+        }
+        
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .formula {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+            border: 2px solid #dee2e6;
+        }
+        
+        .note {
+            background: #e1f5fe;
+            border-left: 5px solid #03a9f4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .visual-comparison {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+        
+        .summary-box h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin-top: 0;
+        }
+        
+        .quick-reference {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid #667eea;
+            margin: 30px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .badge-cgan {
+            background: #3498db;
+            color: white;
+        }
+        
+        .badge-acgan {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .badge-both {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-box">
+            <h1>⚔️ Conditional GAN vs Auxiliary Classifier GAN</h1>
+            <p style="font-size: 1.2em; margin-top: 15px;">A Complete Technical Comparison</p>
+        </div>
+
+        <div class="intro">
+            <p><strong>Both Conditional GAN (cGAN) and Auxiliary Classifier GAN (AC-GAN) extend the original GAN framework to enable controlled image generation using class labels.</strong> However, they achieve this goal in fundamentally different ways, each with unique advantages and trade-offs.</p>
+            <p style="margin-top: 15px;"><strong>Key Question:</strong> How do we generate images of specific classes (e.g., "generate a cat" vs "generate a dog")?</p>
+        </div>
+
+        <!-- Quick Visual Summary -->
+        <div class="visual-comparison">
+            <h2 style="margin-top: 0; text-align: center; color: #667eea;">Quick Visual Comparison</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card cgan">
+                    <h3>🔵 Conditional GAN (cGAN)</h3>
+                    <p><strong>Approach:</strong> Feed label as extra input</p>
+                    <p><strong>Discriminator Task:</strong> "Is this a real image?"</p>
+                    <p><strong>Published:</strong> 2014 (Mirza & Osindero)</p>
+                </div>
+                
+                <div class="comparison-card acgan">
+                    <h3>🔴 Auxiliary Classifier GAN (AC-GAN)</h3>
+                    <p><strong>Approach:</strong> Discriminator predicts label</p>
+                    <p><strong>Discriminator Task:</strong> "Is this real? What class is it?"</p>
+                    <p><strong>Published:</strong> 2017 (Odena et al., Google Brain)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Difference -->
+        <div class="key-difference">
+            <h3>🔑 The Core Difference</h3>
+            <p><strong>Conditional GAN:</strong> The discriminator uses the class label as <span class="highlight">auxiliary information</span> to help determine if an image is real or fake.</p>
+            <p><strong>AC-GAN:</strong> The discriminator must <span class="highlight">predict the class label</span> in addition to determining if an image is real or fake.</p>
+            <p style="margin-top: 15px; font-weight: 600;">In simple terms: cGAN is given the answer, AC-GAN must figure it out!</p>
+        </div>
+
+        <!-- Section 1: Conditional GAN -->
+        <h2>1. Conditional GAN (cGAN)</h2>
+
+        <h3>1.1 Overview</h3>
+        <p><strong>Conditional GAN</strong> extends the original GAN by conditioning both the generator and discriminator on additional information <code>y</code> (typically class labels).</p>
+
+        <div class="note">
+            <strong>Key Idea:</strong> Both generator and discriminator receive the class label as input. The label guides what to generate and what to expect.
+        </div>
+
+        <h3>1.2 Architecture</h3>
+
+        <div class="architecture-box">
+┌────────────────────────────────────────────────────────┐
+│              CONDITIONAL GAN ARCHITECTURE               │
+├────────────────────────────────────────────────────────┤
+│                                                         │
+│  GENERATOR:                                            │
+│                                                         │
+│    Noise (z) ───────┐                                 │
+│                     │                                  │
+│    Label (y) ───────┴──► [Concatenate] ──► G(z,y) ──► │
+│                                              │          │
+│                                         Fake Image      │
+│                                                         │
+│  DISCRIMINATOR:                                        │
+│                                                         │
+│    Image (x) ───────┐                                 │
+│                     │                                  │
+│    Label (y) ───────┴──► [Concatenate] ──► D(x,y) ──► │
+│                                              │          │
+│                                    Real/Fake (0 or 1)   │
+│                                                         │
+└────────────────────────────────────────────────────────┘
+        </div>
+
+        <h3>1.3 How It Works</h3>
+
+        <h4>Generator:</h4>
+        <ul>
+            <li><strong>Input:</strong> Random noise <code>z</code> + Class label <code>y</code></li>
+            <li><strong>Process:</strong> Concatenate or embed the label, then generate image</li>
+            <li><strong>Output:</strong> Fake image conditioned on class <code>y</code></li>
+        </ul>
+
+        <h4>Discriminator:</h4>
+        <ul>
+            <li><strong>Input:</strong> Image <code>x</code> + Class label <code>y</code></li>
+            <li><strong>Process:</strong> Concatenate image with label information</li>
+            <li><strong>Output:</strong> Probability that <code>x</code> is real given label <code>y</code></li>
+        </ul>
+
+        <h3>1.4 Loss Function</h3>
+
+        <div class="formula">
+            <strong>Conditional GAN Objective:</strong><br><br>
+            min<sub>G</sub> max<sub>D</sub> V(D, G) = 
+            𝔼<sub>x~p<sub>data</sub>(x)</sub>[log D(x|y)] + 
+            𝔼<sub>z~p<sub>z</sub>(z)</sub>[log(1 - D(G(z|y)))]
+            <br><br>
+            <strong>Where:</strong><br>
+            • D(x|y) = Discriminator output for image x given label y<br>
+            • G(z|y) = Generator output from noise z conditioned on label y<br>
+            • The vertical bar "|" means "conditioned on"
+        </div>
+
+        <h3>1.5 Implementation (PyTorch)</h3>
+
+        <div class="code-block">
+<code><span class="keyword">class</span> <span class="function">ConditionalGenerator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, noise_dim=<span class="number">100</span>, num_classes=<span class="number">10</span>, img_size=<span class="number">28</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        
+        <span class="comment"># Embed class labels</span>
+        <span class="keyword">self</span>.label_emb = nn.<span class="function">Embedding</span>(num_classes, num_classes)
+        
+        <span class="comment"># Generator network</span>
+        <span class="keyword">self</span>.model = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(noise_dim + num_classes, <span class="number">256</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">256</span>, <span class="number">512</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">512</span>, <span class="number">1024</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">1024</span>, img_size * img_size),
+            nn.<span class="function">Tanh</span>()
+        )
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, noise, labels):
+        <span class="comment"># Concatenate noise and embedded labels</span>
+        label_emb = <span class="keyword">self</span>.label_emb(labels)
+        gen_input = torch.<span class="function">cat</span>([noise, label_emb], dim=<span class="number">1</span>)
+        img = <span class="keyword">self</span>.model(gen_input)
+        <span class="keyword">return</span> img.<span class="function">view</span>(img.<span class="function">size</span>(<span class="number">0</span>), <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>)
+
+
+<span class="keyword">class</span> <span class="function">ConditionalDiscriminator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, num_classes=<span class="number">10</span>, img_size=<span class="number">28</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        
+        <span class="comment"># Embed class labels</span>
+        <span class="keyword">self</span>.label_emb = nn.<span class="function">Embedding</span>(num_classes, num_classes)
+        
+        <span class="comment"># Discriminator network</span>
+        <span class="keyword">self</span>.model = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(img_size * img_size + num_classes, <span class="number">512</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Dropout</span>(<span class="number">0.3</span>),
+            nn.<span class="function">Linear</span>(<span class="number">512</span>, <span class="number">256</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Dropout</span>(<span class="number">0.3</span>),
+            nn.<span class="function">Linear</span>(<span class="number">256</span>, <span class="number">1</span>),
+            nn.<span class="function">Sigmoid</span>()
+        )
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, img, labels):
+        <span class="comment"># Flatten image and concatenate with embedded labels</span>
+        img_flat = img.<span class="function">view</span>(img.<span class="function">size</span>(<span class="number">0</span>), <span class="number">-1</span>)
+        label_emb = <span class="keyword">self</span>.label_emb(labels)
+        d_input = torch.<span class="function">cat</span>([img_flat, label_emb], dim=<span class="number">1</span>)
+        validity = <span class="keyword">self</span>.model(d_input)
+        <span class="keyword">return</span> validity</code>
+        </div>
+
+        <h3>1.6 Training Process</h3>
+
+        <div class="code-block">
+<code><span class="comment"># Training loop for cGAN</span>
+<span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="function">range</span>(epochs):
+    <span class="keyword">for</span> real_imgs, labels <span class="keyword">in</span> dataloader:
+        
+        <span class="comment"># Generate fake images</span>
+        z = torch.<span class="function">randn</span>(batch_size, noise_dim)
+        fake_imgs = generator(z, labels)
+        
+        <span class="comment"># Train Discriminator</span>
+        real_validity = discriminator(real_imgs, labels)
+        fake_validity = discriminator(fake_imgs.<span class="function">detach</span>(), labels)
+        
+        d_loss = -torch.<span class="function">mean</span>(torch.<span class="function">log</span>(real_validity) + 
+                            torch.<span class="function">log</span>(<span class="number">1</span> - fake_validity))
+        
+        <span class="comment"># Train Generator</span>
+        fake_validity = discriminator(fake_imgs, labels)
+        g_loss = -torch.<span class="function">mean</span>(torch.<span class="function">log</span>(fake_validity))</code>
+        </div>
+
+        <!-- Section 2: AC-GAN -->
+        <h2>2. Auxiliary Classifier GAN (AC-GAN)</h2>
+
+        <h3>2.1 Overview</h3>
+        <p><strong>Auxiliary Classifier GAN</strong> extends GAN by adding an auxiliary classifier to the discriminator. The discriminator must both determine if an image is real/fake AND predict its class.</p>
+
+        <div class="note">
+            <strong>Key Idea:</strong> The discriminator has TWO outputs: (1) Real/Fake probability, (2) Class prediction. This forces the generator to create more distinct, recognizable classes.
+        </div>
+
+        <h3>2.2 Architecture</h3>
+
+        <div class="architecture-box">
+┌────────────────────────────────────────────────────────┐
+│           AUXILIARY CLASSIFIER GAN ARCHITECTURE         │
+├────────────────────────────────────────────────────────┤
+│                                                         │
+│  GENERATOR:                                            │
+│                                                         │
+│    Noise (z) ────┐                                    │
+│                  │                                     │
+│    Label (y) ────┴──► [Concatenate] ──► G(z,y) ──►   │
+│                                           │            │
+│                                      Fake Image        │
+│                                                         │
+│  DISCRIMINATOR (Dual Output):                          │
+│                                                         │
+│    Image (x) ──► [Shared Layers] ──┬─► Real/Fake (D)  │
+│                                     │                   │
+│                                     └─► Class (C)       │
+│                                                         │
+│    Note: Label NOT given to discriminator!             │
+│          Discriminator must predict it!                │
+│                                                         │
+└────────────────────────────────────────────────────────┘
+        </div>
+
+        <h3>2.3 How It Works</h3>
+
+        <h4>Generator:</h4>
+        <ul>
+            <li><strong>Input:</strong> Random noise <code>z</code> + Class label <code>y</code></li>
+            <li><strong>Process:</strong> Similar to cGAN - embed and concatenate label</li>
+            <li><strong>Output:</strong> Fake image of class <code>y</code></li>
+        </ul>
+
+        <h4>Discriminator:</h4>
+        <ul>
+            <li><strong>Input:</strong> Image <code>x</code> only (NO label!)</li>
+            <li><strong>Process:</strong> Shared feature extraction, then two separate heads</li>
+            <li><strong>Output 1:</strong> Real/Fake probability D(x)</li>
+            <li><strong>Output 2:</strong> Class prediction C(x)</li>
+        </ul>
+
+        <div class="key-difference">
+            <h4>⚠️ Critical Difference:</h4>
+            <p><strong>cGAN:</strong> Discriminator is GIVEN the label → "Is this image real for class y?"</p>
+            <p><strong>AC-GAN:</strong> Discriminator must PREDICT the label → "Is this real? What class is it?"</p>
+        </div>
+
+        <h3>2.4 Loss Functions</h3>
+
+        <div class="formula">
+            <strong>AC-GAN has TWO loss components:</strong><br><br>
+            
+            <strong>1. Source Loss (Real/Fake):</strong><br>
+            L<sub>S</sub> = 𝔼[log D(x)] + 𝔼[log(1 - D(G(z|y)))]
+            <br><br>
+            
+            <strong>2. Class Loss (Correct Class):</strong><br>
+            L<sub>C</sub> = 𝔼[log P(C=c|x)] + 𝔼[log P(C=c|G(z|c))]
+            <br><br>
+            
+            <strong>Total Loss:</strong><br>
+            • Discriminator: max L<sub>S</sub> + L<sub>C</sub><br>
+            • Generator: max L<sub>C</sub> - L<sub>S</sub>
+            <br><br>
+            
+            <strong>Where:</strong><br>
+            • D(x) = Real/Fake prediction<br>
+            • C = Class prediction head<br>
+            • P(C=c|x) = Probability of correct class c given image x
+        </div>
+
+        <h3>2.5 Implementation (PyTorch)</h3>
+
+        <div class="code-block">
+<code><span class="keyword">class</span> <span class="function">ACGANGenerator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, noise_dim=<span class="number">100</span>, num_classes=<span class="number">10</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        
+        <span class="comment"># Same as cGAN - embed labels</span>
+        <span class="keyword">self</span>.label_emb = nn.<span class="function">Embedding</span>(num_classes, num_classes)
+        
+        <span class="keyword">self</span>.model = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(noise_dim + num_classes, <span class="number">256</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">256</span>, <span class="number">512</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">512</span>, <span class="number">1024</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Linear</span>(<span class="number">1024</span>, <span class="number">784</span>),
+            nn.<span class="function">Tanh</span>()
+        )
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, noise, labels):
+        label_emb = <span class="keyword">self</span>.label_emb(labels)
+        gen_input = torch.<span class="function">cat</span>([noise, label_emb], dim=<span class="number">1</span>)
+        img = <span class="keyword">self</span>.model(gen_input)
+        <span class="keyword">return</span> img.<span class="function">view</span>(-<span class="number">1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>)
+
+
+<span class="keyword">class</span> <span class="function">ACGANDiscriminator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, num_classes=<span class="number">10</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>()
+        
+        <span class="comment"># Shared feature extraction (NO label input!)</span>
+        <span class="keyword">self</span>.shared = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(<span class="number">784</span>, <span class="number">512</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Dropout</span>(<span class="number">0.3</span>),
+            nn.<span class="function">Linear</span>(<span class="number">512</span>, <span class="number">256</span>),
+            nn.<span class="function">LeakyReLU</span>(<span class="number">0.2</span>),
+            nn.<span class="function">Dropout</span>(<span class="number">0.3</span>)
+        )
+        
+        <span class="comment"># Real/Fake head</span>
+        <span class="keyword">self</span>.adv_layer = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(<span class="number">256</span>, <span class="number">1</span>),
+            nn.<span class="function">Sigmoid</span>()
+        )
+        
+        <span class="comment"># Class prediction head</span>
+        <span class="keyword">self</span>.aux_layer = nn.<span class="function">Sequential</span>(
+            nn.<span class="function">Linear</span>(<span class="number">256</span>, num_classes),
+            nn.<span class="function">Softmax</span>(dim=<span class="number">1</span>)
+        )
+    
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="keyword">self</span>, img):
+        <span class="comment"># Extract features</span>
+        img_flat = img.<span class="function">view</span>(img.<span class="function">size</span>(<span class="number">0</span>), <span class="number">-1</span>)
+        features = <span class="keyword">self</span>.shared(img_flat)
+        
+        <span class="comment"># Two outputs</span>
+        validity = <span class="keyword">self</span>.adv_layer(features)      <span class="comment"># Real/Fake</span>
+        label = <span class="keyword">self</span>.aux_layer(features)          <span class="comment"># Class</span>
+        
+        <span class="keyword">return</span> validity, label</code>
+        </div>
+
+        <h3>2.6 Training Process</h3>
+
+        <div class="code-block">
+<code><span class="comment"># Training loop for AC-GAN</span>
+adversarial_loss = nn.<span class="function">BCELoss</span>()
+auxiliary_loss = nn.<span class="function">CrossEntropyLoss</span>()
+
+<span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="function">range</span>(epochs):
+    <span class="keyword">for</span> real_imgs, labels <span class="keyword">in</span> dataloader:
+        
+        <span class="comment"># Generate fake images</span>
+        z = torch.<span class="function">randn</span>(batch_size, noise_dim)
+        gen_labels = torch.<span class="function">randint</span>(<span class="number">0</span>, num_classes, (batch_size,))
+        fake_imgs = generator(z, gen_labels)
+        
+        <span class="comment"># Train Discriminator</span>
+        <span class="comment"># Real images</span>
+        real_validity, real_pred_label = discriminator(real_imgs)
+        d_real_loss = (adversarial_loss(real_validity, valid) + 
+                       auxiliary_loss(real_pred_label, labels))
+        
+        <span class="comment"># Fake images</span>
+        fake_validity, fake_pred_label = discriminator(fake_imgs.<span class="function">detach</span>())
+        d_fake_loss = (adversarial_loss(fake_validity, fake) + 
+                       auxiliary_loss(fake_pred_label, gen_labels))
+        
+        d_loss = (d_real_loss + d_fake_loss) / <span class="number">2</span>
+        
+        <span class="comment"># Train Generator</span>
+        validity, pred_label = discriminator(fake_imgs)
+        g_loss = (adversarial_loss(validity, valid) + 
+                  auxiliary_loss(pred_label, gen_labels))</code>
+        </div>
+
+        <!-- Detailed Comparison Table -->
+        <h2>3. Detailed Comparison</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Conditional GAN (cGAN)</th>
+                    <th>Auxiliary Classifier GAN (AC-GAN)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Year Published</strong></td>
+                    <td>2014</td>
+                    <td>2017</td>
+                </tr>
+                <tr>
+                    <td><strong>Generator Input</strong></td>
+                    <td>Noise + Label</td>
+                    <td>Noise + Label</td>
+                </tr>
+                <tr>
+                    <td><strong>Discriminator Input</strong></td>
+                    <td>Image + Label (Given)</td>
+                    <td>Image Only (No label)</td>
+                </tr>
+                <tr>
+                    <td><strong>Discriminator Output</strong></td>
+                    <td>1 output: Real/Fake</td>
+                    <td>2 outputs: Real/Fake + Class</td>
+                </tr>
+                <tr>
+                    <td><strong>Label Usage</strong></td>
+                    <td>Condition on label</td>
+                    <td>Predict label</td>
+                </tr>
+                <tr>
+                    <td><strong>Loss Function</strong></td>
+                    <td>Single adversarial loss</td>
+                    <td>Adversarial + Classification loss</td>
+                </tr>
+                <tr>
+                    <td><strong>Training Stability</strong></td>
+                    <td>More stable</td>
+                    <td>Less stable (harder to train)</td>
+                </tr>
+                <tr>
+                    <td><strong>Image Quality</strong></td>
+                    <td>Good quality</td>
+                    <td>Higher quality (more distinct classes)</td>
+                </tr>
+                <tr>
+                    <td><strong>Class Separation</strong></td>
+                    <td>Moderate separation</td>
+                    <td>Better class separation</td>
+                </tr>
+                <tr>
+                    <td><strong>Computational Cost</strong></td>
+                    <td>Lower</td>
+                    <td>Higher (extra classification head)</td>
+                </tr>
+                <tr>
+                    <td><strong>Scalability</strong></td>
+                    <td>Better for many classes</td>
+                    <td>Struggles with 100+ classes</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>When you have paired (image, label) data</td>
+                    <td>When you want high-quality, distinct classes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Key Differences Section -->
+        <h2>4. Key Differences Explained</h2>
+
+        <h3>4.1 Information Flow</h3>
+
+        <div class="comparison-grid">
+            <div class="comparison-card cgan">
+                <h4><span class="badge badge-cgan">cGAN</span></h4>
+                <p><strong>Generator:</strong> z + y → G(z, y) → Image</p>
+                <p><strong>Discriminator:</strong> Image + y → D(x, y) → Real/Fake</p>
+                <p><strong>Key:</strong> Label flows to both G and D</p>
+            </div>
+            
+            <div class="comparison-card acgan">
+                <h4><span class="badge badge-acgan">AC-GAN</span></h4>
+                <p><strong>Generator:</strong> z + y → G(z, y) → Image</p>
+                <p><strong>Discriminator:</strong> Image → D(x) → Real/Fake + Class</p>
+                <p><strong>Key:</strong> D must predict the class!</p>
+            </div>
+        </div>
+
+        <h3>4.2 Discriminator Task</h3>
+
+        <div class="comparison-grid">
+            <div class="comparison-card cgan">
+                <h4><span class="badge badge-cgan">cGAN Discriminator</span></h4>
+                <p><strong>Question:</strong> "Given that this should be class y, is this image real or fake?"</p>
+                <p><strong>Task:</strong> Binary classification conditioned on label</p>
+                <p><strong>Easier:</strong> Has ground truth label to work with</p>
+            </div>
+            
+            <div class="comparison-card acgan">
+                <h4><span class="badge badge-acgan">AC-GAN Discriminator</span></h4>
+                <p><strong>Questions:</strong> "Is this real or fake? AND What class is this?"</p>
+                <p><strong>Task:</strong> Binary + Multi-class classification</p>
+                <p><strong>Harder:</strong> Must learn class features from scratch</p>
+            </div>
+        </div>
+
+        <h3>4.3 Why AC-GAN Produces Better Quality</h3>
+
+        <div class="note">
+            <p><strong>Reason:</strong> Because the discriminator must <em>classify</em> the image, the generator is forced to create images with <strong>clear, distinctive class features</strong>.</p>
+            <ul>
+                <li><strong>cGAN:</strong> Generator only needs to fool discriminator for given class</li>
+                <li><strong>AC-GAN:</strong> Generator must create features recognizable enough for classification</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Result:</strong> AC-GAN images have better-defined class characteristics and less ambiguity.</p>
+        </div>
+
+        <h3>4.4 Training Dynamics</h3>
+
+        <div class="comparison-grid">
+            <div class="comparison-card cgan">
+                <h4><span class="badge badge-cgan">cGAN Training</span></h4>
+                <ul>
+                    <li>✅ More stable training</li>
+                    <li>✅ Faster convergence</li>
+                    <li>✅ Less prone to mode collapse</li>
+                    <li>⚠️ May produce blurrier images</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-card acgan">
+                <h4><span class="badge badge-acgan">AC-GAN Training</span></h4>
+                <ul>
+                    <li>⚠️ Less stable (two losses to balance)</li>
+                    <li>⚠️ Slower convergence</li>
+                    <li>⚠️ More hyperparameter tuning needed</li>
+                    <li>✅ Produces sharper, more distinct images</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Pros and Cons -->
+        <h2>5. Advantages and Disadvantages</h2>
+
+        <h3>5.1 Conditional GAN</h3>
+        
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>✅ Advantages</h4>
+                <ul>
+                    <li><strong>Simpler architecture</strong> - Easier to implement and understand</li>
+                    <li><strong>More stable training</strong> - Converges more reliably</li>
+                    <li><strong>Faster training</strong> - Single loss function</li>
+                    <li><strong>Better scalability</strong> - Works well with many classes</li>
+                    <li><strong>Lower computational cost</strong> - No extra classification head</li>
+                    <li><strong>Well-established</strong> - Lots of research and implementations</li>
+                </ul>
+            </div>
+            
+            <div class="cons">
+                <h4>❌ Disadvantages</h4>
+                <ul>
+                    <li><strong>Moderate quality</strong> - Images may be less sharp</li>
+                    <li><strong>Weaker class separation</strong> - Classes may overlap more</li>
+                    <li><strong>Requires labels everywhere</strong> - Must feed labels to D</li>
+                    <li><strong>Less learning pressure</strong> - D has easier task</li>
+                    <li><strong>May ignore some label info</strong> - Generator might not fully use conditioning</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>5.2 Auxiliary Classifier GAN</h3>
+        
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>✅ Advantages</h4>
+                <ul>
+                    <li><strong>Higher image quality</strong> - Sharper, more realistic images</li>
+                    <li><strong>Better class separation</strong> - Distinct, recognizable classes</li>
+                    <li><strong>Forces meaningful features</strong> - D must classify, so G must be clear</li>
+                    <li><strong>Can evaluate quality</strong> - Use classification accuracy as metric</li>
+                    <li><strong>Semi-supervised learning</strong> - Can leverage unlabeled data</li>
+                    <li><strong>Better for complex domains</strong> - When class distinction matters</li>
+                </ul>
+            </div>
+            
+            <div class="cons">
+                <h4>❌ Disadvantages</h4>
+                <ul>
+                    <li><strong>Harder to train</strong> - Two losses to balance</li>
+                    <li><strong>Less stable</strong> - More prone to training issues</li>
+                    <li><strong>Higher computational cost</strong> - Extra classification head</li>
+                    <li><strong>Doesn't scale well</strong> - Struggles with 100+ classes</li>
+                    <li><strong>More hyperparameters</strong> - Loss weights need tuning</li>
+                    <li><strong>Longer training time</strong> - Slower convergence</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- When to Use Which -->
+        <h2>6. When to Use Which?</h2>
+
+        <div class="quick-reference">
+            <h3>Decision Guide</h3>
+            
+            <h4><span class="badge badge-cgan">Use Conditional GAN when:</span></h4>
+            <ul>
+                <li>🎯 You want <strong>stable, reliable training</strong></li>
+                <li>🎯 You have <strong>many classes</strong> (50+)</li>
+                <li>🎯 You need <strong>faster training</strong></li>
+                <li>🎯 Image quality is <strong>good enough</strong> (not critical)</li>
+                <li>🎯 You're <strong>new to GANs</strong> (easier to implement)</li>
+                <li>🎯 You have <strong>limited computational resources</strong></li>
+                <li>🎯 Class separation is <strong>not critical</strong></li>
+            </ul>
+            
+            <h4 style="margin-top: 30px;"><span class="badge badge-acgan">Use AC-GAN when:</span></h4>
+            <ul>
+                <li>🎯 You need <strong>high-quality images</strong></li>
+                <li>🎯 <strong>Class distinction</strong> is critical</li>
+                <li>🎯 You have <strong>moderate number of classes</strong> (5-50)</li>
+                <li>🎯 You can afford <strong>longer training time</strong></li>
+                <li>🎯 You're willing to <strong>tune hyperparameters</strong></li>
+                <li>🎯 You want to <strong>evaluate generation quality</strong> via classification</li>
+                <li>🎯 You're doing <strong>research</strong> or need state-of-art quality</li>
+            </ul>
+        </div>
+
+        <!-- Practical Example -->
+        <h2>7. Practical Example Comparison</h2>
+
+        <h3>Scenario: Generating MNIST Digits</h3>
+
+        <div class="comparison-grid">
+            <div class="comparison-card cgan">
+                <h4><span class="badge badge-cgan">cGAN Approach</span></h4>
+                <p><strong>Training:</strong></p>
+                <ul>
+                    <li>Converges in ~20 epochs</li>
+                    <li>Stable loss curves</li>
+                    <li>Easy to implement</li>
+                </ul>
+                <p><strong>Results:</strong></p>
+                <ul>
+                    <li>Good digit recognition</li>
+                    <li>Some digits may look similar</li>
+                    <li>Occasional class confusion</li>
+                </ul>
+                <p><strong>Best for:</strong> Quick prototyping, educational purposes</p>
+            </div>
+            
+            <div class="comparison-card acgan">
+                <h4><span class="badge badge-acgan">AC-GAN Approach</span></h4>
+                <p><strong>Training:</strong></p>
+                <ul>
+                    <li>Converges in ~50 epochs</li>
+                    <li>Needs loss weight tuning</li>
+                    <li>More complex implementation</li>
+                </ul>
+                <p><strong>Results:</strong></p>
+                <ul>
+                    <li>Excellent digit clarity</li>
+                    <li>Very distinct classes</li>
+                    <li>Rarely confuses digits</li>
+                </ul>
+                <p><strong>Best for:</strong> Production systems, research papers</p>
+            </div>
+        </div>
+
+        <!-- Summary Box -->
+        <div class="summary-box">
+            <h2>🎯 Final Summary</h2>
+            
+            <div style="margin-top: 20px;">
+                <h3 style="color: white; margin-top: 0;">The Fundamental Difference:</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    <strong>Conditional GAN:</strong> "Here's the answer (label) - tell me if this matches."<br>
+                    <strong>AC-GAN:</strong> "Figure out the answer (label) yourself - and tell me if it's real."
+                </p>
+                
+                <h3 style="color: white; margin-top: 30px;">The Trade-off:</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    <strong>cGAN:</strong> Stability & Speed ⚡<br>
+                    <strong>AC-GAN:</strong> Quality & Distinction 🎨
+                </p>
+                
+                <h3 style="color: white; margin-top: 30px;">The Recommendation:</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    Start with <strong>cGAN</strong> to learn and prototype.<br>
+                    Move to <strong>AC-GAN</strong> when quality becomes critical.
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="quick-reference">
+            <h2 style="margin-top: 0;">📝 Key Takeaways</h2>
+            
+            <ol style="font-size: 1.05em;">
+                <li style="margin-bottom: 15px;"><strong>Architecture:</strong> cGAN conditions D on labels; AC-GAN makes D predict labels</li>
+                <li style="margin-bottom: 15px;"><strong>Task:</strong> cGAN D asks "Real given y?"; AC-GAN D asks "Real? What class?"</li>
+                <li style="margin-bottom: 15px;"><strong>Quality:</strong> AC-GAN produces sharper images with better class distinction</li>
+                <li style="margin-bottom: 15px;"><strong>Training:</strong> cGAN is easier and more stable; AC-GAN requires more tuning</li>
+                <li style="margin-bottom: 15px;"><strong>Scalability:</strong> cGAN handles more classes; AC-GAN better for fewer classes</li>
+                <li style="margin-bottom: 15px;"><strong>Use case:</strong> cGAN for production; AC-GAN for research and high quality</li>
+            </ol>
+        </div>
+
+        <!-- References -->
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #667eea;">
+            <h3>📚 References</h3>
+            <p><strong>Conditional GAN:</strong> Mirza & Osindero (2014) - "Conditional Generative Adversarial Nets"</p>
+            <p><strong>AC-GAN:</strong> Odena et al. (2017) - "Conditional Image Synthesis With Auxiliary Classifier GANs"</p>
+        </div>
+
+    </div>
+</body>
+</html>
